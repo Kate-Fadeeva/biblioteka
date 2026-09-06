@@ -335,10 +335,32 @@
     .book-pages { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
     .book-progress { font-size: 0.8rem; color: var(--accent-text); font-weight: 500; margin-bottom: 4px; }
 
-    /* ----- КНОПКА ТАЙМЕРА ----- */
-    .book-timer-btn { background: var(--timer-bg); color: var(--timer-text); border: none; border-radius: 40px; padding: 6px 14px; font-size: 0.8rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; margin: 4px 0 8px; align-self: flex-start; }
-    .book-timer-btn:hover { transform: scale(1.05); background: var(--accent); color: var(--bg); }
-    .book-timer-btn.active { background: var(--error); animation: pulse 1s infinite; }
+    /* ----- КНОПКА ТАЙМЕРА (ИСПРАВЛЕНА) ----- */
+    .book-timer-btn {
+      background: var(--timer-bg);
+      color: var(--timer-text);
+      border: none;
+      border-radius: 40px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin: 4px 0 8px 0;
+      align-self: flex-start;
+      line-height: 1.2;
+    }
+    .book-timer-btn:hover {
+      transform: scale(1.05);
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .book-timer-btn.active {
+      background: var(--error);
+      animation: pulse 1s infinite;
+    }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
     /* ----- КНОПКИ ДЕЙСТВИЙ ----- */
