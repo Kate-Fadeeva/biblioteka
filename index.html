@@ -79,7 +79,103 @@
     /* ----- БАЗОВЫЕ СТИЛИ ----- */
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; transition: background 0.3s, color 0.2s, border-color 0.3s, box-shadow 0.3s; }
     body { background: var(--bg); padding: 2rem 1rem; min-height: 100vh; display: flex; justify-content: center; }
-    .app { max-width: 1200px; width: 100%; }
+
+    /* ----- ЭКРАН ВХОДА (ПОВЕРХ ВСЕГО) ----- */
+    .login-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      flex-direction: column;
+      padding: 2rem;
+    }
+    .login-screen .login-box {
+      background: var(--bg-card);
+      border-radius: 32px;
+      padding: 2.5rem;
+      max-width: 400px;
+      width: 100%;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 60px var(--shadow);
+      text-align: center;
+    }
+    .login-screen .login-box h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+    .login-screen .login-box h1 .accent {
+      color: var(--accent-text);
+    }
+    .login-screen .login-box p {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+    .login-screen .login-box input {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      font-size: 1rem;
+      background: var(--input-bg);
+      color: var(--text);
+      margin-bottom: 1rem;
+      outline: none;
+      transition: 0.2s;
+    }
+    .login-screen .login-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    .login-screen .login-box .login-btn {
+      width: 100%;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 14px;
+      border-radius: 40px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .login-screen .login-box .login-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 30px var(--accent-glow);
+    }
+    .login-screen .login-box .login-error {
+      color: var(--error);
+      font-size: 0.85rem;
+      margin-top: 8px;
+      min-height: 24px;
+      display: none;
+    }
+    .login-screen .login-box .login-error.visible {
+      display: block;
+    }
+
+    /* ----- ОСНОВНОЙ КОНТЕНТ ----- */
+    .app-content {
+      display: none;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .app-content.visible {
+      display: block;
+    }
+
+    .app {
+      max-width: 1200px;
+      width: 100%;
+    }
 
     /* ----- ШАПКА ----- */
     .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
@@ -562,146 +658,198 @@
       .book-quotes .add-quote-row button { width: 100%; justify-content: center; }
       .filters button { font-size: 0.75rem; padding: 6px 12px; }
       .filters { gap: 6px; }
+      .login-screen .login-box { padding: 1.5rem; }
     }
   </style>
 </head>
 <body>
-<div class="app">
-  <!-- PWA: offline badge -->
-  <div class="offline-badge" id="offlineBadge">📡 Офлайн</div>
 
-  <!-- ШАПКА -->
-  <div class="header">
-    <div class="header-left">
-      <button class="back-btn" id="backBtn">← Назад</button>
-      <h1>📖 <span class="accent">Библиотека</span> <small id="counter">0 книг</small></h1>
-    </div>
-    <div class="header-actions">
-      <button class="btn-add-book" id="openAddModal">+ Добавить книгу</button>
-      <button class="theme-toggle" id="themeToggle">🌙 Тёмная тема</button>
-    </div>
+<!-- ЭКРАН ВХОДА -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <h1>📖 <span class="accent">Библиотека</span></h1>
+    <p>Введите пароль, чтобы войти</p>
+    <input type="password" id="passwordInput" placeholder="Введите пароль" />
+    <button class="login-btn" id="loginBtn">🔑 Войти</button>
+    <div class="login-error" id="loginError">Неверный пароль. Попробуйте ещё раз.</div>
   </div>
+</div>
 
-  <!-- ПОИСК -->
-  <div class="search-wrap" id="searchWrap">
-    <input type="text" id="searchInput" placeholder="🔍 Поиск по названию или автору..." />
-  </div>
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<div class="app-content" id="appContent">
+  <div class="app">
+    <!-- PWA: offline badge -->
+    <div class="offline-badge" id="offlineBadge">📡 Офлайн</div>
 
-  <!-- ФИЛЬТРЫ -->
-  <div class="filters" id="filterBar">
-    <button class="active" data-filter="all">Все</button>
-    <button data-filter="В плане">📌 В плане</button>
-    <button data-filter="Читаю">📖 Читаю</button>
-    <button data-filter="Прочитано">✅ Прочитано</button>
-    <button data-filter="Хочу купить">🛒 Хочу купить</button>
-    <button data-filter="favorite">⭐ Избранное</button>
-  </div>
-
-  <!-- СПИСОК КНИГ -->
-  <div class="grid" id="booksGrid"></div>
-
-  <!-- СТРАНИЦА КНИГИ -->
-  <div class="book-page" id="bookPage">
-    <div class="book-detail" id="bookDetail"></div>
-  </div>
-
-  <!-- МОДАЛКА ДОБАВЛЕНИЯ -->
-  <div class="modal-overlay" id="addModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h2>➕ <span class="accent">Новая</span> книга</h2>
-        <button class="modal-close" id="closeAddModal">✕</button>
+    <!-- ШАПКА -->
+    <div class="header">
+      <div class="header-left">
+        <button class="back-btn" id="backBtn">← Назад</button>
+        <h1>📖 <span class="accent">Библиотека</span> <small id="counter">0 книг</small></h1>
       </div>
-      <div class="form-card" id="bookForm">
-        <div class="form-group">
-          <label>Название книги *</label>
-          <input type="text" id="titleInput" placeholder="Например: 1984" required />
+      <div class="header-actions">
+        <button class="btn-add-book" id="openAddModal">+ Добавить книгу</button>
+        <button class="theme-toggle" id="themeToggle">🌙 Тёмная тема</button>
+      </div>
+    </div>
+
+    <!-- ПОИСК -->
+    <div class="search-wrap" id="searchWrap">
+      <input type="text" id="searchInput" placeholder="🔍 Поиск по названию или автору..." />
+    </div>
+
+    <!-- ФИЛЬТРЫ -->
+    <div class="filters" id="filterBar">
+      <button class="active" data-filter="all">Все</button>
+      <button data-filter="В плане">📌 В плане</button>
+      <button data-filter="Читаю">📖 Читаю</button>
+      <button data-filter="Прочитано">✅ Прочитано</button>
+      <button data-filter="Хочу купить">🛒 Хочу купить</button>
+      <button data-filter="favorite">⭐ Избранное</button>
+    </div>
+
+    <!-- СПИСОК КНИГ -->
+    <div class="grid" id="booksGrid"></div>
+
+    <!-- СТРАНИЦА КНИГИ -->
+    <div class="book-page" id="bookPage">
+      <div class="book-detail" id="bookDetail"></div>
+    </div>
+
+    <!-- МОДАЛКА ДОБАВЛЕНИЯ -->
+    <div class="modal-overlay" id="addModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>➕ <span class="accent">Новая</span> книга</h2>
+          <button class="modal-close" id="closeAddModal">✕</button>
         </div>
-        <div class="form-group">
-          <label>Автор</label>
-          <input type="text" id="authorInput" placeholder="Джордж Оруэлл" />
-        </div>
-        <div class="form-group">
-          <label>Количество страниц</label>
-          <input type="number" id="pagesInput" placeholder="328" min="1" />
-        </div>
-        <div class="form-group">
-          <label>Обложки</label>
-          <div class="covers-input" id="coversContainer">
-            <div class="cover-url-row">
-              <input type="text" class="cover-url-input" placeholder="https://example.com/cover.jpg" />
-              <button class="upload-btn">📤 Загрузить <input type="file" accept="image/*" /></button>
-              <button class="remove-cover-btn" style="visibility:hidden;">✕</button>
+        <div class="form-card" id="bookForm">
+          <div class="form-group">
+            <label>Название книги *</label>
+            <input type="text" id="titleInput" placeholder="Например: 1984" required />
+          </div>
+          <div class="form-group">
+            <label>Автор</label>
+            <input type="text" id="authorInput" placeholder="Джордж Оруэлл" />
+          </div>
+          <div class="form-group">
+            <label>Количество страниц</label>
+            <input type="number" id="pagesInput" placeholder="328" min="1" />
+          </div>
+          <div class="form-group">
+            <label>Обложки</label>
+            <div class="covers-input" id="coversContainer">
+              <div class="cover-url-row">
+                <input type="text" class="cover-url-input" placeholder="https://example.com/cover.jpg" />
+                <button class="upload-btn">📤 Загрузить <input type="file" accept="image/*" /></button>
+                <button class="remove-cover-btn" style="visibility:hidden;">✕</button>
+              </div>
+            </div>
+            <button class="add-cover-btn" id="addCoverBtn">+ Добавить ещё обложку</button>
+          </div>
+          <div class="form-group">
+            <label>Статус</label>
+            <select id="statusSelect">
+              <option value="В плане">В плане</option>
+              <option value="Читаю">Читаю</option>
+              <option value="Прочитано">Прочитано</option>
+              <option value="Хочу купить">Хочу купить</option>
+            </select>
+          </div>
+          <div class="date-row" id="dateRow">
+            <div class="form-group" id="startDateGroup">
+              <label>Дата начала</label>
+              <input type="date" id="startDate" />
+            </div>
+            <div class="form-group" id="endDateGroup" style="display:none;">
+              <label>Дата окончания</label>
+              <input type="date" id="endDate" />
             </div>
           </div>
-          <button class="add-cover-btn" id="addCoverBtn">+ Добавить ещё обложку</button>
-        </div>
-        <div class="form-group">
-          <label>Статус</label>
-          <select id="statusSelect">
-            <option value="В плане">В плане</option>
-            <option value="Читаю">Читаю</option>
-            <option value="Прочитано">Прочитано</option>
-            <option value="Хочу купить">Хочу купить</option>
-          </select>
-        </div>
-        <div class="date-row" id="dateRow">
-          <div class="form-group" id="startDateGroup">
-            <label>Дата начала</label>
-            <input type="date" id="startDate" />
+          <div class="form-group" id="ratingGroup" style="display:none;">
+            <label>Оценка (1–5)</label>
+            <div class="rating-input">
+              <input type="number" id="ratingInput" min="1" max="5" placeholder="1-5" />
+              <span class="stars-preview" id="starsPreview">☆☆☆☆☆</span>
+            </div>
           </div>
-          <div class="form-group" id="endDateGroup" style="display:none;">
-            <label>Дата окончания</label>
-            <input type="date" id="endDate" />
+          <div class="form-group" id="reviewGroup" style="display:none;">
+            <label>Отзыв</label>
+            <textarea id="reviewInput" placeholder="Поделитесь впечатлениями о книге..." rows="2"></textarea>
           </div>
-        </div>
-        <div class="form-group" id="ratingGroup" style="display:none;">
-          <label>Оценка (1–5)</label>
-          <div class="rating-input">
-            <input type="number" id="ratingInput" min="1" max="5" placeholder="1-5" />
-            <span class="stars-preview" id="starsPreview">☆☆☆☆☆</span>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Аннотация</label>
+            <textarea id="annotationInput" placeholder="Краткое описание книги..." rows="3"></textarea>
           </div>
+          <button class="btn-add" id="addBtn">+ Добавить</button>
         </div>
-        <div class="form-group" id="reviewGroup" style="display:none;">
-          <label>Отзыв</label>
-          <textarea id="reviewInput" placeholder="Поделитесь впечатлениями о книге..." rows="2"></textarea>
-        </div>
-        <div class="form-group" style="grid-column: 1 / -1;">
-          <label>Аннотация</label>
-          <textarea id="annotationInput" placeholder="Краткое описание книги..." rows="3"></textarea>
-        </div>
-        <button class="btn-add" id="addBtn">+ Добавить</button>
       </div>
     </div>
-  </div>
 
-  <!-- МОДАЛКА ТАЙМЕРА (с полем для ошибки) -->
-  <div class="modal-overlay timer-modal" id="timerModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h2>⏱️ <span class="accent">Чтение</span></h2>
-        <button class="modal-close" id="closeTimerModal">✕</button>
-      </div>
-      <div class="timer-display" id="timerDisplay">00:00:00</div>
-      <div class="timer-controls">
-        <button class="start-btn" id="timerStartBtn">▶ Старт</button>
-        <button class="stop-btn" id="timerStopBtn">⏹ Стоп</button>
-      </div>
-      <div class="timer-page-input">
-        <label>Страница:</label>
-        <input type="number" id="timerPageInput" min="1" placeholder="страница" />
-        <button class="save-page-btn" id="timerSavePageBtn">📌 Записать</button>
-      </div>
-      <div class="timer-error" id="timerError"></div>
-      <div class="timer-history" id="timerHistory">
-        <h4>История чтения</h4>
-        <div id="timerHistoryList"></div>
+    <!-- МОДАЛКА ТАЙМЕРА -->
+    <div class="modal-overlay timer-modal" id="timerModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>⏱️ <span class="accent">Чтение</span></h2>
+          <button class="modal-close" id="closeTimerModal">✕</button>
+        </div>
+        <div class="timer-display" id="timerDisplay">00:00:00</div>
+        <div class="timer-controls">
+          <button class="start-btn" id="timerStartBtn">▶ Старт</button>
+          <button class="stop-btn" id="timerStopBtn">⏹ Стоп</button>
+        </div>
+        <div class="timer-page-input">
+          <label>Страница:</label>
+          <input type="number" id="timerPageInput" min="1" placeholder="страница" />
+          <button class="save-page-btn" id="timerSavePageBtn">📌 Записать</button>
+        </div>
+        <div class="timer-error" id="timerError"></div>
+        <div class="timer-history" id="timerHistory">
+          <h4>История чтения</h4>
+          <div id="timerHistoryList"></div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <script>
+  // ============================================================
+  // 0. ЗАЩИТА ПАРОЛЕМ
+  // ============================================================
+  const CORRECT_PASSWORD = 'StarKoforeva';
+
+  const loginScreen = document.getElementById('loginScreen');
+  const appContent = document.getElementById('appContent');
+  const passwordInput = document.getElementById('passwordInput');
+  const loginBtn = document.getElementById('loginBtn');
+  const loginError = document.getElementById('loginError');
+
+  function checkPassword() {
+    const input = passwordInput.value;
+    if (input === CORRECT_PASSWORD) {
+      sessionStorage.setItem('library_logged_in', 'true');
+      loginScreen.style.display = 'none';
+      appContent.classList.add('visible');
+      initApp();
+    } else {
+      loginError.classList.add('visible');
+      passwordInput.value = '';
+      passwordInput.focus();
+    }
+  }
+
+  loginBtn.addEventListener('click', checkPassword);
+  passwordInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') checkPassword();
+  });
+
+  // Проверяем, не заходили ли уже в этой сессии
+  if (sessionStorage.getItem('library_logged_in') === 'true') {
+    loginScreen.style.display = 'none';
+    appContent.classList.add('visible');
+  }
+
   // ============================================================
   // 1. PWA SERVICE WORKER
   // ============================================================
@@ -1244,7 +1392,7 @@
   addBtn.addEventListener('click', addBook);
 
   // ============================================================
-  // 14. ТАЙМЕР (УМНЫЙ + АВТО-ЗАВЕРШЕНИЕ + ОШИБКА В МОДАЛКЕ)
+  // 14. ТАЙМЕР
   // ============================================================
   function openTimer(bookId) {
     const book = books.find(b => b.id === bookId);
@@ -1255,7 +1403,6 @@
     timerRunning = false;
     timerPageInput.value = book.currentPage || '';
 
-    // Скрываем ошибку при открытии
     timerError.style.display = 'none';
     timerError.textContent = '';
 
@@ -1327,7 +1474,6 @@
   timerSavePageBtn.addEventListener('click', async () => {
     const page = parseInt(timerPageInput.value);
     
-    // Скрываем старую ошибку
     timerError.style.display = 'none';
     timerError.textContent = '';
 
@@ -2135,9 +2281,9 @@
   });
 
   // ============================================================
-  // 19. ЗАПУСК
+  // 19. ЗАПУСК (ВЫЗЫВАЕТСЯ ПОСЛЕ ВХОДА)
   // ============================================================
-  function init() {
+  function initApp() {
     initCoverRows(coversContainer);
     subscribeToBooks();
 
@@ -2151,7 +2297,10 @@
     render();
   }
 
-  init();
+  // Если уже заходили в этой сессии
+  if (sessionStorage.getItem('library_logged_in') === 'true') {
+    initApp();
+  }
 </script>
 </body>
 </html>
