@@ -1,0 +1,2157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  <title>Домашняя библиотека</title>
+  
+  <!-- PWA: манифест -->
+  <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogItCU0L7QvNCw0YjQvdGP0Y8g0LHQuNCx0LvQuNC+0YLQtdC60LAg0LrQvdC40LMiLAogICJzaG9ydF9uYW1lIjogItCU0L7QvNCw0YjQvdGP0Y8g0LHQuNCx0LvQuNC+0YLQtdC60LAg0LrQvdC40LMiLAogICJkZXNjcmlwdGlvbiI6ICLQmtC90LjQttC90YvQuSDRh9C40YLQsNC70LXQvSIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmFmNmYwIiwKICAidGhlbWVfY29sb3IiOiAiI2ZmYjBmYiIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCw8c3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDUxMiA1MTInPjxyZWN0IHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyByeD0nNjQnIGZpbGw9JyNmZmIwZmInLz48dGV4dCB4PScyNTYnIHk9JzI4MCcgZm9udC1mYW1pbHk9J3N5c3RlbS11aScgZm9udC1zaXplPScyODAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyNmZmYnPkvQvjwvdGV4dD48L3N2Zz4iLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiLAogICAgICAicHVycG9zZSI6ICJhbnkgbWFzayBhbnkgcHVycG9zZSIKICAgIH0KICBdCn0=">
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  
+  <style>
+    /* ----- СВЕТЛАЯ ТЕМА ----- */
+    :root {
+      --bg: #faf6f0;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f8f3ec;
+      --text: #2d2a24;
+      --text-secondary: #6b6258;
+      --text-muted: #9a9084;
+      --border: #e8e0d6;
+      --border-light: #d5ccc0;
+      --shadow: rgba(0,0,0,0.06);
+      --hover: #f0e8de;
+      --status-bg: #f0e8de;
+      --delete-bg: #fde8e4;
+      --delete-hover: #fcd5ce;
+      --input-bg: #ffffff;
+      --cover-placeholder: #e8e0d6;
+      --success: #4caf50;
+      --error: #f44336;
+      --accent: #ffb0fb;
+      --accent-dim: rgba(255,176,251,0.2);
+      --accent-glow: rgba(255,176,251,0.3);
+      --accent-text: #d478d0;
+      --star-color: #f5a623;
+      --star-empty: #d5ccc0;
+      --timer-bg: #2d2a24;
+      --timer-text: #ffffff;
+      --favorite-color: #ffb800;
+      --want-to-buy-color: #4fc3f7;
+      --want-to-buy-bg: rgba(79, 195, 247, 0.12);
+    }
+
+    /* ----- ТЁМНАЯ ТЕМА ----- */
+    [data-theme="dark"] {
+      --bg: #0d0d0d;
+      --bg-card: #1a1a1a;
+      --bg-card-hover: #242424;
+      --text: #f0eef0;
+      --text-secondary: #a8a4aa;
+      --text-muted: #6a666e;
+      --border: #2a2a2a;
+      --border-light: #3a3a3a;
+      --shadow: rgba(0,0,0,0.6);
+      --hover: #2a2a2a;
+      --status-bg: #2a2a2a;
+      --delete-bg: #3a1a1a;
+      --delete-hover: #4a2222;
+      --input-bg: #121212;
+      --cover-placeholder: #1a1a1a;
+      --success: #66bb6a;
+      --error: #ef5350;
+      --accent: #ffb0fb;
+      --accent-dim: rgba(255,176,251,0.15);
+      --accent-glow: rgba(255,176,251,0.25);
+      --accent-text: #ffb0fb;
+      --star-color: #f5a623;
+      --star-empty: #4a4a4a;
+      --timer-bg: #2a2a2a;
+      --timer-text: #ffffff;
+      --favorite-color: #f5a623;
+      --want-to-buy-color: #4fc3f7;
+      --want-to-buy-bg: rgba(79, 195, 247, 0.15);
+    }
+
+    /* ----- БАЗОВЫЕ СТИЛИ ----- */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; transition: background 0.3s, color 0.2s, border-color 0.3s, box-shadow 0.3s; }
+    body { background: var(--bg); padding: 2rem 1rem; min-height: 100vh; display: flex; justify-content: center; }
+    .app { max-width: 1200px; width: 100%; }
+
+    /* ----- ШАПКА ----- */
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+    .header-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .header-left .back-btn { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 40px; padding: 8px 16px; font-size: 1rem; color: var(--text); cursor: pointer; transition: 0.2s; display: none; align-items: center; gap: 6px; }
+    .header-left .back-btn:hover { background: var(--hover); border-color: var(--accent); }
+    .header-left .back-btn.visible { display: flex; }
+    h1 { font-size: 2.8rem; font-weight: 600; letter-spacing: -0.5px; color: var(--text); display: flex; align-items: center; gap: 12px; }
+    h1 small { font-size: 1rem; font-weight: 400; color: var(--text-secondary); margin-left: 8px; }
+    h1 .accent { color: var(--accent-text); }
+    .header-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .btn-add-book { background: var(--accent); color: var(--bg); border: none; padding: 12px 24px; border-radius: 40px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .btn-add-book:hover { transform: scale(1.04); box-shadow: 0 0 30px var(--accent-glow); }
+    .theme-toggle { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 40px; padding: 10px 20px; font-size: 1rem; font-weight: 500; color: var(--text); cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; white-space: nowrap; }
+    .theme-toggle:hover { background: var(--hover); transform: scale(1.03); border-color: var(--accent); }
+
+    /* ----- ПОИСК ----- */
+    .search-wrap { margin-bottom: 1rem; }
+    .search-wrap input {
+      width: 100%;
+      padding: 12px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: 40px;
+      font-size: 1rem;
+      background: var(--bg-card);
+      color: var(--text);
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: 0.2s;
+      outline: none;
+    }
+    .search-wrap input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim), 0 2px 12px var(--shadow);
+    }
+    .search-wrap input::placeholder { color: var(--text-muted); }
+
+    /* ----- МОДАЛКИ ----- */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 2000; animation: fadeIn 0.2s ease; padding: 1rem; }
+    .modal-overlay.active { display: flex; }
+    [data-theme="dark"] .modal-overlay { background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); }
+    .modal { background: var(--bg-card); border-radius: 32px; padding: 2rem; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; border: 1px solid var(--border); box-shadow: 0 20px 60px var(--shadow); }
+    .modal:focus-within { border-color: var(--accent); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .modal-header h2 { color: var(--text); }
+    .modal-header h2 .accent { color: var(--accent-text); }
+    .modal-close { background: var(--status-bg); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 40px; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary); transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+    .modal-close:hover { background: var(--hover); color: var(--text); border-color: var(--accent); transform: rotate(90deg); }
+    .modal .form-card { box-shadow: none; padding: 0; margin: 0; border: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; background: transparent; }
+    .modal .form-card .btn-add { grid-column: 2 / 3; max-width: 100%; }
+
+    /* ----- ФОРМА ----- */
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+    .form-group label .badge { font-size: 0.6rem; text-transform: none; background: var(--accent-dim); color: var(--accent-text); padding: 2px 10px; border-radius: 20px; font-weight: 400; }
+    .form-group input, .form-group select, .form-group textarea { padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 16px; font-size: 1rem; background: var(--input-bg); color: var(--text); transition: 0.2s; font-family: inherit; resize: vertical; }
+    .form-group textarea { min-height: 70px; max-height: 200px; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+    .form-group input[type="number"] { width: 100px; }
+    .form-group .rating-input { display: flex; align-items: center; gap: 12px; }
+    .form-group .rating-input input { width: 80px; }
+    .form-group .rating-input .stars-preview { font-size: 1.6rem; letter-spacing: 3px; color: var(--star-color); }
+    .form-group .covers-input { display: flex; flex-direction: column; gap: 8px; }
+    .form-group .covers-input .cover-url-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .form-group .covers-input .cover-url-row input[type="text"] { flex: 1; min-width: 150px; }
+    .form-group .covers-input .cover-url-row .upload-btn { background: var(--bg); border: 1.5px solid var(--border); border-radius: 16px; padding: 10px 14px; cursor: pointer; font-size: 0.85rem; color: var(--text-secondary); transition: 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 6px; position: relative; overflow: hidden; }
+    .form-group .covers-input .cover-url-row .upload-btn:hover { border-color: var(--accent); color: var(--accent-text); background: var(--accent-dim); }
+    .form-group .covers-input .cover-url-row .upload-btn input[type="file"] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+    .form-group .covers-input .cover-url-row .remove-cover-btn { background: var(--delete-bg); color: var(--error); border: none; border-radius: 40px; padding: 8px 12px; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+    .form-group .covers-input .cover-url-row .remove-cover-btn:hover { background: var(--delete-hover); transform: scale(1.05); }
+    .form-group .covers-input .add-cover-btn { background: var(--bg); border: 1.5px dashed var(--border); border-radius: 16px; padding: 10px; cursor: pointer; color: var(--text-secondary); transition: 0.2s; font-size: 0.9rem; }
+    .form-group .covers-input .add-cover-btn:hover { border-color: var(--accent); color: var(--accent-text); background: var(--accent-dim); }
+
+    .date-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .date-row .form-group { flex: 1; min-width: 120px; }
+    .btn-add { background: var(--accent); color: var(--bg); border: none; padding: 14px 28px; border-radius: 40px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.2s; grid-column: 2 / 3; justify-self: end; width: 100%; max-width: 200px; }
+    .btn-add:hover { transform: scale(1.02); box-shadow: 0 0 30px var(--accent-glow); }
+
+    /* ----- ФИЛЬТРЫ ----- */
+    .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem; }
+    .filters button { padding: 8px 16px; border-radius: 40px; border: 1.5px solid var(--border); background: transparent; font-weight: 500; font-size: 0.85rem; cursor: pointer; transition: 0.15s; color: var(--text-secondary); white-space: nowrap; }
+    .filters button:hover { background: var(--hover); color: var(--text); border-color: var(--border-light); }
+    .filters button.active { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 600; }
+
+    /* ----- СЕТКА КНИГ ----- */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.8rem; }
+    .book-card { background: var(--bg-card); border-radius: 28px; padding: 1.2rem 1.2rem 1.5rem; box-shadow: 0 6px 18px var(--shadow); transition: 0.3s; border: 1px solid var(--border); display: flex; flex-direction: column; position: relative; cursor: pointer; }
+    .book-card:hover { transform: translateY(-6px); box-shadow: 0 14px 30px var(--shadow); border-color: var(--accent); background: var(--bg-card-hover); }
+    .book-card:hover .cover-wrapper { border-color: var(--accent); }
+
+    /* ----- ОБЛОЖКА ----- */
+    .cover-wrapper { position: relative; width: 100%; aspect-ratio: 3/4; border-radius: 18px; margin-bottom: 14px; overflow: hidden; background: var(--cover-placeholder); border: 1px solid var(--border); transition: border-color 0.3s; }
+    .cover { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; background: var(--cover-placeholder); }
+    .cover img { width: 100%; height: 100%; object-fit: contain; position: absolute; top: 0; left: 0; }
+    .cover .no-cover { font-size: 0.85rem; color: var(--text-muted); text-align: center; padding: 10px; font-weight: 300; letter-spacing: 0.5px; }
+    .cover .no-cover span { display: block; font-size: 2.5rem; margin-bottom: 6px; }
+    .cover-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); border-radius: 20px; padding: 3px 10px; font-size: 0.7rem; color: #fff; font-weight: 500; z-index: 5; pointer-events: none; }
+
+    /* ----- ИЗБРАННОЕ (звёздочка) ----- */
+    .favorite-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 10;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      border: none;
+      border-radius: 40px;
+      padding: 4px 10px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: 0.2s;
+      color: rgba(255,255,255,0.6);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .favorite-btn:hover { transform: scale(1.15); background: rgba(0,0,0,0.7); }
+    .favorite-btn.active { color: var(--favorite-color); }
+
+    .book-title { font-size: 1.1rem; font-weight: 600; color: var(--text); margin-bottom: 2px; word-break: break-word; }
+    .book-author { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px; font-weight: 400; }
+    
+    /* ----- СТАТУСЫ (ГОЛУБОЙ ДЛЯ "ХОЧУ КУПИТЬ") ----- */
+    .book-status {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      padding: 4px 12px;
+      border-radius: 40px;
+      background: var(--status-bg);
+      color: var(--text-secondary);
+      margin: 6px 0 8px;
+      align-self: flex-start;
+      border: 1px solid var(--border);
+    }
+    .book-status.reading {
+      border-color: var(--accent);
+      color: var(--accent-text);
+    }
+    .book-status.done {
+      border-color: var(--star-color);
+      color: var(--star-color);
+    }
+    .book-status.want-to-buy {
+      border-color: var(--want-to-buy-color);
+      color: var(--want-to-buy-color);
+      background: var(--want-to-buy-bg);
+    }
+
+    .book-rating { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; margin: 4px 0; }
+    .book-rating .stars { letter-spacing: 2px; font-size: 1.2rem; color: var(--star-color); }
+    .book-rating .stars .empty-star { color: var(--star-empty); }
+    .book-rating .rating-number { color: var(--text-secondary); font-weight: 500; font-size: 0.8rem; }
+    .book-dates { font-size: 0.8rem; color: var(--text-muted); margin: 6px 0 8px; line-height: 1.5; }
+    .book-pages { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
+    .book-progress { font-size: 0.8rem; color: var(--accent-text); font-weight: 500; margin-bottom: 4px; }
+
+    /* ----- КНОПКА ТАЙМЕРА ----- */
+    .book-timer-btn { background: var(--timer-bg); color: var(--timer-text); border: none; border-radius: 40px; padding: 6px 14px; font-size: 0.8rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; margin: 4px 0 8px; align-self: flex-start; }
+    .book-timer-btn:hover { transform: scale(1.05); background: var(--accent); color: var(--bg); }
+    .book-timer-btn.active { background: var(--error); animation: pulse 1s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+    /* ----- КНОПКИ ДЕЙСТВИЙ ----- */
+    .book-actions { margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+    .book-actions button { background: none; border: none; padding: 6px 12px; border-radius: 40px; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: 0.15s; color: var(--text-secondary); background: var(--status-bg); }
+    .book-actions button:hover { background: var(--hover); color: var(--text); }
+    .book-actions .delete-btn { color: var(--error); background: var(--delete-bg); }
+    .book-actions .delete-btn:hover { background: var(--delete-hover); }
+    .book-actions .buy-btn { color: var(--success); background: var(--accent-dim); }
+    .book-actions .buy-btn:hover { background: var(--accent); color: var(--bg); }
+
+    .empty { text-align: center; padding: 4rem 0; color: var(--text-muted); font-size: 1.2rem; grid-column: 1 / -1; }
+
+    /* ----- СТРАНИЦА КНИГИ ----- */
+    .book-page { display: none; animation: fadeIn 0.3s ease; }
+    .book-page.active { display: block; }
+    .book-page .book-detail { background: var(--bg-card); border-radius: 32px; padding: 2.5rem; border: 1px solid var(--border); box-shadow: 0 12px 30px var(--shadow); display: grid; grid-template-columns: 300px 1fr; gap: 2.5rem; }
+    .book-page .book-detail-cover-wrapper { position: relative; width: 100%; aspect-ratio: 3/4; border-radius: 24px; overflow: hidden; background: var(--cover-placeholder); border: 1px solid var(--border); }
+    .book-page .book-detail-cover-wrapper .cover-slide { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: var(--cover-placeholder); }
+    .book-page .book-detail-cover-wrapper .cover-slide img { width: 100%; height: 100%; object-fit: contain; }
+    .book-page .book-detail-cover-wrapper .cover-slide .no-cover { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 1.2rem; }
+    .book-page .book-detail-cover-wrapper .cover-slide .no-cover span { font-size: 4rem; margin-bottom: 12px; }
+    .book-page .gallery-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); border: none; border-radius: 40px; width: 36px; height: 36px; color: white; font-size: 1.2rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; z-index: 10; }
+    .book-page .gallery-nav:hover { background: var(--accent); color: var(--bg); }
+    .book-page .gallery-nav.prev { left: 8px; }
+    .book-page .gallery-nav.next { right: 8px; }
+    .book-page .gallery-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 10; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); padding: 4px 10px; border-radius: 20px; }
+    .book-page .gallery-dots .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: 0.2s; border: none; }
+    .book-page .gallery-dots .dot.active { background: var(--accent); transform: scale(1.3); }
+    .book-page .gallery-dots .dot:hover { background: rgba(255,255,255,0.8); }
+    .book-page .set-main-btn { position: absolute; top: 8px; right: 8px; z-index: 10; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); border: 1px solid var(--border); border-radius: 40px; padding: 5px 12px; font-size: 0.7rem; color: #fff; cursor: pointer; transition: 0.2s; font-weight: 500; }
+    .book-page .set-main-btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .book-page .set-main-btn.active { background: var(--star-color); color: #0d0d0d; border-color: var(--star-color); }
+    .book-page .book-detail-info { display: flex; flex-direction: column; gap: 1.2rem; }
+    .book-page .book-detail-title { font-size: 2.2rem; font-weight: 700; color: var(--text); line-height: 1.2; }
+    .book-page .book-detail-author { font-size: 1.2rem; color: var(--text-secondary); }
+    
+    .book-page .book-detail-status {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      background: var(--status-bg);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+    }
+    .book-page .book-detail-status.reading {
+      border-color: var(--accent);
+      color: var(--accent-text);
+    }
+    .book-page .book-detail-status.done {
+      border-color: var(--star-color);
+      color: var(--star-color);
+    }
+    .book-page .book-detail-status.want-to-buy {
+      border-color: var(--want-to-buy-color);
+      color: var(--want-to-buy-color);
+      background: var(--want-to-buy-bg);
+    }
+
+    .book-page .book-detail-rating { font-size: 1.4rem; letter-spacing: 3px; color: var(--star-color); }
+    .book-page .book-detail-rating .empty-star { color: var(--star-empty); }
+    .book-page .book-detail-rating .rating-number { font-size: 1rem; color: var(--text-secondary); margin-left: 8px; }
+    .book-page .book-detail-dates { font-size: 1rem; color: var(--text-secondary); }
+
+    /* ----- АННОТАЦИЯ ----- */
+    .book-annotation {
+      margin-top: 0.5rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+    .book-annotation .annotation-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    .book-annotation .annotation-text {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      padding: 8px 12px;
+      background: var(--bg);
+      border-radius: 12px;
+      min-height: 40px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .book-annotation .annotation-text:empty::before {
+      content: "Нет аннотации";
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .book-annotation .annotation-edit-btn {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 40px;
+      padding: 4px 14px;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 6px;
+    }
+    .book-annotation .annotation-edit-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent-text);
+      background: var(--accent-dim);
+    }
+    .book-annotation .annotation-textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      font-size: 0.95rem;
+      background: var(--input-bg);
+      color: var(--text);
+      font-family: inherit;
+      resize: vertical;
+      min-height: 80px;
+      display: none;
+    }
+    .book-annotation .annotation-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    .book-annotation .annotation-save-btn {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 6px 16px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 6px;
+      display: none;
+    }
+    .book-annotation .annotation-save-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .book-page .book-detail-review { background: var(--bg); padding: 16px 20px; border-radius: 16px; border-left: 4px solid var(--accent); font-style: italic; color: var(--text-secondary); line-height: 1.6; margin-top: 4px; }
+    .book-page .book-detail-review-label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-secondary); margin-bottom: 4px; }
+
+    /* ----- ЦИТАТЫ ----- */
+    .book-quotes {
+      margin-top: 0.5rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+    .book-quotes .quotes-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .book-quotes .quote-item {
+      padding: 8px 12px;
+      margin-bottom: 6px;
+      border-left: 3px solid var(--accent);
+      background: var(--bg);
+      border-radius: 8px;
+      font-style: italic;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .book-quotes .quote-item .delete-quote {
+      background: none;
+      border: none;
+      color: var(--error);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0 4px;
+      flex-shrink: 0;
+      opacity: 0.5;
+      transition: 0.2s;
+    }
+    .book-quotes .quote-item .delete-quote:hover {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+    .book-quotes .add-quote-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .book-quotes .add-quote-row input {
+      flex: 1;
+      min-width: 150px;
+      padding: 8px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      background: var(--input-bg);
+      color: var(--text);
+    }
+    .book-quotes .add-quote-row input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .book-quotes .add-quote-row button {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      white-space: nowrap;
+    }
+    .book-quotes .add-quote-row button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+    .book-quotes .empty-quotes {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+
+    .book-page .book-detail-actions { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+    .book-page .book-detail-actions button { padding: 10px 24px; border-radius: 40px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: 0.2s; border: none; }
+    .book-page .book-detail-actions .edit-btn { background: var(--accent); color: var(--bg); }
+    .book-page .book-detail-actions .edit-btn:hover { transform: scale(1.03); box-shadow: 0 0 20px var(--accent-glow); }
+    .book-page .book-detail-actions .delete-btn { background: var(--delete-bg); color: var(--error); }
+    .book-page .book-detail-actions .delete-btn:hover { background: var(--delete-hover); transform: scale(1.03); }
+
+    /* ----- TOAST ----- */
+    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--bg-card); color: var(--text); padding: 14px 28px; border-radius: 40px; box-shadow: 0 8px 30px var(--shadow); border: 1px solid var(--border); font-weight: 500; z-index: 1000; animation: slideUp 0.3s ease; max-width: 90%; }
+    .toast.success { border-color: var(--success); }
+    .toast.error { border-color: var(--error); }
+    @keyframes slideUp { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    /* ----- ТАЙМЕР МОДАЛКА ----- */
+    .timer-modal .modal { max-width: 400px; }
+    .timer-display { font-size: 3.5rem; font-weight: 700; text-align: center; color: var(--text); padding: 1.5rem 0; font-variant-numeric: tabular-nums; letter-spacing: 2px; }
+    .timer-controls { display: flex; gap: 12px; justify-content: center; margin-bottom: 1rem; }
+    .timer-controls button { padding: 10px 24px; border-radius: 40px; font-size: 1rem; font-weight: 600; border: none; cursor: pointer; transition: 0.2s; }
+    .timer-controls .start-btn { background: var(--success); color: white; }
+    .timer-controls .start-btn:hover { transform: scale(1.05); }
+    .timer-controls .start-btn.active { background: var(--error); }
+    .timer-controls .stop-btn { background: var(--status-bg); color: var(--text); }
+    .timer-controls .stop-btn:hover { background: var(--hover); }
+    .timer-page-input { display: flex; gap: 12px; align-items: center; justify-content: center; margin-top: 0.5rem; flex-wrap: wrap; }
+    .timer-page-input label { font-size: 0.9rem; color: var(--text-secondary); }
+    .timer-page-input input { width: 100px; padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 1rem; background: var(--input-bg); color: var(--text); }
+    .timer-page-input input:focus { outline: none; border-color: var(--accent); }
+    .timer-page-input .save-page-btn { background: var(--accent); color: var(--bg); border: none; padding: 8px 16px; border-radius: 40px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .timer-page-input .save-page-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--accent-glow); }
+    .timer-error { color: var(--error); font-size: 0.85rem; margin-top: 6px; min-height: 24px; text-align: center; display: none; }
+    .timer-history { margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+    .timer-history h4 { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.3px; }
+    .timer-history-item { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary); padding: 4px 0; border-bottom: 1px solid var(--border); }
+    .timer-history-item .time { font-weight: 500; color: var(--text); }
+
+    /* ----- PWA: OFFLINE ----- */
+    .offline-badge {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: var(--error);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      z-index: 9999;
+      display: none;
+    }
+    .offline-badge.visible { display: block; }
+
+    /* ----- АДАПТИВ ----- */
+    @media (max-width: 700px) {
+      h1 { font-size: 2rem; flex-wrap: wrap; }
+      .header { flex-direction: column; align-items: stretch; }
+      .header-left { justify-content: space-between; width: 100%; }
+      .header-actions { width: 100%; justify-content: stretch; }
+      .btn-add-book { flex: 1; justify-content: center; }
+      .theme-toggle { flex: 1; justify-content: center; }
+      .modal .form-card { grid-template-columns: 1fr; gap: 1.2rem; }
+      .modal .form-card .btn-add { grid-column: 1 / 2; max-width: 100%; }
+      .date-row { flex-direction: column; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+      .modal { padding: 1.2rem; }
+      .book-page .book-detail { grid-template-columns: 1fr; gap: 1.5rem; padding: 1.5rem; }
+      .book-page .book-detail-cover-wrapper { max-width: 250px; margin: 0 auto; }
+      .book-page .book-detail-title { font-size: 1.6rem; }
+      .form-group .covers-input .cover-url-row { flex-wrap: wrap; }
+      .form-group .covers-input .cover-url-row input[type="text"] { flex: 1 1 100%; }
+      .timer-display { font-size: 2.5rem; }
+      .book-quotes .add-quote-row { flex-direction: column; }
+      .book-quotes .add-quote-row input { width: 100%; }
+      .book-quotes .add-quote-row button { width: 100%; justify-content: center; }
+      .filters button { font-size: 0.75rem; padding: 6px 12px; }
+      .filters { gap: 6px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <!-- PWA: offline badge -->
+  <div class="offline-badge" id="offlineBadge">📡 Офлайн</div>
+
+  <!-- ШАПКА -->
+  <div class="header">
+    <div class="header-left">
+      <button class="back-btn" id="backBtn">← Назад</button>
+      <h1>📖 <span class="accent">Библиотека</span> <small id="counter">0 книг</small></h1>
+    </div>
+    <div class="header-actions">
+      <button class="btn-add-book" id="openAddModal">+ Добавить книгу</button>
+      <button class="theme-toggle" id="themeToggle">🌙 Тёмная тема</button>
+    </div>
+  </div>
+
+  <!-- ПОИСК -->
+  <div class="search-wrap" id="searchWrap">
+    <input type="text" id="searchInput" placeholder="🔍 Поиск по названию или автору..." />
+  </div>
+
+  <!-- ФИЛЬТРЫ -->
+  <div class="filters" id="filterBar">
+    <button class="active" data-filter="all">Все</button>
+    <button data-filter="В плане">📌 В плане</button>
+    <button data-filter="Читаю">📖 Читаю</button>
+    <button data-filter="Прочитано">✅ Прочитано</button>
+    <button data-filter="Хочу купить">🛒 Хочу купить</button>
+    <button data-filter="favorite">⭐ Избранное</button>
+  </div>
+
+  <!-- СПИСОК КНИГ -->
+  <div class="grid" id="booksGrid"></div>
+
+  <!-- СТРАНИЦА КНИГИ -->
+  <div class="book-page" id="bookPage">
+    <div class="book-detail" id="bookDetail"></div>
+  </div>
+
+  <!-- МОДАЛКА ДОБАВЛЕНИЯ -->
+  <div class="modal-overlay" id="addModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>➕ <span class="accent">Новая</span> книга</h2>
+        <button class="modal-close" id="closeAddModal">✕</button>
+      </div>
+      <div class="form-card" id="bookForm">
+        <div class="form-group">
+          <label>Название книги *</label>
+          <input type="text" id="titleInput" placeholder="Например: 1984" required />
+        </div>
+        <div class="form-group">
+          <label>Автор</label>
+          <input type="text" id="authorInput" placeholder="Джордж Оруэлл" />
+        </div>
+        <div class="form-group">
+          <label>Количество страниц</label>
+          <input type="number" id="pagesInput" placeholder="328" min="1" />
+        </div>
+        <div class="form-group">
+          <label>Обложки</label>
+          <div class="covers-input" id="coversContainer">
+            <div class="cover-url-row">
+              <input type="text" class="cover-url-input" placeholder="https://example.com/cover.jpg" />
+              <button class="upload-btn">📤 Загрузить <input type="file" accept="image/*" /></button>
+              <button class="remove-cover-btn" style="visibility:hidden;">✕</button>
+            </div>
+          </div>
+          <button class="add-cover-btn" id="addCoverBtn">+ Добавить ещё обложку</button>
+        </div>
+        <div class="form-group">
+          <label>Статус</label>
+          <select id="statusSelect">
+            <option value="В плане">В плане</option>
+            <option value="Читаю">Читаю</option>
+            <option value="Прочитано">Прочитано</option>
+            <option value="Хочу купить">Хочу купить</option>
+          </select>
+        </div>
+        <div class="date-row" id="dateRow">
+          <div class="form-group" id="startDateGroup">
+            <label>Дата начала</label>
+            <input type="date" id="startDate" />
+          </div>
+          <div class="form-group" id="endDateGroup" style="display:none;">
+            <label>Дата окончания</label>
+            <input type="date" id="endDate" />
+          </div>
+        </div>
+        <div class="form-group" id="ratingGroup" style="display:none;">
+          <label>Оценка (1–5)</label>
+          <div class="rating-input">
+            <input type="number" id="ratingInput" min="1" max="5" placeholder="1-5" />
+            <span class="stars-preview" id="starsPreview">☆☆☆☆☆</span>
+          </div>
+        </div>
+        <div class="form-group" id="reviewGroup" style="display:none;">
+          <label>Отзыв</label>
+          <textarea id="reviewInput" placeholder="Поделитесь впечатлениями о книге..." rows="2"></textarea>
+        </div>
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label>Аннотация</label>
+          <textarea id="annotationInput" placeholder="Краткое описание книги..." rows="3"></textarea>
+        </div>
+        <button class="btn-add" id="addBtn">+ Добавить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- МОДАЛКА ТАЙМЕРА (с полем для ошибки) -->
+  <div class="modal-overlay timer-modal" id="timerModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>⏱️ <span class="accent">Чтение</span></h2>
+        <button class="modal-close" id="closeTimerModal">✕</button>
+      </div>
+      <div class="timer-display" id="timerDisplay">00:00:00</div>
+      <div class="timer-controls">
+        <button class="start-btn" id="timerStartBtn">▶ Старт</button>
+        <button class="stop-btn" id="timerStopBtn">⏹ Стоп</button>
+      </div>
+      <div class="timer-page-input">
+        <label>Страница:</label>
+        <input type="number" id="timerPageInput" min="1" placeholder="страница" />
+        <button class="save-page-btn" id="timerSavePageBtn">📌 Записать</button>
+      </div>
+      <div class="timer-error" id="timerError"></div>
+      <div class="timer-history" id="timerHistory">
+        <h4>История чтения</h4>
+        <div id="timerHistoryList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // 1. PWA SERVICE WORKER
+  // ============================================================
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+    
+    window.addEventListener('online', () => {
+      document.getElementById('offlineBadge').classList.remove('visible');
+    });
+    window.addEventListener('offline', () => {
+      document.getElementById('offlineBadge').classList.add('visible');
+    });
+  }
+
+  // ============================================================
+  // 2. FIREBASE
+  // ============================================================
+  const firebaseConfig = {
+    apiKey: "AIzaSyB5GwhAJTznFiM2lAY1hliazCadZmXXFUM",
+    authDomain: "library-36144.firebaseapp.com",
+    projectId: "library-36144",
+    storageBucket: "library-36144.firebasestorage.app",
+    messagingSenderId: "831110393548",
+    appId: "1:831110393548:web:7dd8deb2fbbf36708d5c69"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // ============================================================
+  // 3. СОСТОЯНИЕ
+  // ============================================================
+  let books = [];
+  let currentFilter = 'all';
+  let currentTheme = localStorage.getItem('libraryTheme') || 'light';
+  let currentView = 'grid';
+  let currentBookId = null;
+  let galleryIndex = 0;
+  let isSyncing = false;
+
+  let timerInterval = null;
+  let timerSeconds = 0;
+  let timerRunning = false;
+  let timerBookId = null;
+
+  // DOM
+  const titleInput = document.getElementById('titleInput');
+  const authorInput = document.getElementById('authorInput');
+  const pagesInput = document.getElementById('pagesInput');
+  const coversContainer = document.getElementById('coversContainer');
+  const addCoverBtn = document.getElementById('addCoverBtn');
+  const statusSelect = document.getElementById('statusSelect');
+  const startDate = document.getElementById('startDate');
+  const endDate = document.getElementById('endDate');
+  const startDateGroup = document.getElementById('startDateGroup');
+  const endDateGroup = document.getElementById('endDateGroup');
+  const ratingGroup = document.getElementById('ratingGroup');
+  const reviewGroup = document.getElementById('reviewGroup');
+  const ratingInput = document.getElementById('ratingInput');
+  const starsPreview = document.getElementById('starsPreview');
+  const reviewInput = document.getElementById('reviewInput');
+  const annotationInput = document.getElementById('annotationInput');
+  const addBtn = document.getElementById('addBtn');
+  const booksGrid = document.getElementById('booksGrid');
+  const bookPage = document.getElementById('bookPage');
+  const bookDetail = document.getElementById('bookDetail');
+  const counter = document.getElementById('counter');
+  const filterBar = document.getElementById('filterBar');
+  const themeToggle = document.getElementById('themeToggle');
+  const openAddModal = document.getElementById('openAddModal');
+  const closeAddModal = document.getElementById('closeAddModal');
+  const addModal = document.getElementById('addModal');
+  const backBtn = document.getElementById('backBtn');
+  const searchInput = document.getElementById('searchInput');
+  const searchWrap = document.getElementById('searchWrap');
+
+  const timerModal = document.getElementById('timerModal');
+  const closeTimerModal = document.getElementById('closeTimerModal');
+  const timerDisplay = document.getElementById('timerDisplay');
+  const timerStartBtn = document.getElementById('timerStartBtn');
+  const timerStopBtn = document.getElementById('timerStopBtn');
+  const timerPageInput = document.getElementById('timerPageInput');
+  const timerSavePageBtn = document.getElementById('timerSavePageBtn');
+  const timerError = document.getElementById('timerError');
+  const timerHistoryList = document.getElementById('timerHistoryList');
+
+  // ============================================================
+  // 4. ТЕМА
+  // ============================================================
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    currentTheme = theme;
+    localStorage.setItem('libraryTheme', theme);
+    themeToggle.textContent = theme === 'dark' ? '☀️ Светлая тема' : '🌙 Тёмная тема';
+  }
+  themeToggle.addEventListener('click', () => {
+    applyTheme(currentTheme === 'light' ? 'dark' : 'light');
+  });
+  applyTheme(currentTheme);
+
+  // ============================================================
+  // 5. TOAST
+  // ============================================================
+  function showToast(message, type = '') {
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3500);
+  }
+
+  // ============================================================
+  // 6. HELPERS
+  // ============================================================
+  function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function formatDate(dateStr) {
+    if (!dateStr) return '—';
+    const d = new Date(dateStr + 'T00:00:00');
+    return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  function formatTime(seconds) {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  }
+
+  function getStatusEmoji(status) {
+    if (status === 'В плане') return '📌';
+    if (status === 'Читаю') return '📖';
+    if (status === 'Прочитано') return '✅';
+    if (status === 'Хочу купить') return '🛒';
+    return '';
+  }
+
+  function getStars(rating) {
+    if (!rating || rating < 1 || rating > 5) return '☆☆☆☆☆';
+    return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+  }
+
+  // ============================================================
+  // 7. ЗАГРУЗКА ОБЛОЖЕК
+  // ============================================================
+  function initUploadButtons(container) {
+    const fileInputs = container.querySelectorAll('.upload-btn input[type="file"]');
+    fileInputs.forEach(fileInput => {
+      fileInput.removeEventListener('change', handleFileUpload);
+      fileInput.addEventListener('change', handleFileUpload);
+    });
+  }
+
+  function handleFileUpload(e) {
+    const fileInput = e.target;
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      showToast('Файл слишком большой (максимум 10MB)', 'error');
+      fileInput.value = '';
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      showToast('Можно загружать только изображения', 'error');
+      fileInput.value = '';
+      return;
+    }
+
+    const row = fileInput.closest('.cover-url-row');
+    const textInput = row.querySelector('.cover-url-input');
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const img = new Image();
+      img.onload = function() {
+        const MAX_WIDTH = 600;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > MAX_WIDTH) {
+          height = Math.round(height * MAX_WIDTH / width);
+          width = MAX_WIDTH;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const compressed = canvas.toDataURL('image/jpeg', 0.5);
+        textInput.value = compressed;
+        showToast('✅ Обложка загружена и сжата!', 'success');
+        fileInput.value = '';
+      };
+      img.src = event.target.result;
+    };
+    reader.onerror = () => {
+      showToast('Ошибка загрузки файла', 'error');
+      fileInput.value = '';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function updateRemoveButtons(container) {
+    const rows = container.querySelectorAll('.cover-url-row');
+    rows.forEach((row, index) => {
+      const btn = row.querySelector('.remove-cover-btn');
+      if (rows.length > 1) {
+        btn.style.visibility = 'visible';
+      } else {
+        btn.style.visibility = 'hidden';
+      }
+    });
+  }
+
+  function createCoverRow(value = '') {
+    const row = document.createElement('div');
+    row.className = 'cover-url-row';
+    row.innerHTML = `
+      <input type="text" class="cover-url-input" placeholder="https://example.com/cover.jpg" value="${escapeHtml(value)}" />
+      <button class="upload-btn">📤 Загрузить <input type="file" accept="image/*" /></button>
+      <button class="remove-cover-btn">✕</button>
+    `;
+    initUploadButtons(row);
+    row.querySelector('.remove-cover-btn').addEventListener('click', function() {
+      const container = this.closest('.covers-input');
+      row.remove();
+      updateRemoveButtons(container);
+    });
+    return row;
+  }
+
+  function addCoverRowToContainer(container, value = '') {
+    const row = createCoverRow(value);
+    container.appendChild(row);
+    updateRemoveButtons(container);
+    return row;
+  }
+
+  function initCoverRows(container) {
+    initUploadButtons(container);
+    updateRemoveButtons(container);
+  }
+
+  function getCoversFromForm(container) {
+    const inputs = container.querySelectorAll('.cover-url-input');
+    const urls = [];
+    inputs.forEach(input => {
+      const val = input.value.trim();
+      if (val) urls.push(val);
+    });
+    return urls;
+  }
+
+  addCoverBtn.addEventListener('click', () => {
+    addCoverRowToContainer(coversContainer, '');
+  });
+
+  coversContainer.addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove-cover-btn')) {
+      const row = e.target.closest('.cover-url-row');
+      const container = e.target.closest('.covers-input');
+      if (row && container && container.children.length > 1) {
+        row.remove();
+        updateRemoveButtons(container);
+      }
+    }
+  });
+
+  // ============================================================
+  // 8. ДАТЫ И СТАТУСЫ
+  // ============================================================
+  function updateFields() {
+    const status = statusSelect.value;
+    if (status === 'В плане' || status === 'Хочу купить') {
+      startDateGroup.style.display = 'none';
+      endDateGroup.style.display = 'none';
+      startDate.value = '';
+      endDate.value = '';
+      startDate.required = false;
+      endDate.required = false;
+      ratingGroup.style.display = 'none';
+      reviewGroup.style.display = 'none';
+      ratingInput.value = '';
+      reviewInput.value = '';
+      starsPreview.textContent = '☆☆☆☆☆';
+    } else if (status === 'Читаю') {
+      startDateGroup.style.display = 'flex';
+      endDateGroup.style.display = 'none';
+      startDate.required = true;
+      endDate.required = false;
+      endDate.value = '';
+      ratingGroup.style.display = 'none';
+      reviewGroup.style.display = 'none';
+      ratingInput.value = '';
+      reviewInput.value = '';
+      starsPreview.textContent = '☆☆☆☆☆';
+    } else if (status === 'Прочитано') {
+      startDateGroup.style.display = 'flex';
+      endDateGroup.style.display = 'flex';
+      startDate.required = true;
+      endDate.required = true;
+      ratingGroup.style.display = 'flex';
+      reviewGroup.style.display = 'flex';
+    }
+  }
+
+  ratingInput.addEventListener('input', () => {
+    const val = parseInt(ratingInput.value);
+    if (val >= 1 && val <= 5) {
+      starsPreview.textContent = getStars(val);
+    } else {
+      starsPreview.textContent = '☆☆☆☆☆';
+    }
+  });
+
+  statusSelect.addEventListener('change', updateFields);
+  updateFields();
+
+  // ============================================================
+  // 9. МОДАЛКА ДОБАВЛЕНИЯ
+  // ============================================================
+  function openModal() {
+    addModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    titleInput.value = '';
+    authorInput.value = '';
+    pagesInput.value = '';
+    statusSelect.value = 'В плане';
+    startDate.value = '';
+    endDate.value = '';
+    ratingInput.value = '';
+    reviewInput.value = '';
+    annotationInput.value = '';
+    starsPreview.textContent = '☆☆☆☆☆';
+    coversContainer.innerHTML = '';
+    addCoverRowToContainer(coversContainer, '');
+    updateFields();
+    setTimeout(() => titleInput.focus(), 100);
+  }
+
+  function closeModal() {
+    addModal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  openAddModal.addEventListener('click', openModal);
+  closeAddModal.addEventListener('click', closeModal);
+  addModal.addEventListener('click', (e) => {
+    if (e.target === addModal) closeModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && addModal.classList.contains('active')) {
+      closeModal();
+    }
+  });
+
+  // ============================================================
+  // 10. НАВИГАЦИЯ
+  // ============================================================
+  function showGridView() {
+    currentView = 'grid';
+    currentBookId = null;
+    booksGrid.style.display = 'grid';
+    bookPage.classList.remove('active');
+    filterBar.style.display = 'flex';
+    searchWrap.style.display = 'block';
+    backBtn.classList.remove('visible');
+    document.querySelector('.header-actions').style.display = 'flex';
+    updateCounter();
+  }
+
+  function showBookView(bookId) {
+    const book = books.find(b => b.id === bookId);
+    if (!book) return;
+    currentView = 'book';
+    currentBookId = bookId;
+    galleryIndex = 0;
+    booksGrid.style.display = 'none';
+    bookPage.classList.add('active');
+    filterBar.style.display = 'none';
+    searchWrap.style.display = 'none';
+    backBtn.classList.add('visible');
+    document.querySelector('.header-actions').style.display = 'none';
+    renderBookPage(book);
+  }
+
+  backBtn.addEventListener('click', showGridView);
+
+  // ============================================================
+  // 11. FIREBASE — ЧТЕНИЕ
+  // ============================================================
+  function subscribeToBooks() {
+    db.collection('books')
+      .orderBy('createdAt', 'desc')
+      .onSnapshot((snapshot) => {
+        if (isSyncing) return;
+        const newBooks = [];
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          newBooks.push({
+            id: doc.id,
+            ...data
+          });
+        });
+        books = newBooks;
+        render();
+        updateCounter();
+      }, (error) => {
+        console.error('Ошибка синхронизации:', error);
+        showToast('❌ Ошибка подключения к облаку', 'error');
+      });
+  }
+
+  // ============================================================
+  // 12. FIREBASE — ЗАПИСЬ
+  // ============================================================
+  async function saveToFirebase(bookData) {
+    isSyncing = true;
+    try {
+      const docRef = db.collection('books').doc();
+      await docRef.set({
+        ...bookData,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      });
+      showToast('✅ Книга добавлена!', 'success');
+    } catch (error) {
+      console.error('Ошибка сохранения:', error);
+      showToast('❌ Ошибка сохранения', 'error');
+    }
+    isSyncing = false;
+  }
+
+  async function updateInFirebase(bookId, updatedData) {
+    isSyncing = true;
+    try {
+      const docRef = db.collection('books').doc(bookId);
+      await docRef.set({
+        ...updatedData,
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+      showToast('✅ Книга обновлена!', 'success');
+    } catch (error) {
+      console.error('Ошибка обновления:', error);
+      showToast('❌ Ошибка обновления', 'error');
+    }
+    isSyncing = false;
+  }
+
+  async function deleteFromFirebase(bookId) {
+    isSyncing = true;
+    try {
+      const docRef = db.collection('books').doc(bookId);
+      await docRef.delete();
+      showToast('✅ Книга удалена!', 'success');
+    } catch (error) {
+      console.error('Ошибка удаления:', error);
+      showToast('❌ Ошибка удаления', 'error');
+    }
+    isSyncing = false;
+  }
+
+  // ============================================================
+  // 13. ДОБАВЛЕНИЕ КНИГИ
+  // ============================================================
+  function addBook() {
+    const title = titleInput.value.trim();
+    if (!title) {
+      showToast('Введите название книги', 'error');
+      titleInput.focus();
+      return;
+    }
+
+    const author = authorInput.value.trim() || null;
+    const pages = parseInt(pagesInput.value) || null;
+    const status = statusSelect.value;
+    const start = startDate.value || null;
+    let end = endDate.value || null;
+    const rating = parseInt(ratingInput.value) || null;
+    const review = reviewInput.value.trim() || null;
+    const annotation = annotationInput.value.trim() || null;
+    const covers = getCoversFromForm(coversContainer);
+
+    if (covers.length === 0) {
+      showToast('Добавьте хотя бы одну обложку', 'error');
+      return;
+    }
+
+    if (status === 'Прочитано' && (!start || !end)) {
+      showToast('Для "Прочитано" укажите даты', 'error');
+      return;
+    }
+    if (status === 'Читаю' && !start) {
+      showToast('Для "Читаю" укажите дату начала', 'error');
+      return;
+    }
+    if (start && end && new Date(end) < new Date(start)) {
+      showToast('Дата окончания не может быть раньше даты начала', 'error');
+      return;
+    }
+    if (rating && (rating < 1 || rating > 5)) {
+      showToast('Оценка должна быть от 1 до 5', 'error');
+      return;
+    }
+
+    const newBook = {
+      title,
+      author,
+      pages,
+      covers: covers,
+      mainCover: covers[0],
+      status,
+      startDate: start,
+      endDate: (status === 'Прочитано' ? end : null),
+      rating: (status === 'Прочитано' ? rating : null),
+      review: (status === 'Прочитано' ? review : null),
+      annotation: annotation,
+      readingHistory: [],
+      currentPage: null,
+      quotes: [],
+      favorite: false
+    };
+
+    saveToFirebase(newBook);
+    closeModal();
+  }
+
+  addBtn.addEventListener('click', addBook);
+
+  // ============================================================
+  // 14. ТАЙМЕР (УМНЫЙ + АВТО-ЗАВЕРШЕНИЕ + ОШИБКА В МОДАЛКЕ)
+  // ============================================================
+  function openTimer(bookId) {
+    const book = books.find(b => b.id === bookId);
+    if (!book) return;
+
+    timerBookId = bookId;
+    timerSeconds = 0;
+    timerRunning = false;
+    timerPageInput.value = book.currentPage || '';
+
+    // Скрываем ошибку при открытии
+    timerError.style.display = 'none';
+    timerError.textContent = '';
+
+    renderTimerHistory(book);
+
+    timerDisplay.textContent = '00:00:00';
+    timerStartBtn.textContent = '▶ Старт';
+    timerStartBtn.classList.remove('active');
+
+    timerModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+  }
+
+  function closeTimer() {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+    timerRunning = false;
+    timerModal.classList.remove('active');
+    document.body.style.overflow = '';
+    timerBookId = null;
+  }
+
+  closeTimerModal.addEventListener('click', closeTimer);
+  timerModal.addEventListener('click', (e) => {
+    if (e.target === timerModal) closeTimer();
+  });
+
+  timerStartBtn.addEventListener('click', () => {
+    if (!timerRunning) {
+      timerRunning = true;
+      timerStartBtn.textContent = '⏸ Пауза';
+      timerStartBtn.classList.add('active');
+      timerInterval = setInterval(() => {
+        timerSeconds++;
+        timerDisplay.textContent = formatTime(timerSeconds);
+      }, 1000);
+    } else {
+      timerRunning = false;
+      timerStartBtn.textContent = '▶ Продолжить';
+      timerStartBtn.classList.remove('active');
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+  });
+
+  timerStopBtn.addEventListener('click', () => {
+    if (timerRunning) {
+      timerRunning = false;
+      timerStartBtn.textContent = '▶ Старт';
+      timerStartBtn.classList.remove('active');
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+    timerSeconds = 0;
+    timerDisplay.textContent = '00:00:00';
+  });
+
+  timerSavePageBtn.addEventListener('click', async () => {
+    const page = parseInt(timerPageInput.value);
+    
+    // Скрываем старую ошибку
+    timerError.style.display = 'none';
+    timerError.textContent = '';
+
+    if (!page || page < 1) {
+      timerError.textContent = '❌ Введите номер страницы (число больше 0)';
+      timerError.style.display = 'block';
+      return;
+    }
+
+    const book = books.find(b => b.id === timerBookId);
+    if (!book) return;
+
+    if (book.pages && page > book.pages) {
+      timerError.textContent = `❌ В книге всего ${book.pages} стр.`;
+      timerError.style.display = 'block';
+      return;
+    }
+
+    const sessionTime = timerSeconds;
+    const entry = {
+      date: new Date().toISOString(),
+      page: page,
+      timeSpent: sessionTime,
+      timeSpentFormatted: formatTime(sessionTime)
+    };
+
+    const history = book.readingHistory || [];
+    history.push(entry);
+
+    let newStatus = book.status;
+    if (book.pages && page >= book.pages) {
+      newStatus = 'Прочитано';
+      const endDateValue = new Date().toISOString().split('T')[0];
+      await updateInFirebase(timerBookId, {
+        readingHistory: history,
+        currentPage: page,
+        status: newStatus,
+        endDate: endDateValue
+      });
+      showToast(`🎉 Книга дочитана! Статус изменён на "Прочитано"`, 'success');
+    } else {
+      await updateInFirebase(timerBookId, {
+        readingHistory: history,
+        currentPage: page
+      });
+      showToast('✅ Прогресс сохранён!', 'success');
+    }
+
+    timerSeconds = 0;
+    timerDisplay.textContent = '00:00:00';
+    if (timerRunning) {
+      timerRunning = false;
+      timerStartBtn.textContent = '▶ Старт';
+      timerStartBtn.classList.remove('active');
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    const updatedBook = books.find(b => b.id === timerBookId);
+    if (updatedBook) renderTimerHistory(updatedBook);
+    
+    if (newStatus === 'Прочитано') {
+      setTimeout(() => closeTimer(), 1500);
+    }
+  });
+
+  function renderTimerHistory(book) {
+    const history = book.readingHistory || [];
+    if (history.length === 0) {
+      timerHistoryList.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;">Пока нет записей</div>';
+      return;
+    }
+
+    const sorted = [...history].reverse().slice(0, 10);
+    timerHistoryList.innerHTML = sorted.map(entry => `
+      <div class="timer-history-item">
+        <span>📖 стр. ${entry.page}</span>
+        <span class="time">${entry.timeSpentFormatted || formatTime(entry.timeSpent || 0)}</span>
+        <span style="font-size:0.7rem;color:var(--text-muted);">${new Date(entry.date).toLocaleDateString()}</span>
+      </div>
+    `).join('');
+  }
+
+  // ============================================================
+  // 15. РЕНДЕР
+  // ============================================================
+  function getSearchQuery() {
+    return searchInput.value.trim().toLowerCase();
+  }
+
+  function render() {
+    const query = getSearchQuery();
+
+    let filtered = books.filter(book => {
+      if (currentFilter === 'all' && book.status === 'Хочу купить') return false;
+      
+      if (currentFilter === 'favorite') {
+        if (!book.favorite) return false;
+      } else if (currentFilter !== 'all' && book.status !== currentFilter) {
+        return false;
+      }
+      
+      if (query) {
+        const titleMatch = book.title.toLowerCase().includes(query);
+        const authorMatch = book.author ? book.author.toLowerCase().includes(query) : false;
+        if (!titleMatch && !authorMatch) return false;
+      }
+      return true;
+    });
+
+    filtered.sort((a, b) => {
+      if (a.status === 'Читаю' && b.status !== 'Читаю') return -1;
+      if (b.status === 'Читаю' && a.status !== 'Читаю') return 1;
+      return (b.createdAt || '').localeCompare(a.createdAt || '');
+    });
+
+    if (filtered.length === 0) {
+      booksGrid.innerHTML = `<div class="empty">📭 Нет книг по вашему запросу</div>`;
+    } else {
+      booksGrid.innerHTML = filtered.map((book) => {
+        const covers = book.covers || [];
+        let mainCover = book.mainCover || (covers.length > 0 ? covers[0] : null);
+        
+        let coverHtml = '';
+        if (mainCover) {
+          coverHtml = `<img src="${escapeHtml(mainCover)}" alt="Обложка" onerror="this.style.display='none'" />`;
+        } else {
+          coverHtml = `<div class="no-cover"><span>📖</span>Нет обложки</div>`;
+        }
+        
+        let datesHtml = '';
+        if (book.status === 'Читаю' && book.startDate) {
+          datesHtml = `с ${formatDate(book.startDate)}`;
+        } else if (book.status === 'Прочитано' && book.startDate) {
+          datesHtml = `${formatDate(book.startDate)} → ${formatDate(book.endDate)}`;
+        }
+
+        let ratingHtml = '';
+        if (book.status === 'Прочитано' && book.rating) {
+          const stars = getStars(book.rating);
+          ratingHtml = `
+            <div class="book-rating">
+              <span class="stars">${stars}</span>
+              <span class="rating-number">${book.rating}/5</span>
+            </div>
+          `;
+        }
+
+        const statusClass = book.status === 'Читаю' ? 'reading' : book.status === 'Прочитано' ? 'done' : book.status === 'Хочу купить' ? 'want-to-buy' : '';
+        const coverCount = covers.length;
+
+        let progressHtml = '';
+        if (book.status === 'Читаю' && book.pages && book.currentPage) {
+          const percent = Math.round((book.currentPage / book.pages) * 100);
+          progressHtml = `<div class="book-progress">${book.currentPage}/${book.pages} стр. (${percent}%)</div>`;
+        } else if (book.status === 'Читаю' && book.currentPage) {
+          progressHtml = `<div class="book-progress">${book.currentPage} стр.</div>`;
+        } else if (book.status === 'Читаю' && book.pages) {
+          progressHtml = `<div class="book-pages">${book.pages} стр.</div>`;
+        }
+
+        const timerBtnHtml = book.status === 'Читаю' ? `
+          <button class="book-timer-btn" data-id="${book.id}">⏱️ Читать</button>
+        ` : '';
+
+        const buyBtnHtml = book.status === 'Хочу купить' ? `
+          <button class="buy-btn" data-id="${book.id}">✅ Куплено</button>
+        ` : '';
+
+        return `
+          <div class="book-card" data-id="${book.id}">
+            <div class="cover-wrapper">
+              <div class="cover">${coverHtml}</div>
+              ${coverCount > 1 ? `<div class="cover-badge">📷 ${coverCount}</div>` : ''}
+              <button class="favorite-btn ${book.favorite ? 'active' : ''}" data-id="${book.id}" title="Избранное">⭐</button>
+            </div>
+            <div class="book-title">${escapeHtml(book.title)}</div>
+            ${book.author ? `<div class="book-author">${escapeHtml(book.author)}</div>` : ''}
+            ${book.pages ? `<div class="book-pages">${book.pages} стр.</div>` : ''}
+            <span class="book-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>
+            ${ratingHtml}
+            <div class="book-dates">${datesHtml}</div>
+            ${progressHtml}
+            ${timerBtnHtml}
+            <div class="book-actions">
+              ${buyBtnHtml}
+              <button class="delete-btn" data-id="${book.id}">🗑 Удалить</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.book-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+          if (e.target.closest('button')) return;
+          const id = card.dataset.id;
+          showBookView(id);
+        });
+      });
+
+      document.querySelectorAll('.favorite-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          const book = books.find(b => b.id === id);
+          if (!book) return;
+          await updateInFirebase(id, { favorite: !book.favorite });
+        });
+      });
+
+      document.querySelectorAll('.book-timer-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          openTimer(id);
+        });
+      });
+
+      document.querySelectorAll('.buy-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          await updateInFirebase(id, { status: 'В плане' });
+          showToast('✅ Книга добавлена в "В плане"!', 'success');
+        });
+      });
+
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          const book = books.find(b => b.id === id);
+          if (confirm(`Удалить книгу "${book?.title}"?`)) {
+            await deleteFromFirebase(id);
+          }
+        });
+      });
+    }
+    updateCounter();
+  }
+
+  searchInput.addEventListener('input', render);
+
+  // ============================================================
+  // 16. РЕНДЕР СТРАНИЦЫ КНИГИ
+  // ============================================================
+  function renderBookPage(book) {
+    const covers = book.covers || [];
+    const mainCover = book.mainCover || (covers.length > 0 ? covers[0] : null);
+
+    const statusClass = book.status === 'Читаю' ? 'reading' : book.status === 'Прочитано' ? 'done' : book.status === 'Хочу купить' ? 'want-to-buy' : '';
+    
+    let ratingHtml = '';
+    if (book.status === 'Прочитано' && book.rating) {
+      const stars = getStars(book.rating);
+      ratingHtml = `
+        <div class="book-detail-rating">
+          ${stars}
+          <span class="rating-number">${book.rating}/5</span>
+        </div>
+      `;
+    }
+
+    let reviewHtml = '';
+    if (book.status === 'Прочитано' && book.review) {
+      reviewHtml = `
+        <div>
+          <div class="book-detail-review-label">Отзыв</div>
+          <div class="book-detail-review">“${escapeHtml(book.review)}”</div>
+        </div>
+      `;
+    }
+
+    let annotationHtml = '';
+    const annotationText = book.annotation || '';
+    annotationHtml = `
+      <div class="book-annotation">
+        <div class="annotation-title">📖 Аннотация</div>
+        <div class="annotation-text" id="annotationDisplay">${escapeHtml(annotationText)}</div>
+        <textarea class="annotation-textarea" id="annotationTextarea">${escapeHtml(annotationText)}</textarea>
+        <button class="annotation-edit-btn" id="annotationEditBtn">✏️ Редактировать</button>
+        <button class="annotation-save-btn" id="annotationSaveBtn">💾 Сохранить</button>
+      </div>
+    `;
+
+    let datesHtml = '';
+    if (book.status === 'Читаю' && book.startDate) {
+      datesHtml = `Начало: ${formatDate(book.startDate)}`;
+    } else if (book.status === 'Прочитано' && book.startDate) {
+      datesHtml = `${formatDate(book.startDate)} → ${formatDate(book.endDate)}`;
+    } else if (book.startDate) {
+      datesHtml = `${formatDate(book.startDate)}`;
+    }
+
+    let progressHtml = '';
+    if (book.status === 'Читаю' && book.pages && book.currentPage) {
+      const percent = Math.round((book.currentPage / book.pages) * 100);
+      progressHtml = `<div style="font-size:1rem;color:var(--accent-text);">Прочитано ${book.currentPage}/${book.pages} стр. (${percent}%)</div>`;
+    } else if (book.status === 'Читаю' && book.currentPage) {
+      progressHtml = `<div style="font-size:1rem;color:var(--accent-text);">${book.currentPage} стр.</div>`;
+    }
+
+    const quotes = book.quotes || [];
+    let quotesHtml = '';
+    if (quotes.length > 0) {
+      quotesHtml = quotes.map((q, idx) => `
+        <div class="quote-item">
+          <span>“${escapeHtml(q)}”</span>
+          <button class="delete-quote" data-idx="${idx}" title="Удалить цитату">✕</button>
+        </div>
+      `).join('');
+    } else {
+      quotesHtml = `<div class="empty-quotes">Пока нет цитат</div>`;
+    }
+
+    let coverHtml = '';
+    if (covers.length > 0) {
+      const currentCover = covers[galleryIndex] || covers[0];
+      coverHtml = `
+        <div class="cover-slide">
+          <img src="${escapeHtml(currentCover)}" alt="Обложка" onerror="this.parentElement.innerHTML='<div class=\\'no-cover\\'><span>📖</span>Нет обложки</div>'" />
+        </div>
+        ${covers.length > 1 ? `
+          <button class="gallery-nav prev" id="galleryPrev">◀</button>
+          <button class="gallery-nav next" id="galleryNext">▶</button>
+          <div class="gallery-dots">
+            ${covers.map((_, i) => `<button class="dot ${i === galleryIndex ? 'active' : ''}" data-index="${i}"></button>`).join('')}
+          </div>
+          <button class="set-main-btn ${mainCover === covers[galleryIndex] ? 'active' : ''}" id="setMainBtn">
+            ${mainCover === covers[galleryIndex] ? '⭐ Главная' : '☆ Сделать главной'}
+          </button>
+        ` : ''}
+        <button class="favorite-btn ${book.favorite ? 'active' : ''}" id="detailFavoriteBtn" style="top:56px;" title="Избранное">⭐</button>
+      `;
+    } else {
+      coverHtml = `
+        <div class="cover-slide">
+          <div class="no-cover"><span>📖</span>Нет обложки</div>
+        </div>
+        <button class="favorite-btn ${book.favorite ? 'active' : ''}" id="detailFavoriteBtn" style="top:8px;" title="Избранное">⭐</button>
+      `;
+    }
+
+    bookDetail.innerHTML = `
+      <div class="book-detail-cover-wrapper" id="galleryWrapper">
+        ${coverHtml}
+      </div>
+      <div class="book-detail-info">
+        <div class="book-detail-title">${escapeHtml(book.title)}</div>
+        ${book.author ? `<div class="book-detail-author">${escapeHtml(book.author)}</div>` : ''}
+        ${book.pages ? `<div style="font-size:1rem;color:var(--text-secondary);">${book.pages} стр.</div>` : ''}
+        <span class="book-detail-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>
+        ${ratingHtml}
+        ${datesHtml ? `<div class="book-detail-dates">${datesHtml}</div>` : ''}
+        ${progressHtml}
+        ${reviewHtml}
+        ${annotationHtml}
+        <div class="book-quotes">
+          <div class="quotes-title">📝 Цитаты</div>
+          <div id="quotesList">${quotesHtml}</div>
+          <div class="add-quote-row">
+            <input type="text" id="newQuoteInput" placeholder="Введите цитату..." />
+            <button id="addQuoteBtn">+ Добавить цитату</button>
+          </div>
+        </div>
+        <div class="book-detail-actions">
+          ${book.status === 'Читаю' ? `<button class="edit-btn" id="detailTimerBtn">⏱️ Читать</button>` : ''}
+          ${book.status === 'Хочу купить' ? `<button class="edit-btn" id="detailBuyBtn" style="background:var(--success);color:#fff;">✅ Куплено</button>` : ''}
+          <button class="edit-btn" id="detailEditBtn">✏️ Редактировать</button>
+          <button class="delete-btn" id="detailDeleteBtn">🗑 Удалить</button>
+        </div>
+      </div>
+    `;
+
+    const detailFavoriteBtn = document.getElementById('detailFavoriteBtn');
+    if (detailFavoriteBtn) {
+      detailFavoriteBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        await updateInFirebase(book.id, { favorite: !book.favorite });
+      });
+    }
+
+    const detailBuyBtn = document.getElementById('detailBuyBtn');
+    if (detailBuyBtn) {
+      detailBuyBtn.addEventListener('click', async () => {
+        await updateInFirebase(book.id, { status: 'В плане' });
+        showToast('✅ Книга добавлена в "В плане"!', 'success');
+      });
+    }
+
+    const annotationDisplay = document.getElementById('annotationDisplay');
+    const annotationTextarea = document.getElementById('annotationTextarea');
+    const annotationEditBtn = document.getElementById('annotationEditBtn');
+    const annotationSaveBtn = document.getElementById('annotationSaveBtn');
+
+    if (annotationEditBtn) {
+      annotationEditBtn.addEventListener('click', () => {
+        annotationDisplay.style.display = 'none';
+        annotationTextarea.style.display = 'block';
+        annotationEditBtn.style.display = 'none';
+        annotationSaveBtn.style.display = 'inline-block';
+        annotationTextarea.focus();
+      });
+    }
+
+    if (annotationSaveBtn) {
+      annotationSaveBtn.addEventListener('click', async () => {
+        const newAnnotation = annotationTextarea.value.trim();
+        await updateInFirebase(book.id, { annotation: newAnnotation });
+        annotationDisplay.textContent = newAnnotation || 'Нет аннотации';
+        annotationDisplay.style.display = 'block';
+        annotationTextarea.style.display = 'none';
+        annotationEditBtn.style.display = 'inline-block';
+        annotationSaveBtn.style.display = 'none';
+        showToast('✅ Аннотация сохранена!', 'success');
+      });
+    }
+
+    const newQuoteInput = document.getElementById('newQuoteInput');
+    const addQuoteBtn = document.getElementById('addQuoteBtn');
+
+    addQuoteBtn.addEventListener('click', async () => {
+      const text = newQuoteInput.value.trim();
+      if (!text) {
+        showToast('Введите текст цитаты', 'error');
+        return;
+      }
+
+      const updatedQuotes = [...(book.quotes || []), text];
+      await updateInFirebase(book.id, { quotes: updatedQuotes });
+      newQuoteInput.value = '';
+      const updatedBook = books.find(b => b.id === book.id);
+      if (updatedBook) renderBookPage(updatedBook);
+    });
+
+    newQuoteInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addQuoteBtn.click();
+      }
+    });
+
+    document.querySelectorAll('.delete-quote').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const idx = parseInt(btn.dataset.idx);
+        const updatedQuotes = (book.quotes || []).filter((_, i) => i !== idx);
+        await updateInFirebase(book.id, { quotes: updatedQuotes });
+        const updatedBook = books.find(b => b.id === book.id);
+        if (updatedBook) renderBookPage(updatedBook);
+      });
+    });
+
+    if (covers.length > 1) {
+      const prevBtn = document.getElementById('galleryPrev');
+      const nextBtn = document.getElementById('galleryNext');
+      const dots = document.querySelectorAll('.dot');
+      const setMainBtn = document.getElementById('setMainBtn');
+      const slide = document.querySelector('.cover-slide');
+
+      function updateGallery(newIndex) {
+        galleryIndex = newIndex;
+        if (galleryIndex < 0) galleryIndex = covers.length - 1;
+        if (galleryIndex >= covers.length) galleryIndex = 0;
+        const cover = covers[galleryIndex];
+        slide.innerHTML = `<img src="${escapeHtml(cover)}" alt="Обложка" onerror="this.parentElement.innerHTML='<div class=\\'no-cover\\'><span>📖</span>Нет обложки</div>'" />`;
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === galleryIndex));
+        const isMain = covers[galleryIndex] === book.mainCover;
+        setMainBtn.textContent = isMain ? '⭐ Главная' : '☆ Сделать главной';
+        setMainBtn.classList.toggle('active', isMain);
+      }
+
+      prevBtn.addEventListener('click', (e) => { e.stopPropagation(); updateGallery(galleryIndex - 1); });
+      nextBtn.addEventListener('click', (e) => { e.stopPropagation(); updateGallery(galleryIndex + 1); });
+      dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+          e.stopPropagation();
+          updateGallery(parseInt(dot.dataset.index));
+        });
+      });
+      setMainBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const currentCover = covers[galleryIndex];
+        const newMain = book.mainCover === currentCover ? null : currentCover;
+        await updateInFirebase(book.id, { mainCover: newMain });
+      });
+    }
+
+    const detailTimerBtn = document.getElementById('detailTimerBtn');
+    if (detailTimerBtn) {
+      detailTimerBtn.addEventListener('click', () => {
+        openTimer(book.id);
+      });
+    }
+
+    document.getElementById('detailEditBtn').addEventListener('click', () => {
+      showGridView();
+      setTimeout(() => openEditModal(book.id), 100);
+    });
+
+    document.getElementById('detailDeleteBtn').addEventListener('click', async () => {
+      if (confirm(`Удалить книгу "${book.title}"?`)) {
+        await deleteFromFirebase(book.id);
+      }
+    });
+  }
+
+  // ============================================================
+  // 17. РЕДАКТИРОВАНИЕ
+  // ============================================================
+  function openEditModal(bookId) {
+    const book = books.find(b => b.id === bookId);
+    if (!book) return;
+
+    const covers = book.covers || [];
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.style.display = 'flex';
+    
+    let coversHtml = covers.map((url) => `
+      <div class="cover-url-row">
+        <input type="text" class="cover-url-input" value="${escapeHtml(url)}" placeholder="https://example.com/cover.jpg" />
+        <button class="upload-btn">📤 Загрузить <input type="file" accept="image/*" /></button>
+        <button class="remove-cover-btn" style="visibility:${covers.length > 1 ? 'visible' : 'hidden'}">✕</button>
+      </div>
+    `).join('');
+
+    overlay.innerHTML = `
+      <div class="modal">
+        <div class="modal-header">
+          <h2>✏️ <span class="accent">Редактировать</span> книгу</h2>
+          <button class="modal-close" id="closeEditModalBtn">✕</button>
+        </div>
+        <div class="form-card" id="editForm">
+          <div class="form-group">
+            <label>Название книги *</label>
+            <input type="text" id="editTitle" value="${escapeHtml(book.title)}" required />
+          </div>
+          <div class="form-group">
+            <label>Автор</label>
+            <input type="text" id="editAuthor" value="${escapeHtml(book.author || '')}" />
+          </div>
+          <div class="form-group">
+            <label>Количество страниц</label>
+            <input type="number" id="editPages" value="${book.pages || ''}" min="1" />
+          </div>
+          <div class="form-group">
+            <label>Обложки</label>
+            <div class="covers-input" id="editCoversContainer">${coversHtml}</div>
+            <button class="add-cover-btn" id="editAddCoverBtn">+ Добавить ещё обложку</button>
+          </div>
+          <div class="form-group">
+            <label>Статус</label>
+            <select id="editStatus">
+              <option value="В плане" ${book.status === 'В плане' ? 'selected' : ''}>В плане</option>
+              <option value="Читаю" ${book.status === 'Читаю' ? 'selected' : ''}>Читаю</option>
+              <option value="Прочитано" ${book.status === 'Прочитано' ? 'selected' : ''}>Прочитано</option>
+              <option value="Хочу купить" ${book.status === 'Хочу купить' ? 'selected' : ''}>Хочу купить</option>
+            </select>
+          </div>
+          <div class="date-row" id="editDateRow">
+            <div class="form-group" id="editStartDateGroup">
+              <label>Дата начала</label>
+              <input type="date" id="editStartDate" value="${book.startDate || ''}" />
+            </div>
+            <div class="form-group" id="editEndDateGroup" style="${book.status === 'Прочитано' ? 'display:flex;' : 'display:none;'}">
+              <label>Дата окончания</label>
+              <input type="date" id="editEndDate" value="${book.endDate || ''}" />
+            </div>
+          </div>
+          <div class="form-group" id="editRatingGroup" style="${book.status === 'Прочитано' ? 'display:flex;' : 'display:none;'}">
+            <label>Оценка (1–5)</label>
+            <div class="rating-input">
+              <input type="number" id="editRating" min="1" max="5" value="${book.rating || ''}" placeholder="1-5" />
+              <span class="stars-preview" id="editStarsPreview">${book.rating ? getStars(book.rating) : '☆☆☆☆☆'}</span>
+            </div>
+          </div>
+          <div class="form-group" id="editReviewGroup" style="${book.status === 'Прочитано' ? 'display:flex;' : 'display:none;'}">
+            <label>Отзыв</label>
+            <textarea id="editReview" rows="2">${escapeHtml(book.review || '')}</textarea>
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Аннотация</label>
+            <textarea id="editAnnotation" rows="3">${escapeHtml(book.annotation || '')}</textarea>
+          </div>
+          <button class="btn-add" id="saveEditBtn">💾 Сохранить</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+
+    const editCoversContainer = document.getElementById('editCoversContainer');
+    const editAddCoverBtn = document.getElementById('editAddCoverBtn');
+
+    function updateEditRemoveButtons() {
+      const rows = editCoversContainer.querySelectorAll('.cover-url-row');
+      rows.forEach((row, index) => {
+        const btn = row.querySelector('.remove-cover-btn');
+        if (rows.length > 1) {
+          btn.style.visibility = 'visible';
+        } else {
+          btn.style.visibility = 'hidden';
+        }
+      });
+    }
+
+    function initEditUploadButtons() {
+      const fileInputs = editCoversContainer.querySelectorAll('.upload-btn input[type="file"]');
+      fileInputs.forEach(fileInput => {
+        fileInput.removeEventListener('change', handleFileUpload);
+        fileInput.addEventListener('change', handleFileUpload);
+      });
+    }
+
+    initEditUploadButtons();
+    updateEditRemoveButtons();
+
+    editAddCoverBtn.addEventListener('click', () => {
+      const row = document.createElement('div');
+      row.className = 'cover-url-row';
+      row.innerHTML = `
+        <input type="text" class="cover-url-input" placeholder="https://example.com/cover.jpg" />
+        <button class="upload-btn">📤 Загрузить <input type="file" accept="image/*" /></button>
+        <button class="remove-cover-btn">✕</button>
+      `;
+      const fileInput = row.querySelector('.upload-btn input[type="file"]');
+      fileInput.addEventListener('change', handleFileUpload);
+      row.querySelector('.remove-cover-btn').addEventListener('click', () => {
+        row.remove();
+        updateEditRemoveButtons();
+      });
+      editCoversContainer.appendChild(row);
+      updateEditRemoveButtons();
+    });
+
+    editCoversContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('remove-cover-btn')) {
+        const row = e.target.closest('.cover-url-row');
+        if (row && editCoversContainer.children.length > 1) {
+          row.remove();
+          updateEditRemoveButtons();
+        }
+      }
+    });
+
+    function getEditCovers() {
+      const inputs = editCoversContainer.querySelectorAll('.cover-url-input');
+      const urls = [];
+      inputs.forEach(input => {
+        const val = input.value.trim();
+        if (val) urls.push(val);
+      });
+      return urls;
+    }
+
+    const editStatus = document.getElementById('editStatus');
+    const editStartGroup = document.getElementById('editStartDateGroup');
+    const editEndGroup = document.getElementById('editEndDateGroup');
+    const editStart = document.getElementById('editStartDate');
+    const editEnd = document.getElementById('editEndDate');
+    const editRatingGroup = document.getElementById('editRatingGroup');
+    const editReviewGroup = document.getElementById('editReviewGroup');
+    const editRating = document.getElementById('editRating');
+    const editReview = document.getElementById('editReview');
+    const editStarsPreview = document.getElementById('editStarsPreview');
+
+    editRating.addEventListener('input', () => {
+      const val = parseInt(editRating.value);
+      if (val >= 1 && val <= 5) {
+        editStarsPreview.textContent = getStars(val);
+      } else {
+        editStarsPreview.textContent = '☆☆☆☆☆';
+      }
+    });
+
+    function updateEditFields() {
+      const status = editStatus.value;
+      if (status === 'В плане' || status === 'Хочу купить') {
+        editStartGroup.style.display = 'none';
+        editEndGroup.style.display = 'none';
+        editStart.value = '';
+        editEnd.value = '';
+        editRatingGroup.style.display = 'none';
+        editReviewGroup.style.display = 'none';
+        editRating.value = '';
+        editReview.value = '';
+      } else if (status === 'Читаю') {
+        editStartGroup.style.display = 'flex';
+        editEndGroup.style.display = 'none';
+        editEnd.value = '';
+        editRatingGroup.style.display = 'none';
+        editReviewGroup.style.display = 'none';
+        editRating.value = '';
+        editReview.value = '';
+      } else if (status === 'Прочитано') {
+        editStartGroup.style.display = 'flex';
+        editEndGroup.style.display = 'flex';
+        editRatingGroup.style.display = 'flex';
+        editReviewGroup.style.display = 'flex';
+      }
+    }
+
+    editStatus.addEventListener('change', updateEditFields);
+    updateEditFields();
+
+    document.getElementById('saveEditBtn').addEventListener('click', async () => {
+      const newTitle = document.getElementById('editTitle').value.trim();
+      if (!newTitle) {
+        showToast('Введите название', 'error');
+        return;
+      }
+      
+      const newAuthor = document.getElementById('editAuthor').value.trim() || null;
+      const newPages = parseInt(document.getElementById('editPages').value) || null;
+      const newStatus = document.getElementById('editStatus').value;
+      const newStart = document.getElementById('editStartDate').value || null;
+      const newEnd = document.getElementById('editEndDate').value || null;
+      const newRating = parseInt(document.getElementById('editRating').value) || null;
+      const newReview = document.getElementById('editReview').value.trim() || null;
+      const newAnnotation = document.getElementById('editAnnotation').value.trim() || null;
+      const newCovers = getEditCovers();
+      const oldMainCover = book.mainCover;
+
+      if (newStatus === 'Прочитано' && (!newStart || !newEnd)) {
+        showToast('Для "Прочитано" укажите даты', 'error');
+        return;
+      }
+      if (newStatus === 'Читаю' && !newStart) {
+        showToast('Для "Читаю" укажите дату начала', 'error');
+        return;
+      }
+      if (newStart && newEnd && new Date(newEnd) < new Date(newStart)) {
+        showToast('Дата окончания не может быть раньше даты начала', 'error');
+        return;
+      }
+      if (newRating && (newRating < 1 || newRating > 5)) {
+        showToast('Оценка должна быть от 1 до 5', 'error');
+        return;
+      }
+      if (newCovers.length === 0) {
+        showToast('Добавьте хотя бы одну обложку', 'error');
+        return;
+      }
+
+      let mainCover = oldMainCover;
+      if (!newCovers.includes(oldMainCover)) {
+        mainCover = newCovers[0];
+      }
+
+      const updatedData = {
+        title: newTitle,
+        author: newAuthor,
+        pages: newPages,
+        covers: newCovers,
+        mainCover: mainCover,
+        status: newStatus,
+        startDate: newStart,
+        endDate: (newStatus === 'Прочитано' ? newEnd : null),
+        rating: (newStatus === 'Прочитано' ? newRating : null),
+        review: (newStatus === 'Прочитано' ? newReview : null),
+        annotation: newAnnotation,
+      };
+
+      await updateInFirebase(bookId, updatedData);
+      overlay.remove();
+      document.body.style.overflow = '';
+    });
+
+    document.getElementById('closeEditModalBtn').addEventListener('click', () => {
+      overlay.remove();
+      document.body.style.overflow = '';
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.remove();
+        document.body.style.overflow = '';
+      }
+    });
+  }
+
+  // ============================================================
+  // 18. СЧЁТЧИК (БЕЗ "ХОЧУ КУПИТЬ")
+  // ============================================================
+  function updateCounter() {
+    if (currentView === 'grid') {
+      const libraryBooks = books.filter(b => b.status !== 'Хочу купить');
+      counter.textContent = `${libraryBooks.length} книг`;
+    }
+  }
+
+  filterBar.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    const filter = btn.dataset.filter;
+    if (!filter) return;
+    document.querySelectorAll('#filterBar button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = filter;
+    render();
+  });
+
+  // ============================================================
+  // 19. ЗАПУСК
+  // ============================================================
+  function init() {
+    initCoverRows(coversContainer);
+    subscribeToBooks();
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.target.closest('#bookForm') && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        addBook();
+      }
+    });
+
+    render();
+  }
+
+  init();
+</script>
+</body>
+</html>
