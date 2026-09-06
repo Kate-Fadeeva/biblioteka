@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
   <title>Домашняя библиотека</title>
   
-  <!-- PWA: манифест -->
-  <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogItCU0L7QvNCw0YjQvdGP0Y8g0LHQuNCx0LvQuNC+0YLQtdC60LAg0LrQvdC40LMiLAogICJzaG9ydF9uYW1lIjogItCU0L7QvNCw0YjQvdGP0Y8g0LHQuNCx0LvQuNC+0YLQtdC60LAg0LrQvdC40LMiLAogICJkZXNjcmlwdGlvbiI6ICLQmtC90LjQttC90YvQuSDRh9C40YLQsNC70LXQvSIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmFmNmYwIiwKICAidGhlbWVfY29sb3IiOiAiI2ZmYjBmYiIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCw8c3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDUxMiA1MTInPjxyZWN0IHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyByeD0nNjQnIGZpbGw9JyNmZmIwZmInLz48dGV4dCB4PScyNTYnIHk9JzI4MCcgZm9udC1mYW1pbHk9J3N5c3RlbS11aScgZm9udC1zaXplPScyODAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyNmZmYnPkvQvjwvdGV4dD48L3N2Zz4iLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiLAogICAgICAicHVycG9zZSI6ICJhbnkgbWFzayBhbnkgcHVycG9zZSIKICAgIH0KICBdCn0=">
+  <!-- PWA: МАНИФЕСТ С ТВОЕЙ ИКОНКОЙ -->
+  <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogItCU0L7QvNCw0YjQvdGP0Y8g0LHQuNCx0LvQuNC+0YLQtdC60LAg0LrQvdC40LMiLAogICJzaG9ydF9uYW1lIjogItCU0L7QvNCw0YjQvdGP0Y8g0LHQuNCx0LvQuNC+0YLQtdC60LAg0LrQvdC40LMiLAogICJkZXNjcmlwdGlvbiI6ICLQmtC90LjQttC90YvQuSDRh9C40YLQsNC70LXQvSIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmFmNmYwIiwKICAidGhlbWVfY29sb3IiOiAiI2ZmYjBmYiIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9LYXRlLUZhZGVldmEvYmlibGlvdGVrYS9tYWluL2ljb24uanBnIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9qcGVnIiwKICAgICAgInB1cnBvc2UiOiAiYW55IG1hc2thYmxlIgogICAgfQogIF0KfQ==">
 
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -844,7 +844,6 @@
     if (e.key === 'Enter') checkPassword();
   });
 
-  // Проверяем, не заходили ли уже в этой сессии
   if (sessionStorage.getItem('library_logged_in') === 'true') {
     loginScreen.style.display = 'none';
     appContent.classList.add('visible');
@@ -2297,7 +2296,6 @@
     render();
   }
 
-  // Если уже заходили в этой сессии
   if (sessionStorage.getItem('library_logged_in') === 'true') {
     initApp();
   }
