@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
   <title>Домашняя библиотека</title>
   
-  <!-- PWA: МАНИФЕСТ С ТВОЕЙ ИКОНКОЙ -->
   <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogItCU0L7QvNCw0YjQvdGP0Y8g0LHQuNCx0LvQuNC+0YLQtdC60LAg0LrQvdC40LMiLAogICJzaG9ydF9uYW1lIjogItCU0L7QvNCw0YjQvdGP0Y8g0LHQuNCx0LvQuNC+0YLQtdC60LAg0LrQvdC40LMiLAogICJkZXNjcmlwdGlvbiI6ICLQmtC90LjQttC90YvQuSDRh9C40YLQsNC70LXQvSIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmFmNmYwIiwKICAidGhlbWVfY29sb3IiOiAiI2ZmYjBmYiIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9LYXRlLUZhZGVldmEvYmlibGlvdGVrYS9tYWluL2ljb24uanBnIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9qcGVnIiwKICAgICAgInB1cnBvc2UiOiAiYW55IG1hc2thYmxlIgogICAgfQogIF0KfQ==">
 
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -80,102 +79,36 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; transition: background 0.3s, color 0.2s, border-color 0.3s, box-shadow 0.3s; }
     body { background: var(--bg); padding: 2rem 1rem; min-height: 100vh; display: flex; justify-content: center; }
 
-    /* ----- ЭКРАН ВХОДА (ПОВЕРХ ВСЕГО) ----- */
+    /* ----- ЭКРАН ВХОДА ----- */
     .login-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      flex-direction: column;
-      padding: 2rem;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--bg); display: flex; align-items: center; justify-content: center;
+      z-index: 9999; flex-direction: column; padding: 2rem;
     }
     .login-screen .login-box {
-      background: var(--bg-card);
-      border-radius: 32px;
-      padding: 2.5rem;
-      max-width: 400px;
-      width: 100%;
-      border: 1px solid var(--border);
-      box-shadow: 0 20px 60px var(--shadow);
-      text-align: center;
+      background: var(--bg-card); border-radius: 32px; padding: 2.5rem; max-width: 400px; width: 100%;
+      border: 1px solid var(--border); box-shadow: 0 20px 60px var(--shadow); text-align: center;
     }
-    .login-screen .login-box h1 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      color: var(--text);
-    }
-    .login-screen .login-box h1 .accent {
-      color: var(--accent-text);
-    }
-    .login-screen .login-box p {
-      color: var(--text-secondary);
-      margin-bottom: 1.5rem;
-      font-size: 0.95rem;
-    }
+    .login-screen .login-box h1 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--text); }
+    .login-screen .login-box h1 .accent { color: var(--accent-text); }
+    .login-screen .login-box p { color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem; }
     .login-screen .login-box input {
-      width: 100%;
-      padding: 14px 18px;
-      border: 1.5px solid var(--border);
-      border-radius: 16px;
-      font-size: 1rem;
-      background: var(--input-bg);
-      color: var(--text);
-      margin-bottom: 1rem;
-      outline: none;
-      transition: 0.2s;
+      width: 100%; padding: 14px 18px; border: 1.5px solid var(--border); border-radius: 16px;
+      font-size: 1rem; background: var(--input-bg); color: var(--text); margin-bottom: 1rem; outline: none; transition: 0.2s;
     }
-    .login-screen .login-box input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-dim);
-    }
+    .login-screen .login-box input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
     .login-screen .login-box .login-btn {
-      width: 100%;
-      background: var(--accent);
-      color: var(--bg);
-      border: none;
-      padding: 14px;
-      border-radius: 40px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.2s;
+      width: 100%; background: var(--accent); color: var(--bg); border: none; padding: 14px;
+      border-radius: 40px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.2s;
     }
-    .login-screen .login-box .login-btn:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 30px var(--accent-glow);
-    }
-    .login-screen .login-box .login-error {
-      color: var(--error);
-      font-size: 0.85rem;
-      margin-top: 8px;
-      min-height: 24px;
-      display: none;
-    }
-    .login-screen .login-box .login-error.visible {
-      display: block;
-    }
+    .login-screen .login-box .login-btn:hover { transform: scale(1.02); box-shadow: 0 0 30px var(--accent-glow); }
+    .login-screen .login-box .login-error { color: var(--error); font-size: 0.85rem; margin-top: 8px; min-height: 24px; display: none; }
+    .login-screen .login-box .login-error.visible { display: block; }
 
     /* ----- ОСНОВНОЙ КОНТЕНТ ----- */
-    .app-content {
-      display: none;
-      max-width: 1200px;
-      width: 100%;
-      margin: 0 auto;
-    }
-    .app-content.visible {
-      display: block;
-    }
-
-    .app {
-      max-width: 1200px;
-      width: 100%;
-    }
+    .app-content { display: none; max-width: 1200px; width: 100%; margin: 0 auto; }
+    .app-content.visible { display: block; }
+    .app { max-width: 1200px; width: 100%; }
 
     /* ----- ШАПКА ----- */
     .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
@@ -195,21 +128,11 @@
     /* ----- ПОИСК ----- */
     .search-wrap { margin-bottom: 1rem; }
     .search-wrap input {
-      width: 100%;
-      padding: 12px 18px;
-      border: 1.5px solid var(--border);
-      border-radius: 40px;
-      font-size: 1rem;
-      background: var(--bg-card);
-      color: var(--text);
-      box-shadow: 0 2px 8px var(--shadow);
-      transition: 0.2s;
-      outline: none;
+      width: 100%; padding: 12px 18px; border: 1.5px solid var(--border); border-radius: 40px;
+      font-size: 1rem; background: var(--bg-card); color: var(--text); box-shadow: 0 2px 8px var(--shadow);
+      transition: 0.2s; outline: none;
     }
-    .search-wrap input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-dim), 0 2px 12px var(--shadow);
-    }
+    .search-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim), 0 2px 12px var(--shadow); }
     .search-wrap input::placeholder { color: var(--text-muted); }
 
     /* ----- МОДАЛКИ ----- */
@@ -273,24 +196,13 @@
     .cover .no-cover span { display: block; font-size: 2.5rem; margin-bottom: 6px; }
     .cover-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); border-radius: 20px; padding: 3px 10px; font-size: 0.7rem; color: #fff; font-weight: 500; z-index: 5; pointer-events: none; }
 
-    /* ----- ИЗБРАННОЕ (звёздочка) ----- */
+    /* ----- ИЗБРАННОЕ ----- */
     .favorite-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      z-index: 10;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(4px);
-      border: none;
-      border-radius: 40px;
-      padding: 4px 10px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: 0.2s;
-      color: rgba(255,255,255,0.6);
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      position: absolute; top: 8px; right: 8px; z-index: 10;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+      border: none; border-radius: 40px; padding: 4px 10px; font-size: 1.2rem;
+      cursor: pointer; transition: 0.2s; color: rgba(255,255,255,0.6);
+      display: flex; align-items: center; gap: 4px;
     }
     .favorite-btn:hover { transform: scale(1.15); background: rgba(0,0,0,0.7); }
     .favorite-btn.active { color: var(--favorite-color); }
@@ -298,34 +210,11 @@
     .book-title { font-size: 1.1rem; font-weight: 600; color: var(--text); margin-bottom: 2px; word-break: break-word; }
     .book-author { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px; font-weight: 400; }
     
-    /* ----- СТАТУСЫ (ГОЛУБОЙ ДЛЯ "ХОЧУ КУПИТЬ") ----- */
-    .book-status {
-      display: inline-block;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      padding: 4px 12px;
-      border-radius: 40px;
-      background: var(--status-bg);
-      color: var(--text-secondary);
-      margin: 6px 0 8px;
-      align-self: flex-start;
-      border: 1px solid var(--border);
-    }
-    .book-status.reading {
-      border-color: var(--accent);
-      color: var(--accent-text);
-    }
-    .book-status.done {
-      border-color: var(--star-color);
-      color: var(--star-color);
-    }
-    .book-status.want-to-buy {
-      border-color: var(--want-to-buy-color);
-      color: var(--want-to-buy-color);
-      background: var(--want-to-buy-bg);
-    }
+    /* ----- СТАТУСЫ ----- */
+    .book-status { display: inline-block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; padding: 4px 12px; border-radius: 40px; background: var(--status-bg); color: var(--text-secondary); margin: 6px 0 8px; align-self: flex-start; border: 1px solid var(--border); }
+    .book-status.reading { border-color: var(--accent); color: var(--accent-text); }
+    .book-status.done { border-color: var(--star-color); color: var(--star-color); }
+    .book-status.want-to-buy { border-color: var(--want-to-buy-color); color: var(--want-to-buy-color); background: var(--want-to-buy-bg); }
 
     .book-rating { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; margin: 4px 0; }
     .book-rating .stars { letter-spacing: 2px; font-size: 1.2rem; color: var(--star-color); }
@@ -335,32 +224,15 @@
     .book-pages { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
     .book-progress { font-size: 0.8rem; color: var(--accent-text); font-weight: 500; margin-bottom: 4px; }
 
-    /* ----- КНОПКА ТАЙМЕРА (ИСПРАВЛЕНА) ----- */
+    /* ----- КНОПКА ТАЙМЕРА ----- */
     .book-timer-btn {
-      background: var(--timer-bg);
-      color: var(--timer-text);
-      border: none;
-      border-radius: 40px;
-      padding: 6px 14px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin: 4px 0 8px 0;
-      align-self: flex-start;
-      line-height: 1.2;
+      background: var(--timer-bg); color: var(--timer-text); border: none; border-radius: 40px;
+      padding: 6px 14px; font-size: 0.8rem; cursor: pointer; transition: 0.2s;
+      display: inline-flex; align-items: center; gap: 6px; margin: 4px 0 8px 0;
+      align-self: flex-start; line-height: 1.2;
     }
-    .book-timer-btn:hover {
-      transform: scale(1.05);
-      background: var(--accent);
-      color: var(--bg);
-    }
-    .book-timer-btn.active {
-      background: var(--error);
-      animation: pulse 1s infinite;
-    }
+    .book-timer-btn:hover { transform: scale(1.05); background: var(--accent); color: var(--bg); }
+    .book-timer-btn.active { background: var(--error); animation: pulse 1s infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
     /* ----- КНОПКИ ДЕЙСТВИЙ ----- */
@@ -399,37 +271,106 @@
     .book-page .book-detail-author { font-size: 1.2rem; color: var(--text-secondary); }
     
     .book-page .book-detail-status {
-      display: inline-block;
-      padding: 6px 18px;
-      border-radius: 40px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      background: var(--status-bg);
-      color: var(--text-secondary);
-      border: 1px solid var(--border);
-      align-self: flex-start;
+      display: inline-block; padding: 6px 18px; border-radius: 40px; font-size: 0.9rem; font-weight: 600;
+      text-transform: uppercase; background: var(--status-bg); color: var(--text-secondary);
+      border: 1px solid var(--border); align-self: flex-start;
     }
-    .book-page .book-detail-status.reading {
-      border-color: var(--accent);
-      color: var(--accent-text);
-    }
-    .book-page .book-detail-status.done {
-      border-color: var(--star-color);
-      color: var(--star-color);
-    }
-    .book-page .book-detail-status.want-to-buy {
-      border-color: var(--want-to-buy-color);
-      color: var(--want-to-buy-color);
-      background: var(--want-to-buy-bg);
-    }
+    .book-page .book-detail-status.reading { border-color: var(--accent); color: var(--accent-text); }
+    .book-page .book-detail-status.done { border-color: var(--star-color); color: var(--star-color); }
+    .book-page .book-detail-status.want-to-buy { border-color: var(--want-to-buy-color); color: var(--want-to-buy-color); background: var(--want-to-buy-bg); }
 
-    .book-page .book-detail-rating { font-size: 1.4rem; letter-spacing: 3px; color: var(--star-color); }
-    .book-page .book-detail-rating .empty-star { color: var(--star-empty); }
-    .book-page .book-detail-rating .rating-number { font-size: 1rem; color: var(--text-secondary); margin-left: 8px; }
     .book-page .book-detail-dates { font-size: 1rem; color: var(--text-secondary); }
 
-    /* ----- АННОТАЦИЯ ----- */
+    /* ----- БЫСТРАЯ ОЦЕНКА ----- */
+    .quick-rating {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--bg);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+    .quick-rating .label {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .quick-rating .stars-clickable {
+      display: flex;
+      gap: 4px;
+      font-size: 1.8rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .quick-rating .stars-clickable .star {
+      color: var(--star-empty);
+      transition: 0.15s;
+      user-select: none;
+    }
+    .quick-rating .stars-clickable .star.filled {
+      color: var(--star-color);
+    }
+    .quick-rating .stars-clickable .star:hover {
+      transform: scale(1.2);
+    }
+    .quick-rating .value {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-left: 4px;
+    }
+
+    /* ----- БЫСТРЫЙ ОТЗЫВ ----- */
+    .quick-review {
+      background: var(--bg);
+      padding: 16px 20px;
+      border-radius: 16px;
+      border-left: 4px solid var(--accent);
+    }
+    .quick-review .label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .quick-review textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      background: var(--input-bg);
+      color: var(--text);
+      font-family: inherit;
+      resize: vertical;
+      min-height: 80px;
+      line-height: 1.5;
+    }
+    .quick-review textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    .quick-review .save-review-btn {
+      margin-top: 10px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .quick-review .save-review-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    /* ----- АННОТАЦИЯ (ТОЛЬКО ДЛЯ ЧТЕНИЯ) ----- */
     .book-annotation {
       margin-top: 0.5rem;
       border-top: 1px solid var(--border);
@@ -459,60 +400,6 @@
       color: var(--text-muted);
       font-style: italic;
     }
-    .book-annotation .annotation-edit-btn {
-      background: var(--bg);
-      border: 1.5px solid var(--border);
-      border-radius: 40px;
-      padding: 4px 14px;
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: 0.2s;
-      margin-top: 6px;
-    }
-    .book-annotation .annotation-edit-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent-text);
-      background: var(--accent-dim);
-    }
-    .book-annotation .annotation-textarea {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1.5px solid var(--border);
-      border-radius: 16px;
-      font-size: 0.95rem;
-      background: var(--input-bg);
-      color: var(--text);
-      font-family: inherit;
-      resize: vertical;
-      min-height: 80px;
-      display: none;
-    }
-    .book-annotation .annotation-textarea:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-dim);
-    }
-    .book-annotation .annotation-save-btn {
-      background: var(--accent);
-      color: var(--bg);
-      border: none;
-      padding: 6px 16px;
-      border-radius: 40px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s;
-      margin-top: 6px;
-      display: none;
-    }
-    .book-annotation .annotation-save-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px var(--accent-glow);
-    }
-
-    .book-page .book-detail-review { background: var(--bg); padding: 16px 20px; border-radius: 16px; border-left: 4px solid var(--accent); font-style: italic; color: var(--text-secondary); line-height: 1.6; margin-top: 4px; }
-    .book-page .book-detail-review-label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-secondary); margin-bottom: 4px; }
 
     /* ----- ЦИТАТЫ ----- */
     .book-quotes {
@@ -529,19 +416,24 @@
       margin-bottom: 8px;
     }
     .book-quotes .quote-item {
-      padding: 8px 12px;
-      margin-bottom: 6px;
+      padding: 12px;
+      margin-bottom: 10px;
       border-left: 3px solid var(--accent);
       background: var(--bg);
       border-radius: 8px;
+    }
+    .book-quotes .quote-item .quote-text-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
       font-style: italic;
       color: var(--text-secondary);
       font-size: 0.95rem;
       line-height: 1.5;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
+    }
+    .book-quotes .quote-item .quote-text-row .quote-text {
+      flex: 1;
     }
     .book-quotes .quote-item .delete-quote {
       background: none;
@@ -557,6 +449,53 @@
     .book-quotes .quote-item .delete-quote:hover {
       opacity: 1;
       transform: scale(1.2);
+    }
+    .book-quotes .quote-item .quote-comment-block {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border);
+    }
+    .book-quotes .quote-item .quote-comment-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .book-quotes .quote-item .quote-comment-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.9rem;
+      background: var(--input-bg);
+      color: var(--text);
+      font-family: inherit;
+      resize: vertical;
+      min-height: 50px;
+      line-height: 1.4;
+    }
+    .book-quotes .quote-item .quote-comment-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    .book-quotes .quote-item .quote-comment-save {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 5px 14px;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 6px;
+    }
+    .book-quotes .quote-item .quote-comment-save:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px var(--accent-glow);
     }
     .book-quotes .add-quote-row {
       display: flex;
@@ -641,19 +580,7 @@
     .timer-history-item .time { font-weight: 500; color: var(--text); }
 
     /* ----- PWA: OFFLINE ----- */
-    .offline-badge {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background: var(--error);
-      color: white;
-      padding: 4px 12px;
-      border-radius: 40px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      z-index: 9999;
-      display: none;
-    }
+    .offline-badge { position: fixed; top: 10px; right: 10px; background: var(--error); color: white; padding: 4px 12px; border-radius: 40px; font-size: 0.7rem; font-weight: 600; z-index: 9999; display: none; }
     .offline-badge.visible { display: block; }
 
     /* ----- АДАПТИВ ----- */
@@ -681,6 +608,7 @@
       .filters button { font-size: 0.75rem; padding: 6px 12px; }
       .filters { gap: 6px; }
       .login-screen .login-box { padding: 1.5rem; }
+      .quick-rating { flex-wrap: wrap; }
     }
   </style>
 </head>
@@ -700,7 +628,6 @@
 <!-- ОСНОВНОЙ КОНТЕНТ -->
 <div class="app-content" id="appContent">
   <div class="app">
-    <!-- PWA: offline badge -->
     <div class="offline-badge" id="offlineBadge">📡 Офлайн</div>
 
     <!-- ШАПКА -->
@@ -876,7 +803,6 @@
   // ============================================================
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
-    
     window.addEventListener('online', () => {
       document.getElementById('offlineBadge').classList.remove('visible');
     });
@@ -1018,6 +944,15 @@
   function getStars(rating) {
     if (!rating || rating < 1 || rating > 5) return '☆☆☆☆☆';
     return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+  }
+
+  function renderClickableStars(rating) {
+    let html = '';
+    for (let i = 1; i <= 5; i++) {
+      const filled = i <= (rating || 0);
+      html += `<span class="star ${filled ? 'filled' : ''}" data-value="${i}">★</span>`;
+    }
+    return html;
   }
 
   // ============================================================
@@ -1290,6 +1225,11 @@
         books = newBooks;
         render();
         updateCounter();
+
+        if (currentView === 'book' && currentBookId) {
+          const updatedBook = books.find(b => b.id === currentBookId);
+          if (updatedBook) renderBookPage(updatedBook);
+        }
       }, (error) => {
         console.error('Ошибка синхронизации:', error);
         showToast('❌ Ошибка подключения к облаку', 'error');
@@ -1316,7 +1256,7 @@
     isSyncing = false;
   }
 
-  async function updateInFirebase(bookId, updatedData) {
+  async function updateInFirebase(bookId, updatedData, silent = false) {
     isSyncing = true;
     try {
       const docRef = db.collection('books').doc(bookId);
@@ -1324,7 +1264,7 @@
         ...updatedData,
         updatedAt: new Date().toISOString()
       }, { merge: true });
-      showToast('✅ Книга обновлена!', 'success');
+      if (!silent) showToast('✅ Книга обновлена!', 'success');
     } catch (error) {
       console.error('Ошибка обновления:', error);
       showToast('❌ Ошибка обновления', 'error');
@@ -1533,13 +1473,13 @@
         currentPage: page,
         status: newStatus,
         endDate: endDateValue
-      });
+      }, true);
       showToast(`🎉 Книга дочитана! Статус изменён на "Прочитано"`, 'success');
     } else {
       await updateInFirebase(timerBookId, {
         readingHistory: history,
         currentPage: page
-      });
+      }, true);
       showToast('✅ Прогресс сохранён!', 'success');
     }
 
@@ -1703,7 +1643,7 @@
           const id = btn.dataset.id;
           const book = books.find(b => b.id === id);
           if (!book) return;
-          await updateInFirebase(id, { favorite: !book.favorite });
+          await updateInFirebase(id, { favorite: !book.favorite }, true);
         });
       });
 
@@ -1719,7 +1659,7 @@
         btn.addEventListener('click', async (e) => {
           e.stopPropagation();
           const id = btn.dataset.id;
-          await updateInFirebase(id, { status: 'В плане' });
+          await updateInFirebase(id, { status: 'В плане' }, true);
           showToast('✅ Книга добавлена в "В плане"!', 'success');
         });
       });
@@ -1741,7 +1681,7 @@
   searchInput.addEventListener('input', render);
 
   // ============================================================
-  // 16. РЕНДЕР СТРАНИЦЫ КНИГИ
+  // 16. РЕНДЕР СТРАНИЦЫ КНИГИ (АННОТАЦИЯ ТОЛЬКО ДЛЯ ЧТЕНИЯ)
   // ============================================================
   function renderBookPage(book) {
     const covers = book.covers || [];
@@ -1749,36 +1689,39 @@
 
     const statusClass = book.status === 'Читаю' ? 'reading' : book.status === 'Прочитано' ? 'done' : book.status === 'Хочу купить' ? 'want-to-buy' : '';
     
-    let ratingHtml = '';
-    if (book.status === 'Прочитано' && book.rating) {
-      const stars = getStars(book.rating);
-      ratingHtml = `
-        <div class="book-detail-rating">
-          ${stars}
-          <span class="rating-number">${book.rating}/5</span>
+    // ----- КЛИКАБЕЛЬНАЯ ОЦЕНКА -----
+    let quickRatingHtml = '';
+    if (book.status === 'Прочитано') {
+      quickRatingHtml = `
+        <div class="quick-rating" id="quickRating">
+          <span class="label">Оценка:</span>
+          <div class="stars-clickable" id="starsClickable">
+            ${renderClickableStars(book.rating)}
+          </div>
+          <span class="value" id="ratingValue">${book.rating ? book.rating + '/5' : '—'}</span>
         </div>
       `;
     }
 
-    let reviewHtml = '';
-    if (book.status === 'Прочитано' && book.review) {
-      reviewHtml = `
-        <div>
-          <div class="book-detail-review-label">Отзыв</div>
-          <div class="book-detail-review">“${escapeHtml(book.review)}”</div>
+    // ----- БЫСТРЫЙ ОТЗЫВ -----
+    let quickReviewHtml = '';
+    if (book.status === 'Прочитано') {
+      quickReviewHtml = `
+        <div class="quick-review">
+          <div class="label">📝 Мой отзыв</div>
+          <textarea id="quickReviewTextarea">${escapeHtml(book.review || '')}</textarea>
+          <button class="save-review-btn" id="saveQuickReview">💾 Сохранить отзыв</button>
         </div>
       `;
     }
 
+    // ----- АННОТАЦИЯ (ТОЛЬКО ДЛЯ ЧТЕНИЯ) -----
     let annotationHtml = '';
     const annotationText = book.annotation || '';
     annotationHtml = `
       <div class="book-annotation">
         <div class="annotation-title">📖 Аннотация</div>
-        <div class="annotation-text" id="annotationDisplay">${escapeHtml(annotationText)}</div>
-        <textarea class="annotation-textarea" id="annotationTextarea">${escapeHtml(annotationText)}</textarea>
-        <button class="annotation-edit-btn" id="annotationEditBtn">✏️ Редактировать</button>
-        <button class="annotation-save-btn" id="annotationSaveBtn">💾 Сохранить</button>
+        <div class="annotation-text">${escapeHtml(annotationText)}</div>
       </div>
     `;
 
@@ -1799,15 +1742,27 @@
       progressHtml = `<div style="font-size:1rem;color:var(--accent-text);">${book.currentPage} стр.</div>`;
     }
 
+    // ----- ЦИТАТЫ С КОММЕНТАРИЯМИ -----
     const quotes = book.quotes || [];
     let quotesHtml = '';
     if (quotes.length > 0) {
-      quotesHtml = quotes.map((q, idx) => `
-        <div class="quote-item">
-          <span>“${escapeHtml(q)}”</span>
-          <button class="delete-quote" data-idx="${idx}" title="Удалить цитату">✕</button>
-        </div>
-      `).join('');
+      quotesHtml = quotes.map((q, idx) => {
+        const quoteText = typeof q === 'string' ? q : (q.text || '');
+        const quoteComment = typeof q === 'object' && q.comment ? q.comment : '';
+        return `
+          <div class="quote-item" data-idx="${idx}">
+            <div class="quote-text-row">
+              <span class="quote-text">“${escapeHtml(quoteText)}”</span>
+              <button class="delete-quote" data-idx="${idx}" title="Удалить цитату">✕</button>
+            </div>
+            <div class="quote-comment-block">
+              <div class="quote-comment-label">💬 Мой комментарий</div>
+              <textarea class="quote-comment-input" data-idx="${idx}">${escapeHtml(quoteComment)}</textarea>
+              <button class="quote-comment-save" data-idx="${idx}">💾 Сохранить</button>
+            </div>
+          </div>
+        `;
+      }).join('');
     } else {
       quotesHtml = `<div class="empty-quotes">Пока нет цитат</div>`;
     }
@@ -1849,10 +1804,10 @@
         ${book.author ? `<div class="book-detail-author">${escapeHtml(book.author)}</div>` : ''}
         ${book.pages ? `<div style="font-size:1rem;color:var(--text-secondary);">${book.pages} стр.</div>` : ''}
         <span class="book-detail-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>
-        ${ratingHtml}
+        ${quickRatingHtml}
         ${datesHtml ? `<div class="book-detail-dates">${datesHtml}</div>` : ''}
         ${progressHtml}
-        ${reviewHtml}
+        ${quickReviewHtml}
         ${annotationHtml}
         <div class="book-quotes">
           <div class="quotes-title">📝 Цитаты</div>
@@ -1871,50 +1826,66 @@
       </div>
     `;
 
-    const detailFavoriteBtn = document.getElementById('detailFavoriteBtn');
-    if (detailFavoriteBtn) {
-      detailFavoriteBtn.addEventListener('click', async (e) => {
+    // ===== КЛИКАБЕЛЬНАЯ ОЦЕНКА =====
+    const starsClickable = document.getElementById('starsClickable');
+    if (starsClickable) {
+      starsClickable.addEventListener('click', async (e) => {
+        const star = e.target.closest('.star');
+        if (!star) return;
+        const value = parseInt(star.dataset.value);
+        starsClickable.querySelectorAll('.star').forEach((s, i) => {
+          s.classList.toggle('filled', i < value);
+        });
+        document.getElementById('ratingValue').textContent = value + '/5';
+        await updateInFirebase(book.id, { rating: value }, true);
+        showToast(`✅ Оценка ${value}/5 сохранена!`, 'success');
+      });
+    }
+
+    // ===== БЫСТРЫЙ ОТЗЫВ =====
+    const saveQuickReview = document.getElementById('saveQuickReview');
+    if (saveQuickReview) {
+      saveQuickReview.addEventListener('click', async () => {
+        const text = document.getElementById('quickReviewTextarea').value.trim();
+        await updateInFirebase(book.id, { review: text || null }, true);
+        showToast('✅ Отзыв сохранён!', 'success');
+      });
+    }
+
+    // ===== СОХРАНЕНИЕ КОММЕНТАРИЕВ К ЦИТАТАМ =====
+    document.querySelectorAll('.quote-comment-save').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const idx = parseInt(btn.dataset.idx);
+        const comment = document.querySelector(`.quote-comment-input[data-idx="${idx}"]`).value.trim();
+        
+        const updatedQuotes = (book.quotes || []).map((q, i) => {
+          if (i !== idx) {
+            return typeof q === 'string' ? q : q;
+          }
+          if (typeof q === 'string') {
+            return { text: q, comment: comment };
+          }
+          return { ...q, comment: comment };
+        });
+        
+        await updateInFirebase(book.id, { quotes: updatedQuotes }, true);
+        showToast('✅ Комментарий сохранён!', 'success');
+      });
+    });
+
+    // ===== УДАЛЕНИЕ ЦИТАТ =====
+    document.querySelectorAll('.delete-quote').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
         e.stopPropagation();
-        await updateInFirebase(book.id, { favorite: !book.favorite });
+        const idx = parseInt(btn.dataset.idx);
+        if (!confirm('Удалить эту цитату?')) return;
+        const updatedQuotes = (book.quotes || []).filter((_, i) => i !== idx);
+        await updateInFirebase(book.id, { quotes: updatedQuotes }, true);
+        showToast('✅ Цитата удалена', 'success');
       });
-    }
+    });
 
-    const detailBuyBtn = document.getElementById('detailBuyBtn');
-    if (detailBuyBtn) {
-      detailBuyBtn.addEventListener('click', async () => {
-        await updateInFirebase(book.id, { status: 'В плане' });
-        showToast('✅ Книга добавлена в "В плане"!', 'success');
-      });
-    }
-
-    const annotationDisplay = document.getElementById('annotationDisplay');
-    const annotationTextarea = document.getElementById('annotationTextarea');
-    const annotationEditBtn = document.getElementById('annotationEditBtn');
-    const annotationSaveBtn = document.getElementById('annotationSaveBtn');
-
-    if (annotationEditBtn) {
-      annotationEditBtn.addEventListener('click', () => {
-        annotationDisplay.style.display = 'none';
-        annotationTextarea.style.display = 'block';
-        annotationEditBtn.style.display = 'none';
-        annotationSaveBtn.style.display = 'inline-block';
-        annotationTextarea.focus();
-      });
-    }
-
-    if (annotationSaveBtn) {
-      annotationSaveBtn.addEventListener('click', async () => {
-        const newAnnotation = annotationTextarea.value.trim();
-        await updateInFirebase(book.id, { annotation: newAnnotation });
-        annotationDisplay.textContent = newAnnotation || 'Нет аннотации';
-        annotationDisplay.style.display = 'block';
-        annotationTextarea.style.display = 'none';
-        annotationEditBtn.style.display = 'inline-block';
-        annotationSaveBtn.style.display = 'none';
-        showToast('✅ Аннотация сохранена!', 'success');
-      });
-    }
-
+    // ===== ДОБАВЛЕНИЕ ЦИТАТ =====
     const newQuoteInput = document.getElementById('newQuoteInput');
     const addQuoteBtn = document.getElementById('addQuoteBtn');
 
@@ -1925,11 +1896,10 @@
         return;
       }
 
-      const updatedQuotes = [...(book.quotes || []), text];
-      await updateInFirebase(book.id, { quotes: updatedQuotes });
+      const updatedQuotes = [...(book.quotes || []), { text: text, comment: '' }];
+      await updateInFirebase(book.id, { quotes: updatedQuotes }, true);
       newQuoteInput.value = '';
-      const updatedBook = books.find(b => b.id === book.id);
-      if (updatedBook) renderBookPage(updatedBook);
+      showToast('✅ Цитата добавлена!', 'success');
     });
 
     newQuoteInput.addEventListener('keydown', (e) => {
@@ -1939,17 +1909,24 @@
       }
     });
 
-    document.querySelectorAll('.delete-quote').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
+    // ===== ОСТАЛЬНЫЕ КНОПКИ =====
+    const detailFavoriteBtn = document.getElementById('detailFavoriteBtn');
+    if (detailFavoriteBtn) {
+      detailFavoriteBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
-        const idx = parseInt(btn.dataset.idx);
-        const updatedQuotes = (book.quotes || []).filter((_, i) => i !== idx);
-        await updateInFirebase(book.id, { quotes: updatedQuotes });
-        const updatedBook = books.find(b => b.id === book.id);
-        if (updatedBook) renderBookPage(updatedBook);
+        await updateInFirebase(book.id, { favorite: !book.favorite }, true);
       });
-    });
+    }
 
+    const detailBuyBtn = document.getElementById('detailBuyBtn');
+    if (detailBuyBtn) {
+      detailBuyBtn.addEventListener('click', async () => {
+        await updateInFirebase(book.id, { status: 'В плане' }, true);
+        showToast('✅ Книга добавлена в "В плане"!', 'success');
+      });
+    }
+
+    // Галерея
     if (covers.length > 1) {
       const prevBtn = document.getElementById('galleryPrev');
       const nextBtn = document.getElementById('galleryNext');
@@ -1981,7 +1958,7 @@
         e.stopPropagation();
         const currentCover = covers[galleryIndex];
         const newMain = book.mainCover === currentCover ? null : currentCover;
-        await updateInFirebase(book.id, { mainCover: newMain });
+        await updateInFirebase(book.id, { mainCover: newMain }, true);
       });
     }
 
@@ -2005,7 +1982,7 @@
   }
 
   // ============================================================
-  // 17. РЕДАКТИРОВАНИЕ
+  // 17. РЕДАКТИРОВАНИЕ (аннотация редактируется ТОЛЬКО здесь)
   // ============================================================
   function openEditModal(bookId) {
     const book = books.find(b => b.id === bookId);
@@ -2281,7 +2258,7 @@
   }
 
   // ============================================================
-  // 18. СЧЁТЧИК (БЕЗ "ХОЧУ КУПИТЬ")
+  // 18. СЧЁТЧИК
   // ============================================================
   function updateCounter() {
     if (currentView === 'grid') {
@@ -2302,7 +2279,7 @@
   });
 
   // ============================================================
-  // 19. ЗАПУСК (ВЫЗЫВАЕТСЯ ПОСЛЕ ВХОДА)
+  // 19. ЗАПУСК
   // ============================================================
   function initApp() {
     initCoverRows(coversContainer);
