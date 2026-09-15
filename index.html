@@ -289,14 +289,46 @@
     .book-progress { font-size: 0.8rem; color: var(--accent-text); font-weight: 500; margin-bottom: 4px; }
 
     /* ----- КНОПКА ТАЙМЕРА ----- */
-    .book-timer-btn {
-      background: var(--timer-bg); color: var(--timer-text); border: none; border-radius: 40px;
-      padding: 6px 14px; font-size: 0.8rem; cursor: pointer; transition: 0.2s;
-      display: inline-flex; align-items: center; gap: 6px; margin: 4px 0 8px 0;
-      align-self: flex-start; line-height: 1.2;
+       .book-timer-btn {
+      background: var(--status-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin: 4px 0 8px 0;
+      align-self: flex-start;
+      line-height: 1.2;
     }
-    .book-timer-btn:hover { transform: scale(1.05); background: var(--accent); color: var(--bg); }
-    .book-timer-btn.active { background: var(--error); animation: pulse 1s infinite; }
+    .book-timer-btn:hover {
+      transform: scale(1.05);
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+    .book-timer-btn.active {
+      background: var(--error);
+      color: #fff;
+      border-color: var(--error);
+      animation: pulse 1s infinite;
+    }
+
+    /* В тёмной теме кнопка остаётся тёмной, как раньше */
+    [data-theme="dark"] .book-timer-btn {
+      background: var(--timer-bg);
+      color: var(--timer-text);
+      border-color: transparent;
+    }
+    [data-theme="dark"] .book-timer-btn:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
     /* ----- КНОПКИ ДЕЙСТВИЙ ----- */
@@ -1867,9 +1899,31 @@
       return true;
     });
 
+       // Порядок статусов на главной:
+    // 1) Читаю
+    // 2) В плане (сначала недавно добавленные)
+    // 3) Прочитано (сначала недавно прочитанные, по endDate)
+    // 4) Хочу купить (по дате добавления)
+    const statusOrder = {
+      'Читаю': 1,
+      'В плане': 2,
+      'Прочитано': 3,
+      'Хочу купить': 4
+    };
+
     filtered.sort((a, b) => {
-      if (a.status === 'Читаю' && b.status !== 'Читаю') return -1;
-      if (b.status === 'Читаю' && a.status !== 'Читаю') return 1;
+      const orderA = statusOrder[a.status] || 99;
+      const orderB = statusOrder[b.status] || 99;
+
+      if (orderA !== orderB) return orderA - orderB;
+
+      // Внутри одной группы:
+      if (a.status === 'Прочитано') {
+        // по убыванию endDate
+        return (b.endDate || '').localeCompare(a.endDate || '');
+      }
+
+      // для «В плане», «Читаю», «Хочу купить» — по убыванию createdAt (новые выше)
       return (b.createdAt || '').localeCompare(a.createdAt || '');
     });
 
@@ -1926,13 +1980,13 @@
           <button class="buy-btn" data-id="${book.id}">✅ Куплено</button>
         ` : '';
 
-        const statusBlockHtml = book.status === 'Хочу купить' ? `
+                const statusBlockHtml = book.status === 'Хочу купить' ? `
           <span class="book-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>
         ` : `
           <div class="book-status-btn">
             <span class="book-status ${statusClass}" data-id="${book.id}">${getStatusEmoji(book.status)} ${book.status} ▼</span>
             <div class="status-dropdown" data-id="${book.id}">
-              <button class="status-option ${book.status === 'В плане' ? 'active' : ''}" data-id="${book.id}" data-status="В плане">📌 В плане</button>
+              ${book.status !== 'Прочитано' ? `<button class="status-option ${book.status === 'В плане' ? 'active' : ''}" data-id="${book.id}" data-status="В плане">📌 В плане</button>` : ''}
               <button class="status-option ${book.status === 'Читаю' ? 'active' : ''}" data-id="${book.id}" data-status="Читаю">📖 Читаю</button>
               <button class="status-option ${book.status === 'Прочитано' ? 'active' : ''}" data-id="${book.id}" data-status="Прочитано">✅ Прочитано</button>
             </div>
@@ -2195,13 +2249,13 @@
       `;
     }
 
-    const detailStatusHtml = book.status === 'Хочу купить' ? `
+        const detailStatusHtml = book.status === 'Хочу купить' ? `
       <span class="book-detail-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>
     ` : `
       <div class="book-status-btn" style="align-self: flex-start;">
         <span class="book-detail-status ${statusClass}" data-id="${book.id}">${getStatusEmoji(book.status)} ${book.status} ▼</span>
         <div class="status-dropdown" data-id="${book.id}">
-          <button class="status-option ${book.status === 'В плане' ? 'active' : ''}" data-id="${book.id}" data-status="В плане">📌 В плане</button>
+          ${book.status !== 'Прочитано' ? `<button class="status-option ${book.status === 'В плане' ? 'active' : ''}" data-id="${book.id}" data-status="В плане">📌 В плане</button>` : ''}
           <button class="status-option ${book.status === 'Читаю' ? 'active' : ''}" data-id="${book.id}" data-status="Читаю">📖 Читаю</button>
           <button class="status-option ${book.status === 'Прочитано' ? 'active' : ''}" data-id="${book.id}" data-status="Прочитано">✅ Прочитано</button>
         </div>
