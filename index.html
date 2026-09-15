@@ -211,7 +211,23 @@
     .book-author { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px; font-weight: 400; }
     
     /* ----- СТАТУСЫ ----- */
-    .book-status { display: inline-block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; padding: 4px 12px; border-radius: 40px; background: var(--status-bg); color: var(--text-secondary); margin: 6px 0 8px; align-self: flex-start; border: 1px solid var(--border); }
+        .book-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      padding: 4px 12px;
+      border-radius: 40px;
+      background: var(--status-bg);
+      color: var(--text-secondary);
+      margin: 6px 0 8px;
+      align-self: flex-start;
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
     .book-status.reading { border-color: var(--accent); color: var(--accent-text); }
     .book-status.done { border-color: var(--star-color); color: var(--star-color); }
     .book-status.want-to-buy { border-color: var(--want-to-buy-color); color: var(--want-to-buy-color); background: var(--want-to-buy-bg); }
@@ -366,10 +382,20 @@
     .book-page .book-detail-title { font-size: 2.2rem; font-weight: 700; color: var(--text); line-height: 1.2; }
     .book-page .book-detail-author { font-size: 1.2rem; color: var(--text-secondary); }
     
-    .book-page .book-detail-status {
-      display: inline-block; padding: 6px 18px; border-radius: 40px; font-size: 0.9rem; font-weight: 600;
-      text-transform: uppercase; background: var(--status-bg); color: var(--text-secondary);
-      border: 1px solid var(--border); align-self: flex-start;
+        .book-page .book-detail-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 18px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      background: var(--status-bg);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+      white-space: nowrap;
     }
     .book-page .book-detail-status.reading { border-color: var(--accent); color: var(--accent-text); }
     .book-page .book-detail-status.done { border-color: var(--star-color); color: var(--star-color); }
