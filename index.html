@@ -216,6 +216,70 @@
     .book-status.done { border-color: var(--star-color); color: var(--star-color); }
     .book-status.want-to-buy { border-color: var(--want-to-buy-color); color: var(--want-to-buy-color); background: var(--want-to-buy-bg); }
 
+    /* ----- СТАТУС КАК КНОПКА ----- */
+    .book-status-btn {
+      position: relative;
+      display: inline-block;
+      align-self: flex-start;
+      margin: 6px 0 8px;
+      z-index: 15;
+    }
+    .book-status-btn .book-status,
+    .book-status-btn .book-detail-status {
+      margin: 0;
+      cursor: pointer;
+      transition: 0.2s;
+      user-select: none;
+    }
+    .book-status-btn .book-status:hover,
+    .book-status-btn .book-detail-status:hover {
+      transform: scale(1.05);
+      filter: brightness(1.1);
+    }
+
+    /* ----- ВЫПАДАЮЩЕЕ МЕНЮ СТАТУСОВ ----- */
+    .status-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 4px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 8px 30px var(--shadow);
+      padding: 6px;
+      z-index: 100;
+      min-width: 170px;
+      display: none;
+      animation: fadeIn 0.15s ease;
+    }
+    .status-dropdown.visible {
+      display: block;
+    }
+    .status-dropdown .status-option {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.15s;
+      color: var(--text);
+      font-family: inherit;
+    }
+    .status-dropdown .status-option:hover {
+      background: var(--hover);
+    }
+    .status-dropdown .status-option.active {
+      background: var(--accent-dim);
+      color: var(--accent-text);
+      font-weight: 600;
+    }
+
     .book-rating { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; margin: 4px 0; }
     .book-rating .stars { letter-spacing: 2px; font-size: 1.2rem; color: var(--star-color); }
     .book-rating .stars .empty-star { color: var(--star-empty); }
@@ -370,7 +434,7 @@
       box-shadow: 0 0 20px var(--accent-glow);
     }
 
-    /* ----- АННОТАЦИЯ (ТОЛЬКО ДЛЯ ЧТЕНИЯ) ----- */
+    /* ----- АННОТАЦИЯ ----- */
     .book-annotation {
       margin-top: 0.5rem;
       border-top: 1px solid var(--border);
@@ -558,7 +622,7 @@
     ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
     /* ----- ТАЙМЕР МОДАЛКА ----- */
-    .timer-modal .modal { max-width: 400px; }
+    .timer-modal .modal { max-width: 420px; }
     .timer-display { font-size: 3.5rem; font-weight: 700; text-align: center; color: var(--text); padding: 1.5rem 0; font-variant-numeric: tabular-nums; letter-spacing: 2px; }
     .timer-controls { display: flex; gap: 12px; justify-content: center; margin-bottom: 1rem; }
     .timer-controls button { padding: 10px 24px; border-radius: 40px; font-size: 1rem; font-weight: 600; border: none; cursor: pointer; transition: 0.2s; }
@@ -567,17 +631,140 @@
     .timer-controls .start-btn.active { background: var(--error); }
     .timer-controls .stop-btn { background: var(--status-bg); color: var(--text); }
     .timer-controls .stop-btn:hover { background: var(--hover); }
-    .timer-page-input { display: flex; gap: 12px; align-items: center; justify-content: center; margin-top: 0.5rem; flex-wrap: wrap; }
-    .timer-page-input label { font-size: 0.9rem; color: var(--text-secondary); }
-    .timer-page-input input { width: 100px; padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 1rem; background: var(--input-bg); color: var(--text); }
-    .timer-page-input input:focus { outline: none; border-color: var(--accent); }
-    .timer-page-input .save-page-btn { background: var(--accent); color: var(--bg); border: none; padding: 8px 16px; border-radius: 40px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
-    .timer-page-input .save-page-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--accent-glow); }
+        .timer-section {
+      margin-top: 1rem;
+    }
+    .timer-mode-toggle {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 40px;
+      padding: 4px;
+      margin-bottom: 12px;
+    }
+    .timer-mode-toggle button {
+      flex: 1;
+      background: none;
+      border: none;
+      border-radius: 40px;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .timer-mode-toggle button:hover {
+      color: var(--text);
+    }
+    .timer-mode-toggle button.active {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .timer-clock-block {
+      display: block;
+    }
+    .timer-clock-block.hidden {
+      display: none;
+    }
+    .timer-manual-fields {
+      display: none;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .timer-manual-fields.visible {
+      display: flex;
+    }
+        .timer-manual-fields input {
+      width: 64px;
+      padding: 10px 8px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      background: var(--input-bg);
+      color: var(--text);
+      text-align: center;
+    }
+    .timer-manual-fields input[type="number"]:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .timer-manual-fields span {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    .timer-fields {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .timer-fields input {
+      width: 90px;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      background: var(--input-bg);
+      color: var(--text);
+      text-align: center;
+    }
+    .timer-fields input[type="number"]:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .timer-fields .timer-field-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .timer-btn {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 10px 22px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      white-space: nowrap;
+    }
+    .timer-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
     .timer-error { color: var(--error); font-size: 0.85rem; margin-top: 6px; min-height: 24px; text-align: center; display: none; }
     .timer-history { margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem; }
     .timer-history h4 { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.3px; }
-    .timer-history-item { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary); padding: 4px 0; border-bottom: 1px solid var(--border); }
+    .timer-history-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-secondary); padding: 4px 0; border-bottom: 1px solid var(--border); }
     .timer-history-item .time { font-weight: 500; color: var(--text); }
+    .timer-history-item .entry-page { flex-shrink: 0; }
+    .timer-history-item .entry-time { flex-shrink: 0; }
+    .timer-history-item .entry-date { font-size: 0.7rem; color: var(--text-muted); margin-left: auto; }
+    .timer-history-item .delete-entry-btn {
+      background: none;
+      border: none;
+      color: var(--error);
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 0 4px;
+      opacity: 0.5;
+      transition: 0.2s;
+      flex-shrink: 0;
+    }
+    .timer-history-item .delete-entry-btn:hover {
+      opacity: 1;
+      transform: scale(1.2);
+    }
 
     /* ----- PWA: OFFLINE ----- */
     .offline-badge { position: fixed; top: 10px; right: 10px; background: var(--error); color: white; padding: 4px 12px; border-radius: 40px; font-size: 0.7rem; font-weight: 600; z-index: 9999; display: none; }
@@ -742,15 +929,34 @@
           <h2>⏱️ <span class="accent">Чтение</span></h2>
           <button class="modal-close" id="closeTimerModal">✕</button>
         </div>
-        <div class="timer-display" id="timerDisplay">00:00:00</div>
-        <div class="timer-controls">
-          <button class="start-btn" id="timerStartBtn">▶ Старт</button>
-          <button class="stop-btn" id="timerStopBtn">⏹ Стоп</button>
-        </div>
-        <div class="timer-page-input">
-          <label>Страница:</label>
-          <input type="number" id="timerPageInput" min="1" placeholder="страница" />
-          <button class="save-page-btn" id="timerSavePageBtn">📌 Записать</button>
+               <div class="timer-section">
+          <div class="timer-mode-toggle" id="timerModeToggle">
+            <button class="active" data-mode="timer">⏱️ Таймер</button>
+            <button data-mode="manual">✍️ Вручную</button>
+          </div>
+
+          <div class="timer-clock-block" id="timerClockBlock">
+            <div class="timer-display" id="timerDisplay">00:00:00</div>
+            <div class="timer-controls">
+              <button class="start-btn" id="timerStartBtn">▶ Старт</button>
+              <button class="stop-btn" id="timerStopBtn">⏹ Стоп</button>
+            </div>
+          </div>
+
+                    <div class="timer-manual-fields" id="timerManualFields">
+            <input type="number" id="manualHours" min="0" max="999" placeholder="0" />
+            <span>ч</span>
+            <input type="number" id="manualMinutes" min="0" max="59" placeholder="0" />
+            <span>мин</span>
+            <input type="number" id="manualSeconds" min="0" max="59" placeholder="0" />
+            <span>сек</span>
+          </div>
+
+          <div class="timer-fields">
+            <span class="timer-field-label">📖 Страница:</span>
+            <input type="number" id="timerPageInput" min="1" placeholder="стр." />
+            <button class="timer-btn" id="timerSaveBtn">📌 Записать</button>
+          </div>
         </div>
         <div class="timer-error" id="timerError"></div>
         <div class="timer-history" id="timerHistory">
@@ -840,6 +1046,7 @@
   let timerSeconds = 0;
   let timerRunning = false;
   let timerBookId = null;
+  let timerMode = 'timer'; // 'timer' | 'manual'
 
   // DOM
   const titleInput = document.getElementById('titleInput');
@@ -878,9 +1085,15 @@
   const timerStartBtn = document.getElementById('timerStartBtn');
   const timerStopBtn = document.getElementById('timerStopBtn');
   const timerPageInput = document.getElementById('timerPageInput');
-  const timerSavePageBtn = document.getElementById('timerSavePageBtn');
+  const timerSaveBtn = document.getElementById('timerSaveBtn');
   const timerError = document.getElementById('timerError');
   const timerHistoryList = document.getElementById('timerHistoryList');
+  const manualHours = document.getElementById('manualHours');
+  const manualMinutes = document.getElementById('manualMinutes');
+  const manualSeconds = document.getElementById('manualSeconds');
+  const timerModeToggle = document.getElementById('timerModeToggle');
+  const timerManualFields = document.getElementById('timerManualFields');
+  const timerClockBlock = document.getElementById('timerClockBlock');
 
   // ============================================================
   // 4. ТЕМА
@@ -952,6 +1165,10 @@
       html += `<span class="star ${filled ? 'filled' : ''}" data-value="${i}">★</span>`;
     }
     return html;
+  }
+
+  function getStatusClass(status) {
+    return status === 'Читаю' ? 'reading' : status === 'Прочитано' ? 'done' : status === 'Хочу купить' ? 'want-to-buy' : '';
   }
 
   // ============================================================
@@ -1358,6 +1575,16 @@
 
     timerError.style.display = 'none';
     timerError.textContent = '';
+    manualHours.value = '';
+    manualMinutes.value = '';
+
+        // Сброс режима на «Таймер»
+    timerMode = 'timer';
+    timerModeToggle.querySelectorAll('button').forEach(b => {
+      b.classList.toggle('active', b.dataset.mode === 'timer');
+    });
+    timerManualFields.classList.remove('visible');
+    timerClockBlock.classList.remove('hidden');
 
     renderTimerHistory(book);
 
@@ -1424,57 +1651,125 @@
     timerDisplay.textContent = '00:00:00';
   });
 
-  timerSavePageBtn.addEventListener('click', async () => {
-    const page = parseInt(timerPageInput.value);
-    
+  // Переключатель режима
+    timerModeToggle.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-mode]');
+    if (!btn) return;
+    timerMode = btn.dataset.mode;
+
+    timerModeToggle.querySelectorAll('button').forEach(b => {
+      b.classList.toggle('active', b.dataset.mode === timerMode);
+    });
+
+    const isManual = timerMode === 'manual';
+
+    // Показываем/скрываем блок с таймером
+    timerClockBlock.classList.toggle('hidden', isManual);
+    // Показываем/скрываем поля «ч / мин»
+    timerManualFields.classList.toggle('visible', isManual);
+
+    // Если переключились на «Вручную» и таймер шёл — останавливаем его
+    if (isManual && timerRunning) {
+      timerRunning = false;
+      timerStartBtn.textContent = '▶ Старт';
+      timerStartBtn.classList.remove('active');
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
     timerError.style.display = 'none';
     timerError.textContent = '';
+  });
 
-    if (!page || page < 1) {
-      timerError.textContent = '❌ Введите номер страницы (число больше 0)';
-      timerError.style.display = 'block';
-      return;
-    }
+  // Единая кнопка «Записать»
+  timerSaveBtn.addEventListener('click', async () => {
+    timerError.style.display = 'none';
+    timerError.textContent = '';
 
     const book = books.find(b => b.id === timerBookId);
     if (!book) return;
 
-    if (book.pages && page > book.pages) {
-      timerError.textContent = `❌ В книге всего ${book.pages} стр.`;
-      timerError.style.display = 'block';
-      return;
+    // Проверяем страницу (если указана)
+    const pageInput = timerPageInput.value.trim();
+    const page = pageInput ? parseInt(pageInput) : (book.currentPage || null);
+
+    if (pageInput) {
+      if (!page || page < 1) {
+        timerError.textContent = '❌ Номер страницы должен быть больше 0';
+        timerError.style.display = 'block';
+        return;
+      }
+      if (book.pages && page > book.pages) {
+        timerError.textContent = `❌ В книге всего ${book.pages} стр.`;
+        timerError.style.display = 'block';
+        return;
+      }
     }
 
-    const sessionTime = timerSeconds;
-    const entry = {
-      date: new Date().toISOString(),
-      page: page,
-      timeSpent: sessionTime,
-      timeSpentFormatted: formatTime(sessionTime)
-    };
+    let totalSeconds = 0;
+    let entry;
+
+        if (timerMode === 'manual') {
+      const h = parseInt(manualHours.value) || 0;
+      const m = parseInt(manualMinutes.value) || 0;
+      const s = parseInt(manualSeconds.value) || 0;
+
+      if (h < 0 || m < 0 || m > 59 || s < 0 || s > 59) {
+        timerError.textContent = '❌ Минуты и секунды: 0–59, часы: 0+';
+        timerError.style.display = 'block';
+        return;
+      }
+
+      totalSeconds = h * 3600 + m * 60 + s;
+
+      if (totalSeconds <= 0) {
+        timerError.textContent = '❌ Введите время больше 0';
+        timerError.style.display = 'block';
+        return;
+      }
+
+      entry = {
+        date: new Date().toISOString(),
+        page: page,
+        timeSpent: totalSeconds,
+        timeSpentFormatted: formatTime(totalSeconds),
+        manual: true
+      };
+    } else {
+      totalSeconds = timerSeconds;
+
+      entry = {
+        date: new Date().toISOString(),
+        page: page,
+        timeSpent: totalSeconds,
+        timeSpentFormatted: formatTime(totalSeconds)
+      };
+    }
 
     const history = book.readingHistory || [];
     history.push(entry);
 
     let newStatus = book.status;
-    if (book.pages && page >= book.pages) {
+    const updates = { readingHistory: history };
+    if (page) updates.currentPage = page;
+
+    if (book.pages && page && page >= book.pages) {
       newStatus = 'Прочитано';
-      const endDateValue = new Date().toISOString().split('T')[0];
-      await updateInFirebase(timerBookId, {
-        readingHistory: history,
-        currentPage: page,
-        status: newStatus,
-        endDate: endDateValue
-      }, true);
-      showToast(`🎉 Книга дочитана! Статус изменён на "Прочитано"`, 'success');
-    } else {
-      await updateInFirebase(timerBookId, {
-        readingHistory: history,
-        currentPage: page
-      }, true);
-      showToast('✅ Прогресс сохранён!', 'success');
+      updates.status = newStatus;
+      updates.endDate = new Date().toISOString().split('T')[0];
     }
 
+    await updateInFirebase(timerBookId, updates, true);
+
+    if (newStatus === 'Прочитано') {
+      showToast(`🎉 Книга дочитана! Статус изменён на "Прочитано"`, 'success');
+    } else {
+      showToast('✅ Запись сохранена!', 'success');
+    }
+
+    // Сбрасываем секундомер и поля
     timerSeconds = 0;
     timerDisplay.textContent = '00:00:00';
     if (timerRunning) {
@@ -1486,10 +1781,13 @@
         timerInterval = null;
       }
     }
+    manualHours.value = '';
+    manualMinutes.value = '';
+    manualSeconds.value = '';
 
     const updatedBook = books.find(b => b.id === timerBookId);
     if (updatedBook) renderTimerHistory(updatedBook);
-    
+
     if (newStatus === 'Прочитано') {
       setTimeout(() => closeTimer(), 1500);
     }
@@ -1502,14 +1800,44 @@
       return;
     }
 
-    const sorted = [...history].reverse().slice(0, 10);
-    timerHistoryList.innerHTML = sorted.map(entry => `
+    // Показываем последние 10 записей (в обратном порядке),
+    // но сохраняем их реальные индексы в history
+    const indexed = history.map((entry, idx) => ({ entry, idx }));
+    const sorted = indexed.reverse().slice(0, 10);
+
+    timerHistoryList.innerHTML = sorted.map(({ entry, idx }) => `
       <div class="timer-history-item">
-        <span>📖 стр. ${entry.page}</span>
-        <span class="time">${entry.timeSpentFormatted || formatTime(entry.timeSpent || 0)}</span>
-        <span style="font-size:0.7rem;color:var(--text-muted);">${new Date(entry.date).toLocaleDateString()}</span>
+        <span class="entry-page">📖 стр. ${entry.page || '—'}</span>
+        <span class="time entry-time">${entry.timeSpentFormatted || formatTime(entry.timeSpent || 0)}</span>
+        <span class="entry-date">${new Date(entry.date).toLocaleDateString()}</span>
+        <button class="delete-entry-btn" data-idx="${idx}" title="Удалить запись">✕</button>
       </div>
     `).join('');
+
+    timerHistoryList.querySelectorAll('.delete-entry-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const idx = parseInt(btn.dataset.idx);
+        const currentBook = books.find(b => b.id === timerBookId);
+        if (!currentBook) return;
+
+        const currentHistory = currentBook.readingHistory || [];
+        if (idx < 0 || idx >= currentHistory.length) return;
+
+        const entry = currentHistory[idx];
+        const entryDesc = entry.page ? `стр. ${entry.page}, ` : '';
+        const entryTime = entry.timeSpentFormatted || formatTime(entry.timeSpent || 0);
+
+        if (!confirm(`Удалить запись: ${entryDesc}${entryTime}?`)) return;
+
+        const updatedHistory = currentHistory.filter((_, i) => i !== idx);
+
+        await updateInFirebase(timerBookId, { readingHistory: updatedHistory }, true);
+        showToast('✅ Запись удалена', 'success');
+
+        const updatedBook = books.find(b => b.id === timerBookId);
+        if (updatedBook) renderTimerHistory(updatedBook);
+      });
+    });
   }
 
   // ============================================================
@@ -1577,7 +1905,7 @@
           `;
         }
 
-        const statusClass = book.status === 'Читаю' ? 'reading' : book.status === 'Прочитано' ? 'done' : book.status === 'Хочу купить' ? 'want-to-buy' : '';
+        const statusClass = getStatusClass(book.status);
         const coverCount = covers.length;
 
         let progressHtml = '';
@@ -1598,6 +1926,19 @@
           <button class="buy-btn" data-id="${book.id}">✅ Куплено</button>
         ` : '';
 
+        const statusBlockHtml = book.status === 'Хочу купить' ? `
+          <span class="book-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>
+        ` : `
+          <div class="book-status-btn">
+            <span class="book-status ${statusClass}" data-id="${book.id}">${getStatusEmoji(book.status)} ${book.status} ▼</span>
+            <div class="status-dropdown" data-id="${book.id}">
+              <button class="status-option ${book.status === 'В плане' ? 'active' : ''}" data-id="${book.id}" data-status="В плане">📌 В плане</button>
+              <button class="status-option ${book.status === 'Читаю' ? 'active' : ''}" data-id="${book.id}" data-status="Читаю">📖 Читаю</button>
+              <button class="status-option ${book.status === 'Прочитано' ? 'active' : ''}" data-id="${book.id}" data-status="Прочитано">✅ Прочитано</button>
+            </div>
+          </div>
+        `;
+
         return `
           <div class="book-card" data-id="${book.id}">
             <div class="cover-wrapper">
@@ -1608,7 +1949,7 @@
             <div class="book-title">${escapeHtml(book.title)}</div>
             ${book.author ? `<div class="book-author">${escapeHtml(book.author)}</div>` : ''}
             ${book.pages ? `<div class="book-pages">${book.pages} стр.</div>` : ''}
-            <span class="book-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>
+            ${statusBlockHtml}
             ${ratingHtml}
             <div class="book-dates">${datesHtml}</div>
             ${progressHtml}
@@ -1624,6 +1965,7 @@
       document.querySelectorAll('.book-card').forEach(card => {
         card.addEventListener('click', (e) => {
           if (e.target.closest('button')) return;
+          if (e.target.closest('.book-status-btn')) return;
           const id = card.dataset.id;
           showBookView(id);
         });
@@ -1638,6 +1980,67 @@
           await updateInFirebase(id, { favorite: !book.favorite }, true);
         });
       });
+
+      // ===== БЫСТРОЕ ПЕРЕКЛЮЧЕНИЕ СТАТУСА =====
+      document.querySelectorAll('.book-status-btn .book-status').forEach(badge => {
+        badge.addEventListener('click', (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          const id = badge.dataset.id;
+          const dropdown = document.querySelector(`.status-dropdown[data-id="${id}"]`);
+          if (!dropdown) return;
+          
+          document.querySelectorAll('.status-dropdown.visible').forEach(d => {
+            if (d !== dropdown) d.classList.remove('visible');
+          });
+          
+          dropdown.classList.toggle('visible');
+        });
+      });
+
+      document.querySelectorAll('.status-option').forEach(option => {
+        option.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const id = option.dataset.id;
+          const newStatus = option.dataset.status;
+          if (newStatus === 'Хочу купить') return;
+          const book = books.find(b => b.id === id);
+          if (!book) return;
+          
+          document.querySelectorAll('.status-dropdown.visible').forEach(d => d.classList.remove('visible'));
+          
+          if (book.status === newStatus) return;
+
+          const updatedData = { status: newStatus };
+          const today = new Date().toISOString().split('T')[0];
+
+          if (newStatus === 'В плане') {
+            updatedData.startDate = null;
+            updatedData.endDate = null;
+            updatedData.rating = null;
+          } else if (newStatus === 'Читаю') {
+            updatedData.startDate = book.startDate || today;
+            updatedData.endDate = null;
+            updatedData.rating = null;
+          } else if (newStatus === 'Прочитано') {
+            updatedData.startDate = book.startDate || today;
+            updatedData.endDate = book.endDate || today;
+          }
+
+          await updateInFirebase(id, updatedData, true);
+          showToast(`✅ Статус: ${newStatus}`, 'success');
+        });
+      });
+
+      // ===== ЗАКРЫТИЕ МЕНЮ ПРИ КЛИКЕ ВНЕ =====
+      if (!window._statusCloseListenerAdded) {
+        window._statusCloseListenerAdded = true;
+        document.addEventListener('click', (e) => {
+          if (!e.target.closest('.book-status-btn')) {
+            document.querySelectorAll('.status-dropdown.visible').forEach(d => d.classList.remove('visible'));
+          }
+        });
+      }
 
       document.querySelectorAll('.book-timer-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -1679,7 +2082,7 @@
     const covers = book.covers || [];
     const mainCover = book.mainCover || (covers.length > 0 ? covers[0] : null);
 
-    const statusClass = book.status === 'Читаю' ? 'reading' : book.status === 'Прочитано' ? 'done' : book.status === 'Хочу купить' ? 'want-to-buy' : '';
+    const statusClass = getStatusClass(book.status);
     
     let quickRatingHtml = '';
     if (book.status === 'Прочитано') {
@@ -1729,6 +2132,15 @@
       progressHtml = `<div style="font-size:1rem;color:var(--accent-text);">Прочитано ${book.currentPage}/${book.pages} стр. (${percent}%)</div>`;
     } else if (book.status === 'Читаю' && book.currentPage) {
       progressHtml = `<div style="font-size:1rem;color:var(--accent-text);">${book.currentPage} стр.</div>`;
+    }
+
+    const history = book.readingHistory || [];
+    let totalTimeHtml = '';
+    if (history.length > 0) {
+      const totalSeconds = history.reduce((sum, entry) => sum + (entry.timeSpent || 0), 0);
+      if (totalSeconds > 0) {
+        totalTimeHtml = `<div style="font-size:1rem;color:var(--text-secondary);">⏱️ Общее время чтения: <strong style="color:var(--text);">${formatTime(totalSeconds)}</strong></div>`;
+      }
     }
 
     const quotes = book.quotes || [];
@@ -1783,6 +2195,19 @@
       `;
     }
 
+    const detailStatusHtml = book.status === 'Хочу купить' ? `
+      <span class="book-detail-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>
+    ` : `
+      <div class="book-status-btn" style="align-self: flex-start;">
+        <span class="book-detail-status ${statusClass}" data-id="${book.id}">${getStatusEmoji(book.status)} ${book.status} ▼</span>
+        <div class="status-dropdown" data-id="${book.id}">
+          <button class="status-option ${book.status === 'В плане' ? 'active' : ''}" data-id="${book.id}" data-status="В плане">📌 В плане</button>
+          <button class="status-option ${book.status === 'Читаю' ? 'active' : ''}" data-id="${book.id}" data-status="Читаю">📖 Читаю</button>
+          <button class="status-option ${book.status === 'Прочитано' ? 'active' : ''}" data-id="${book.id}" data-status="Прочитано">✅ Прочитано</button>
+        </div>
+      </div>
+    `;
+
     bookDetail.innerHTML = `
       <div class="book-detail-cover-wrapper" id="galleryWrapper">
         ${coverHtml}
@@ -1791,10 +2216,11 @@
         <div class="book-detail-title">${escapeHtml(book.title)}</div>
         ${book.author ? `<div class="book-detail-author">${escapeHtml(book.author)}</div>` : ''}
         ${book.pages ? `<div style="font-size:1rem;color:var(--text-secondary);">${book.pages} стр.</div>` : ''}
-        <span class="book-detail-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>
+        ${detailStatusHtml}
         ${quickRatingHtml}
         ${datesHtml ? `<div class="book-detail-dates">${datesHtml}</div>` : ''}
         ${progressHtml}
+        ${totalTimeHtml}
         ${quickReviewHtml}
         ${annotationHtml}
         <div class="book-quotes">
@@ -1813,6 +2239,66 @@
         </div>
       </div>
     `;
+
+    // ===== КЛИКАБЕЛЬНЫЙ СТАТУС НА СТРАНИЦЕ КНИГИ =====
+    const statusBadge = bookDetail.querySelector('.book-status-btn .book-detail-status[data-id]');
+    if (statusBadge) {
+      statusBadge.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        const id = statusBadge.dataset.id;
+        const dropdown = bookDetail.querySelector(`.status-dropdown[data-id="${id}"]`);
+        if (!dropdown) return;
+        
+        document.querySelectorAll('.status-dropdown.visible').forEach(d => {
+          if (d !== dropdown) d.classList.remove('visible');
+        });
+        
+        dropdown.classList.toggle('visible');
+      });
+    }
+
+    bookDetail.querySelectorAll('.status-option').forEach(option => {
+      option.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const id = option.dataset.id;
+        const newStatus = option.dataset.status;
+        if (newStatus === 'Хочу купить') return;
+        bookDetail.querySelectorAll('.status-dropdown.visible').forEach(d => d.classList.remove('visible'));
+        
+        const currentBook = books.find(b => b.id === id);
+        if (!currentBook || currentBook.status === newStatus) return;
+
+        const updatedData = { status: newStatus };
+        const today = new Date().toISOString().split('T')[0];
+
+        if (newStatus === 'В плане') {
+          updatedData.startDate = null;
+          updatedData.endDate = null;
+          updatedData.rating = null;
+        } else if (newStatus === 'Читаю') {
+          updatedData.startDate = currentBook.startDate || today;
+          updatedData.endDate = null;
+          updatedData.rating = null;
+        } else if (newStatus === 'Прочитано') {
+          updatedData.startDate = currentBook.startDate || today;
+          updatedData.endDate = currentBook.endDate || today;
+        }
+
+        await updateInFirebase(id, updatedData, true);
+        showToast(`✅ Статус: ${newStatus}`, 'success');
+      });
+    });
+
+    // Закрытие меню при клике вне
+    if (!window._detailStatusCloseListenerAdded) {
+      window._detailStatusCloseListenerAdded = true;
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.book-status-btn')) {
+          document.querySelectorAll('.status-dropdown.visible').forEach(d => d.classList.remove('visible'));
+        }
+      });
+    }
 
     const starsClickable = document.getElementById('starsClickable');
     if (starsClickable) {
