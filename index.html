@@ -42,7 +42,6 @@
       --favorite-color: #ffb800;
       --want-to-buy-color: #4fc3f7;
       --want-to-buy-bg: rgba(79, 195, 247, 0.12);
-      --shelf-bg: #f0e8de;
     }
 
     /* ----- ТЁМНАЯ ТЕМА ----- */
@@ -75,7 +74,6 @@
       --favorite-color: #f5a623;
       --want-to-buy-color: #4fc3f7;
       --want-to-buy-bg: rgba(79, 195, 247, 0.15);
-      --shelf-bg: #2a2a2a;
     }
 
     /* ----- БАЗОВЫЕ СТИЛИ ----- */
@@ -263,16 +261,187 @@
     .form-group .rating-input { display: flex; align-items: center; gap: 12px; }
     .form-group .rating-input input { width: 80px; }
     .form-group .rating-input .stars-preview { font-size: 1.6rem; letter-spacing: 3px; color: var(--star-color); }
-    .form-group .covers-input { display: flex; flex-direction: column; gap: 8px; }
-    .form-group .covers-input .cover-url-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .form-group .covers-input .cover-url-row input[type="text"] { flex: 1; min-width: 150px; }
-    .form-group .covers-input .cover-url-row .upload-btn { background: var(--bg); border: 1.5px solid var(--border); border-radius: 16px; padding: 10px 14px; cursor: pointer; font-size: 0.85rem; color: var(--text-secondary); transition: 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 6px; position: relative; overflow: hidden; }
-    .form-group .covers-input .cover-url-row .upload-btn:hover { border-color: var(--accent); color: var(--accent-text); background: var(--accent-dim); }
-    .form-group .covers-input .cover-url-row .upload-btn input[type="file"] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
-    .form-group .covers-input .cover-url-row .remove-cover-btn { background: var(--delete-bg); color: var(--error); border: none; border-radius: 40px; padding: 8px 12px; cursor: pointer; font-size: 1rem; transition: 0.2s; }
-    .form-group .covers-input .cover-url-row .remove-cover-btn:hover { background: var(--delete-hover); transform: scale(1.05); }
-    .form-group .covers-input .add-cover-btn { background: var(--bg); border: 1.5px dashed var(--border); border-radius: 16px; padding: 10px; cursor: pointer; color: var(--text-secondary); transition: 0.2s; font-size: 0.9rem; }
-    .form-group .covers-input .add-cover-btn:hover { border-color: var(--accent); color: var(--accent-text); background: var(--accent-dim); }
+
+    /* ----- ОБЛОЖКИ: НОВАЯ СЕТКА ПЛИТОК ----- */
+    .covers-block {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .covers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 10px;
+    }
+    .cover-tile {
+      position: relative;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .cover-tile:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px var(--shadow);
+    }
+    .cover-tile.main {
+      border-color: var(--star-color);
+      box-shadow: 0 0 0 1px var(--star-color);
+    }
+    .cover-tile-thumb {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: var(--cover-placeholder);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .cover-tile-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .cover-tile-thumb .thumb-placeholder {
+      font-size: 1.6rem;
+      color: var(--text-muted);
+    }
+    .cover-tile-thumb .thumb-error {
+      font-size: 1.4rem;
+      color: var(--error);
+    }
+    .cover-tile-actions {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      display: flex;
+      gap: 4px;
+      z-index: 3;
+    }
+    .cover-tile-actions button {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      padding: 0;
+      transition: 0.15s;
+      color: #fff;
+      line-height: 1;
+    }
+    .cover-tile-actions .star-btn {
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(4px);
+    }
+    .cover-tile-actions .star-btn:hover {
+      background: var(--star-color);
+      color: #0d0d0d;
+      transform: scale(1.1);
+    }
+    .cover-tile-actions .star-btn.active {
+      background: var(--star-color);
+      color: #0d0d0d;
+    }
+    .cover-tile-actions .remove-btn {
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(4px);
+    }
+    .cover-tile-actions .remove-btn:hover {
+      background: var(--error);
+      transform: scale(1.1);
+    }
+        .cover-tile-url {
+      padding: 4px 6px;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: text;
+      user-select: all;
+      font-family: monospace;
+    }
+    /* Пустой URL — не показываем полоску вообще */
+    .cover-tile-url:empty {
+      display: none;
+    }
+    .cover-tile-input {
+      display: none;
+      padding: 4px 6px;
+      border: none;
+      border-top: 1px solid var(--accent);
+      background: var(--input-bg);
+      color: var(--text);
+      font-size: 0.7rem;
+      width: 100%;
+      font-family: monospace;
+      outline: none;
+    }
+    .cover-tile-input.visible {
+      display: block;
+    }
+    .covers-actions-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .covers-actions-row .upload-tile-btn {
+      background: var(--bg);
+      border: 1.5px dashed var(--border);
+      border-radius: 12px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+    .covers-actions-row .upload-tile-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent-text);
+      background: var(--accent-dim);
+    }
+    .covers-actions-row .upload-tile-btn input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .covers-actions-row .add-tile-btn {
+      background: var(--bg);
+      border: 1.5px dashed var(--border);
+      border-radius: 12px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .covers-actions-row .add-tile-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent-text);
+      background: var(--accent-dim);
+    }
 
     .date-row { display: flex; gap: 12px; flex-wrap: wrap; }
     .date-row .form-group { flex: 1; min-width: 120px; }
@@ -980,8 +1149,6 @@
       .book-page .book-detail { grid-template-columns: 1fr; gap: 1.5rem; padding: 1.5rem; }
       .book-page .book-detail-cover-wrapper { max-width: 250px; margin: 0 auto; }
       .book-page .book-detail-title { font-size: 1.6rem; }
-      .form-group .covers-input .cover-url-row { flex-wrap: wrap; }
-      .form-group .covers-input .cover-url-row input[type="text"] { flex: 1 1 100%; }
       .timer-display { font-size: 2.5rem; }
       .book-quotes .add-quote-row { flex-direction: column; }
       .book-quotes .add-quote-row input { width: 100%; }
@@ -991,6 +1158,7 @@
       .login-screen .login-box { padding: 1.5rem; }
       .quick-rating { flex-wrap: wrap; }
       .shelf-switcher button { font-size: 0.8rem; padding: 8px 14px; }
+      .covers-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
     }
   </style>
 </head>
@@ -1079,16 +1247,17 @@
             <label>Количество страниц</label>
             <input type="number" id="pagesInput" placeholder="328" min="1" />
           </div>
-          <div class="form-group">
+            <div class="form-group" style="grid-column: 1 / -1;">
             <label>Обложки</label>
-            <div class="covers-input" id="coversContainer">
-              <div class="cover-url-row">
-                <input type="text" class="cover-url-input" placeholder="https://example.com/cover.jpg" />
-                <button class="upload-btn">📤 Загрузить <input type="file" accept="image/*" /></button>
-                <button class="remove-cover-btn" style="visibility:hidden;">✕</button>
+            <div class="covers-block">
+              <div class="covers-grid" id="coversContainer"></div>
+              <div class="covers-actions-row">
+                <button type="button" class="upload-tile-btn">📤 Загрузить
+                  <input type="file" accept="image/*" id="addCoverFileInput" />
+                </button>
+                <button type="button" class="add-tile-btn" id="addCoverBtn">+ Добавить по URL</button>
               </div>
             </div>
-            <button class="add-cover-btn" id="addCoverBtn">+ Добавить ещё обложку</button>
           </div>
           <div class="form-group">
             <label>Статус</label>
@@ -1202,10 +1371,10 @@
 
 <script>
   // ============================================================
-  // 0. СОСТОЯНИЕ ГЛОБАЛЬНОЕ
+  // 0. СОСТОЯНИЕ
   // ============================================================
   let currentUser = null;
-  let allUsers = {};                // { uid: { name, genitive } }
+  let allUsers = {};
   let currentShelf = null;
   let books = [];
   let currentFilter = 'all';
@@ -1222,6 +1391,10 @@
 
   let copySourceBook = null;
   let copySelectedStatus = null;
+
+  // Временное состояние модалки добавления (обложки + главная)
+  let addCovers = [];      // массив строк (URL или base64)
+  let addMainCover = null; // строка — главная обложка
 
   // ============================================================
   // 1. FIREBASE
@@ -1257,6 +1430,7 @@
   const pagesInput = document.getElementById('pagesInput');
   const coversContainer = document.getElementById('coversContainer');
   const addCoverBtn = document.getElementById('addCoverBtn');
+  const addCoverFileInput = document.getElementById('addCoverFileInput');
   const statusSelect = document.getElementById('statusSelect');
   const startDate = document.getElementById('startDate');
   const endDate = document.getElementById('endDate');
@@ -1389,14 +1563,128 @@
     return currentUser && currentShelf === currentUser.uid;
   }
 
-  // Имя в родительном падеже (для «Полка Даши» и т.п.)
   function getShelfOwnerGenitive() {
     const u = allUsers[currentShelf];
     return (u && u.genitive) ? u.genitive : 'Неизвестный';
   }
 
   // ============================================================
-  // 6. АУТЕНТИФИКАЦИЯ
+  // 6. КОМПОНЕНТ «СЕТКА ОБЛОЖЕК»
+  // ============================================================
+  // Рендерит плитки обложек в контейнер.
+  // options:
+  //   getState() — функция, возвращающая { covers: [], mainCover: string|null }
+  //   setCovers(newCovers) — обновить массив
+  //   setMainCover(v) — обновить главную
+  //   onRemove(i) — удалить обложку по индексу
+  //   onImageUpload(file) — загрузка файла
+  function renderCoversGrid(container, state, onUpdate) {
+    container.innerHTML = '';
+
+    state.covers.forEach((url, idx) => {
+      const tile = document.createElement('div');
+      tile.className = 'cover-tile' + (state.mainCover === url ? ' main' : '');
+
+      // Миниатюра
+      const thumb = document.createElement('div');
+      thumb.className = 'cover-tile-thumb';
+
+      if (url && url.trim()) {
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = 'Обложка';
+        img.onerror = () => {
+          thumb.innerHTML = '<span class="thumb-error">🚫</span>';
+        };
+        thumb.appendChild(img);
+      } else {
+        thumb.innerHTML = '<span class="thumb-placeholder">📖</span>';
+      }
+      tile.appendChild(thumb);
+
+      // Кнопки: звезда + удалить
+      const actions = document.createElement('div');
+      actions.className = 'cover-tile-actions';
+
+      const starBtn = document.createElement('button');
+      starBtn.type = 'button';
+      starBtn.className = 'star-btn' + (state.mainCover === url ? ' active' : '');
+      starBtn.title = state.mainCover === url ? 'Главная обложка' : 'Сделать главной';
+      starBtn.textContent = state.mainCover === url ? '★' : '☆';
+      starBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        onUpdate({ type: 'setMain', index: idx });
+      });
+      actions.appendChild(starBtn);
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'remove-btn';
+      removeBtn.title = 'Удалить обложку';
+      removeBtn.textContent = '✕';
+      removeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        onUpdate({ type: 'remove', index: idx });
+      });
+      actions.appendChild(removeBtn);
+
+      tile.appendChild(actions);
+
+           // URL (мелкий) + скрытое поле ввода
+      const urlDiv = document.createElement('div');
+      urlDiv.className = 'cover-tile-url' + (url ? '' : ' empty');
+      urlDiv.textContent = url || '';
+      urlDiv.title = url || 'Нажмите, чтобы ввести ссылку';
+      tile.appendChild(urlDiv);
+
+      const urlInput = document.createElement('input');
+      urlInput.type = 'text';
+      urlInput.className = 'cover-tile-input';
+      urlInput.value = url;
+      urlInput.placeholder = 'https://...';
+      tile.appendChild(urlInput);
+
+      // Клик по URL — открыть редактирование
+      urlDiv.addEventListener('click', () => {
+        urlDiv.style.display = 'none';
+        urlInput.classList.add('visible');
+        urlInput.focus();
+        urlInput.select();
+      });
+
+      function commitUrl() {
+        urlInput.classList.remove('visible');
+        urlDiv.style.display = '';
+        const newVal = urlInput.value.trim();
+        if (newVal !== url) {
+          onUpdate({ type: 'edit', index: idx, value: newVal });
+        }
+      }
+      urlInput.addEventListener('blur', commitUrl);
+      urlInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          urlInput.blur();
+        } else if (e.key === 'Escape') {
+          urlInput.value = url;
+          urlInput.blur();
+        }
+      });
+
+      // Клик по миниатюре — открыть редактирование URL
+      thumb.addEventListener('click', () => {
+        urlDiv.style.display = 'none';
+        urlInput.classList.add('visible');
+        urlInput.focus();
+        urlInput.select();
+      });
+
+      container.appendChild(tile);
+    });
+  }
+
+  // ============================================================
+  // 7. АУТЕНТИФИКАЦИЯ
   // ============================================================
   loginBtn.addEventListener('click', async () => {
     const email = emailInput.value.trim();
@@ -1445,7 +1733,7 @@
   });
 
   // ============================================================
-  // 7. ПОДПИСКА НА АВТОРИЗАЦИЮ
+  // 8. ПОДПИСКА НА АВТОРИЗАЦИЮ
   // ============================================================
   auth.onAuthStateChanged(async (user) => {
     if (user) {
@@ -1465,8 +1753,6 @@
           addBook();
         }
       });
-
-      initCoverRows(coversContainer);
     } else {
       currentUser = null;
       loginScreen.style.display = 'flex';
@@ -1475,7 +1761,7 @@
   });
 
   // ============================================================
-  // 8. ЗАГРУЗКА ИМЁН ПОЛЬЗОВАТЕЛЕЙ
+  // 9. ЗАГРУЗКА ИМЁН
   // ============================================================
   async function loadUsers() {
     try {
@@ -1490,10 +1776,7 @@
       });
       if (currentUser && !allUsers[currentUser.uid]) {
         const fallback = currentUser.email.split('@')[0];
-        allUsers[currentUser.uid] = {
-          name: fallback,
-          genitive: fallback
-        };
+        allUsers[currentUser.uid] = { name: fallback, genitive: fallback };
       }
     } catch (err) {
       console.error('Load users error:', err);
@@ -1508,7 +1791,7 @@
   }
 
   // ============================================================
-  // 9. ПЕРЕКЛЮЧАТЕЛЬ ПОЛОК
+  // 10. ПЕРЕКЛЮЧАТЕЛЬ ПОЛОК
   // ============================================================
   function renderShelfSwitcher() {
     if (!currentUser) return;
@@ -1544,15 +1827,11 @@
   }
 
   function updateAddBookVisibility() {
-    if (isMyShelf()) {
-      openAddModal.style.display = '';
-    } else {
-      openAddModal.style.display = 'none';
-    }
+    openAddModal.style.display = isMyShelf() ? '' : 'none';
   }
 
   // ============================================================
-  // 10. PWA SERVICE WORKER
+  // 11. PWA SERVICE WORKER
   // ============================================================
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
@@ -1565,35 +1844,17 @@
   }
 
   // ============================================================
-  // 11. ЗАГРУЗКА ОБЛОЖЕК
+  // 12. ЗАГРУЗКА ФАЙЛА (СЖАТИЕ)
   // ============================================================
-  function initUploadButtons(container) {
-    const fileInputs = container.querySelectorAll('.upload-btn input[type="file"]');
-    fileInputs.forEach(fileInput => {
-      fileInput.removeEventListener('change', handleFileUpload);
-      fileInput.addEventListener('change', handleFileUpload);
-    });
-  }
-
-  function handleFileUpload(e) {
-    const fileInput = e.target;
-    const file = fileInput.files[0];
-    if (!file) return;
-
+  function processCoverFile(file, onDone) {
     if (file.size > 10 * 1024 * 1024) {
       showToast('Файл слишком большой (максимум 10MB)', 'error');
-      fileInput.value = '';
       return;
     }
-
     if (!file.type.startsWith('image/')) {
       showToast('Можно загружать только изображения', 'error');
-      fileInput.value = '';
       return;
     }
-
-    const row = fileInput.closest('.cover-url-row');
-    const textInput = row.querySelector('.cover-url-input');
 
     const reader = new FileReader();
     reader.onload = function(event) {
@@ -1602,100 +1863,28 @@
         const MAX_WIDTH = 600;
         let width = img.width;
         let height = img.height;
-
         if (width > MAX_WIDTH) {
           height = Math.round(height * MAX_WIDTH / width);
           width = MAX_WIDTH;
         }
-
         const canvas = document.createElement('canvas');
         canvas.width = width;
         canvas.height = height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
-
         const compressed = canvas.toDataURL('image/jpeg', 0.5);
-        textInput.value = compressed;
-        showToast('✅ Обложка загружена и сжата!', 'success');
-        fileInput.value = '';
+        onDone(compressed);
       };
       img.src = event.target.result;
     };
     reader.onerror = () => {
       showToast('Ошибка загрузки файла', 'error');
-      fileInput.value = '';
     };
     reader.readAsDataURL(file);
   }
 
-  function updateRemoveButtons(container) {
-    const rows = container.querySelectorAll('.cover-url-row');
-    rows.forEach((row, index) => {
-      const btn = row.querySelector('.remove-cover-btn');
-      if (rows.length > 1) {
-        btn.style.visibility = 'visible';
-      } else {
-        btn.style.visibility = 'hidden';
-      }
-    });
-  }
-
-  function createCoverRow(value = '') {
-    const row = document.createElement('div');
-    row.className = 'cover-url-row';
-    row.innerHTML = `
-      <input type="text" class="cover-url-input" placeholder="https://example.com/cover.jpg" value="${escapeHtml(value)}" />
-      <button class="upload-btn">📤 Загрузить <input type="file" accept="image/*" /></button>
-      <button class="remove-cover-btn">✕</button>
-    `;
-    initUploadButtons(row);
-    row.querySelector('.remove-cover-btn').addEventListener('click', function() {
-      const container = this.closest('.covers-input');
-      row.remove();
-      updateRemoveButtons(container);
-    });
-    return row;
-  }
-
-  function addCoverRowToContainer(container, value = '') {
-    const row = createCoverRow(value);
-    container.appendChild(row);
-    updateRemoveButtons(container);
-    return row;
-  }
-
-  function initCoverRows(container) {
-    initUploadButtons(container);
-    updateRemoveButtons(container);
-  }
-
-  function getCoversFromForm(container) {
-    const inputs = container.querySelectorAll('.cover-url-input');
-    const urls = [];
-    inputs.forEach(input => {
-      const val = input.value.trim();
-      if (val) urls.push(val);
-    });
-    return urls;
-  }
-
-  addCoverBtn.addEventListener('click', () => {
-    addCoverRowToContainer(coversContainer, '');
-  });
-
-  coversContainer.addEventListener('click', (e) => {
-    if (e.target.classList.contains('remove-cover-btn')) {
-      const row = e.target.closest('.cover-url-row');
-      const container = e.target.closest('.covers-input');
-      if (row && container && container.children.length > 1) {
-        row.remove();
-        updateRemoveButtons(container);
-      }
-    }
-  });
-
   // ============================================================
-  // 12. ДАТЫ И СТАТУСЫ
+  // 13. ДАТЫ И СТАТУСЫ (модалка добавления)
   // ============================================================
   function updateFields() {
     const status = statusSelect.value;
@@ -1704,8 +1893,6 @@
       endDateGroup.style.display = 'none';
       startDate.value = '';
       endDate.value = '';
-      startDate.required = false;
-      endDate.required = false;
       ratingGroup.style.display = 'none';
       reviewGroup.style.display = 'none';
       ratingInput.value = '';
@@ -1734,19 +1921,39 @@
 
   ratingInput.addEventListener('input', () => {
     const val = parseInt(ratingInput.value);
-    if (val >= 1 && val <= 5) {
-      starsPreview.textContent = getStars(val);
-    } else {
-      starsPreview.textContent = '☆☆☆☆☆';
-    }
+    starsPreview.textContent = (val >= 1 && val <= 5) ? getStars(val) : '☆☆☆☆☆';
   });
 
   statusSelect.addEventListener('change', updateFields);
   updateFields();
 
   // ============================================================
-  // 13. МОДАЛКА ДОБАВЛЕНИЯ
+  // 14. МОДАЛКА ДОБАВЛЕНИЯ
   // ============================================================
+  function renderAddCovers() {
+    renderCoversGrid(coversContainer, { covers: addCovers, mainCover: addMainCover }, (action) => {
+      if (action.type === 'remove') {
+        if (addCovers.length <= 1) {
+          showToast('Нужна хотя бы одна обложка', 'error');
+          return;
+        }
+        const removed = addCovers[action.index];
+        addCovers.splice(action.index, 1);
+        if (addMainCover === removed) {
+          addMainCover = addCovers[0] || null;
+        }
+      } else if (action.type === 'setMain') {
+        const url = addCovers[action.index];
+        addMainCover = (addMainCover === url) ? null : url;
+      } else if (action.type === 'edit') {
+        const oldUrl = addCovers[action.index];
+        addCovers[action.index] = action.value;
+        if (addMainCover === oldUrl) addMainCover = action.value;
+      }
+      renderAddCovers();
+    });
+  }
+
   function openModal() {
     addModal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -1760,8 +1967,11 @@
     reviewInput.value = '';
     annotationInput.value = '';
     starsPreview.textContent = '☆☆☆☆☆';
-    coversContainer.innerHTML = '';
-    addCoverRowToContainer(coversContainer, '');
+
+    addCovers = [''];
+    addMainCover = null;
+    renderAddCovers();
+
     updateFields();
     setTimeout(() => titleInput.focus(), 100);
   }
@@ -1778,13 +1988,36 @@
   });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && addModal.classList.contains('active')) {
-      closeModal();
-    }
+    if (e.key === 'Escape' && addModal.classList.contains('active')) closeModal();
+  });
+
+  // Кнопка «Добавить по URL»
+  addCoverBtn.addEventListener('click', () => {
+    addCovers.push('');
+    renderAddCovers();
+  });
+
+  // Кнопка «Загрузить файл»
+  addCoverFileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    processCoverFile(file, (compressed) => {
+      // Заполняем первую пустую, иначе добавляем новую
+      const emptyIdx = addCovers.findIndex(c => !c || !c.trim());
+      if (emptyIdx !== -1) {
+        addCovers[emptyIdx] = compressed;
+      } else {
+        addCovers.push(compressed);
+      }
+      if (!addMainCover) addMainCover = compressed;
+      renderAddCovers();
+      showToast('✅ Обложка загружена и сжата!', 'success');
+      e.target.value = '';
+    });
   });
 
   // ============================================================
-  // 14. НАВИГАЦИЯ
+  // 15. НАВИГАЦИЯ
   // ============================================================
   function showGridView() {
     currentView = 'grid';
@@ -1819,7 +2052,7 @@
   backBtn.addEventListener('click', showGridView);
 
   // ============================================================
-  // 15. FIREBASE — ЧТЕНИЕ (реальное время)
+  // 16. FIREBASE — ЧТЕНИЕ
   // ============================================================
   function subscribeToBooks() {
     db.collection('books')
@@ -1827,11 +2060,7 @@
       .onSnapshot((snapshot) => {
         const newBooks = [];
         snapshot.forEach((doc) => {
-          const data = doc.data();
-          newBooks.push({
-            id: doc.id,
-            ...data
-          });
+          newBooks.push({ id: doc.id, ...doc.data() });
         });
         books = newBooks;
         render();
@@ -1849,7 +2078,7 @@
   }
 
   // ============================================================
-  // 16. ПРОВЕРКА МИГРАЦИИ
+  // 17. МИГРАЦИЯ
   // ============================================================
   function checkMigration() {
     if (!currentUser || !isMyShelf()) {
@@ -1857,28 +2086,21 @@
       return;
     }
     const orphanBooks = books.filter(b => !b.ownerId);
-    if (orphanBooks.length > 0) {
-      migrateBanner.style.display = 'flex';
-    } else {
-      migrateBanner.style.display = 'none';
-    }
+    migrateBanner.style.display = orphanBooks.length > 0 ? 'flex' : 'none';
   }
 
   migrateBtn.addEventListener('click', async () => {
     if (!currentUser) return;
     const orphanBooks = books.filter(b => !b.ownerId);
     if (orphanBooks.length === 0) return;
-
     if (!confirm(`Проставить вам ${orphanBooks.length} книг(и) без владельца?`)) return;
 
     migrateBtn.disabled = true;
     migrateBtn.textContent = '⏳ Обработка...';
-
     try {
       const batch = db.batch();
       orphanBooks.forEach(book => {
-        const ref = db.collection('books').doc(book.id);
-        batch.update(ref, { ownerId: currentUser.uid });
+        batch.update(db.collection('books').doc(book.id), { ownerId: currentUser.uid });
       });
       await batch.commit();
       showToast(`✅ Проставлено владельцев: ${orphanBooks.length}`, 'success');
@@ -1892,7 +2114,7 @@
   });
 
   // ============================================================
-  // 17. FIREBASE — ЗАПИСЬ
+  // 18. FIREBASE — ЗАПИСЬ
   // ============================================================
   async function saveToFirebase(bookData) {
     try {
@@ -1926,8 +2148,7 @@
 
   async function deleteFromFirebase(bookId) {
     try {
-      const docRef = db.collection('books').doc(bookId);
-      await docRef.delete();
+      await db.collection('books').doc(bookId).delete();
       showToast('✅ Книга удалена!', 'success');
     } catch (error) {
       console.error('Ошибка удаления:', error);
@@ -1936,7 +2157,7 @@
   }
 
   // ============================================================
-  // 18. ДОБАВЛЕНИЕ КНИГИ
+  // 19. ДОБАВЛЕНИЕ КНИГИ
   // ============================================================
   function addBook() {
     if (!isMyShelf()) {
@@ -1959,12 +2180,16 @@
     const rating = parseInt(ratingInput.value) || null;
     const review = reviewInput.value.trim() || null;
     const annotation = annotationInput.value.trim() || null;
-    const covers = getCoversFromForm(coversContainer);
 
+    // Собираем непустые обложки
+    const covers = addCovers.map(c => (c || '').trim()).filter(c => c);
     if (covers.length === 0) {
       showToast('Добавьте хотя бы одну обложку', 'error');
       return;
     }
+
+    // Главная: если выбрана и есть в массиве, иначе первая
+    let mainCover = (addMainCover && covers.includes(addMainCover)) ? addMainCover : covers[0];
 
     if (status === 'Прочитано' && (!start || !end)) {
       showToast('Для "Прочитано" укажите даты', 'error');
@@ -1987,14 +2212,14 @@
       title,
       author,
       pages,
-      covers: covers,
-      mainCover: covers[0],
+      covers,
+      mainCover,
       status,
       startDate: start,
       endDate: (status === 'Прочитано' ? end : null),
       rating: (status === 'Прочитано' ? rating : null),
       review: (status === 'Прочитано' ? review : null),
-      annotation: annotation,
+      annotation,
       readingHistory: [],
       currentPage: null,
       quotes: [],
@@ -2008,7 +2233,7 @@
   addBtn.addEventListener('click', addBook);
 
   // ============================================================
-  // 19. КОПИРОВАНИЕ КНИГИ К СЕБЕ
+  // 20. КОПИРОВАНИЕ КНИГИ
   // ============================================================
   function openCopyModal(book) {
     copySourceBook = book;
@@ -2016,9 +2241,7 @@
     copyBookTitle.textContent = book.title;
     copyBookAuthor.textContent = book.author || '';
 
-    copyStatusList.querySelectorAll('button').forEach(btn => {
-      btn.classList.remove('selected');
-    });
+    copyStatusList.querySelectorAll('button').forEach(btn => btn.classList.remove('selected'));
     copyConfirmBtn.disabled = true;
 
     copyModal.classList.add('active');
@@ -2094,7 +2317,7 @@
   });
 
   // ============================================================
-  // 20. ТАЙМЕР
+  // 21. ТАЙМЕР
   // ============================================================
   function openTimer(bookId) {
     const book = books.find(b => b.id === bookId);
@@ -2193,7 +2416,6 @@
     });
 
     const isManual = timerMode === 'manual';
-
     timerClockBlock.classList.toggle('hidden', isManual);
     timerManualFields.classList.toggle('visible', isManual);
 
@@ -2265,7 +2487,6 @@
       };
     } else {
       totalSeconds = timerSeconds;
-
       entry = {
         date: new Date().toISOString(),
         page: page,
@@ -2353,7 +2574,6 @@
         if (!confirm(`Удалить запись: ${entryDesc}${entryTime}?`)) return;
 
         const updatedHistory = currentHistory.filter((_, i) => i !== idx);
-
         await updateInFirebase(timerBookId, { readingHistory: updatedHistory }, true);
         showToast('✅ Запись удалена', 'success');
 
@@ -2364,7 +2584,7 @@
   }
 
   // ============================================================
-  // 21. РЕНДЕР
+  // 22. РЕНДЕР СПИСКА КНИГ
   // ============================================================
   function getSearchQuery() {
     return searchInput.value.trim().toLowerCase();
@@ -2378,15 +2598,12 @@
 
     let filtered = books.filter(book => {
       if (book.ownerId !== currentShelf) return false;
-
       if (currentFilter === 'all' && book.status === 'Хочу купить') return false;
-      
       if (currentFilter === 'favorite') {
         if (!book.favorite) return false;
       } else if (currentFilter !== 'all' && book.status !== currentFilter) {
         return false;
       }
-      
       if (query) {
         const titleMatch = book.title.toLowerCase().includes(query);
         const authorMatch = book.author ? book.author.toLowerCase().includes(query) : false;
@@ -2395,23 +2612,15 @@
       return true;
     });
 
-    const statusOrder = {
-      'Читаю': 1,
-      'В плане': 2,
-      'Прочитано': 3,
-      'Хочу купить': 4
-    };
+    const statusOrder = { 'Читаю': 1, 'В плане': 2, 'Прочитано': 3, 'Хочу купить': 4 };
 
     filtered.sort((a, b) => {
       const orderA = statusOrder[a.status] || 99;
       const orderB = statusOrder[b.status] || 99;
-
       if (orderA !== orderB) return orderA - orderB;
-
       if (a.status === 'Прочитано') {
         return (b.endDate || '').localeCompare(a.endDate || '');
       }
-
       return (b.createdAt || '').localeCompare(a.createdAt || '');
     });
 
@@ -2422,12 +2631,9 @@
         const covers = book.covers || [];
         let mainCover = book.mainCover || (covers.length > 0 ? covers[0] : null);
         
-        let coverHtml = '';
-        if (mainCover) {
-          coverHtml = `<img src="${escapeHtml(mainCover)}" alt="Обложка" onerror="this.style.display='none'" />`;
-        } else {
-          coverHtml = `<div class="no-cover"><span>📖</span>Нет обложки</div>`;
-        }
+        let coverHtml = mainCover
+          ? `<img src="${escapeHtml(mainCover)}" alt="Обложка" onerror="this.style.display='none'" />`
+          : `<div class="no-cover"><span>📖</span>Нет обложки</div>`;
         
         let datesHtml = '';
         if (book.status === 'Читаю' && book.startDate) {
@@ -2438,10 +2644,9 @@
 
         let ratingHtml = '';
         if (book.status === 'Прочитано' && book.rating) {
-          const stars = getStars(book.rating);
           ratingHtml = `
             <div class="book-rating">
-              <span class="stars">${stars}</span>
+              <span class="stars">${getStars(book.rating)}</span>
               <span class="rating-number">${book.rating}/5</span>
             </div>
           `;
@@ -2478,25 +2683,21 @@
           statusBlockHtml = `<span class="book-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>`;
         }
 
-        const timerBtnHtml = (mine && book.status === 'Читаю') ? `
-          <button class="book-timer-btn" data-id="${book.id}">⏱️ Читать</button>
-        ` : '';
+        const timerBtnHtml = (mine && book.status === 'Читаю')
+          ? `<button class="book-timer-btn" data-id="${book.id}">⏱️ Читать</button>` : '';
 
-        const buyBtnHtml = (mine && book.status === 'Хочу купить') ? `
-          <button class="buy-btn" data-id="${book.id}">✅ Куплено</button>
-        ` : '';
+        const buyBtnHtml = (mine && book.status === 'Хочу купить')
+          ? `<button class="buy-btn" data-id="${book.id}">✅ Куплено</button>` : '';
 
-        const copyBtnHtml = !mine ? `
-          <button class="copy-btn" data-id="${book.id}">➕ К себе</button>
-        ` : '';
+        const copyBtnHtml = !mine
+          ? `<button class="copy-btn" data-id="${book.id}">➕ К себе</button>` : '';
 
-        const deleteBtnHtml = mine ? `
-          <button class="delete-btn" data-id="${book.id}">🗑 Удалить</button>
-        ` : '';
+        const deleteBtnHtml = mine
+          ? `<button class="delete-btn" data-id="${book.id}">🗑 Удалить</button>` : '';
 
-        const favoriteBtnHtml = mine ? `
-          <button class="favorite-btn ${book.favorite ? 'active' : ''}" data-id="${book.id}" title="Избранное">⭐</button>
-        ` : `<span class="favorite-btn ${book.favorite ? 'active' : ''}" style="pointer-events:none;opacity:${book.favorite ? 1 : 0.3};">⭐</span>`;
+        const favoriteBtnHtml = mine
+          ? `<button class="favorite-btn ${book.favorite ? 'active' : ''}" data-id="${book.id}" title="Избранное">⭐</button>`
+          : `<span class="favorite-btn ${book.favorite ? 'active' : ''}" style="pointer-events:none;opacity:${book.favorite ? 1 : 0.3};">⭐</span>`;
 
         return `
           <div class="book-card" data-id="${book.id}">
@@ -2522,12 +2723,12 @@
         `;
       }).join('');
 
+      // Обработчики карточек
       document.querySelectorAll('.book-card').forEach(card => {
         card.addEventListener('click', (e) => {
           if (e.target.closest('button')) return;
           if (e.target.closest('.book-status-btn')) return;
-          const id = card.dataset.id;
-          showBookView(id);
+          showBookView(card.dataset.id);
         });
       });
 
@@ -2550,11 +2751,9 @@
             const id = badge.dataset.id;
             const dropdown = document.querySelector(`.status-dropdown[data-id="${id}"]`);
             if (!dropdown) return;
-            
             document.querySelectorAll('.status-dropdown.visible').forEach(d => {
               if (d !== dropdown) d.classList.remove('visible');
             });
-            
             dropdown.classList.toggle('visible');
           });
         });
@@ -2567,9 +2766,8 @@
             if (newStatus === 'Хочу купить') return;
             const book = books.find(b => b.id === id);
             if (!book) return;
-            
+
             document.querySelectorAll('.status-dropdown.visible').forEach(d => d.classList.remove('visible'));
-            
             if (book.status === newStatus) return;
 
             const updatedData = { status: newStatus };
@@ -2605,16 +2803,14 @@
         document.querySelectorAll('.book-timer-btn').forEach(btn => {
           btn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const id = btn.dataset.id;
-            openTimer(id);
+            openTimer(btn.dataset.id);
           });
         });
 
         document.querySelectorAll('.buy-btn').forEach(btn => {
           btn.addEventListener('click', async (e) => {
             e.stopPropagation();
-            const id = btn.dataset.id;
-            await updateInFirebase(id, { status: 'В плане' }, true);
+            await updateInFirebase(btn.dataset.id, { status: 'В плане' }, true);
             showToast('✅ Книга добавлена в "В плане"!', 'success');
           });
         });
@@ -2634,10 +2830,8 @@
       document.querySelectorAll('.copy-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
-          const id = btn.dataset.id;
-          const book = books.find(b => b.id === id);
-          if (!book) return;
-          openCopyModal(book);
+          const book = books.find(b => b.id === btn.dataset.id);
+          if (book) openCopyModal(book);
         });
       });
     }
@@ -2647,34 +2841,29 @@
   searchInput.addEventListener('input', render);
 
   // ============================================================
-  // 22. РЕНДЕР СТРАНИЦЫ КНИГИ
+  // 23. СТРАНИЦА КНИГИ
   // ============================================================
   function renderBookPage(book) {
     const mine = book.ownerId === currentUser.uid;
     const covers = book.covers || [];
     const mainCover = book.mainCover || (covers.length > 0 ? covers[0] : null);
-
     const statusClass = getStatusClass(book.status);
-    
+
     let quickRatingHtml = '';
     if (book.status === 'Прочитано' && mine) {
       quickRatingHtml = `
         <div class="quick-rating" id="quickRating">
           <span class="label">Оценка:</span>
-          <div class="stars-clickable" id="starsClickable">
-            ${renderClickableStars(book.rating)}
-          </div>
+          <div class="stars-clickable" id="starsClickable">${renderClickableStars(book.rating)}</div>
           <span class="value" id="ratingValue">${book.rating ? book.rating + '/5' : '—'}</span>
-        </div>
-      `;
+        </div>`;
     } else if (book.status === 'Прочитано' && !mine && book.rating) {
       quickRatingHtml = `
         <div class="quick-rating">
           <span class="label">Оценка:</span>
           <span style="font-size:1.4rem;color:var(--star-color);">${getStars(book.rating)}</span>
           <span class="value">${book.rating}/5</span>
-        </div>
-      `;
+        </div>`;
     }
 
     let quickReviewHtml = '';
@@ -2684,25 +2873,20 @@
           <div class="label">📝 Мой отзыв</div>
           <textarea id="quickReviewTextarea">${escapeHtml(book.review || '')}</textarea>
           <button class="save-review-btn" id="saveQuickReview">💾 Сохранить отзыв</button>
-        </div>
-      `;
+        </div>`;
     } else if (book.status === 'Прочитано' && !mine && book.review) {
       quickReviewHtml = `
         <div class="quick-review">
           <div class="label">📝 Отзыв ${escapeHtml(getShelfOwnerGenitive())}</div>
           <div style="font-size:0.95rem;color:var(--text-secondary);line-height:1.5;white-space:pre-wrap;">${escapeHtml(book.review)}</div>
-        </div>
-      `;
+        </div>`;
     }
 
-    let annotationHtml = '';
-    const annotationText = book.annotation || '';
-    annotationHtml = `
+    const annotationHtml = `
       <div class="book-annotation">
         <div class="annotation-title">📖 Аннотация</div>
-        <div class="annotation-text">${escapeHtml(annotationText)}</div>
-      </div>
-    `;
+        <div class="annotation-text">${escapeHtml(book.annotation || '')}</div>
+      </div>`;
 
     let datesHtml = '';
     if (book.status === 'Читаю' && book.startDate) {
@@ -2748,8 +2932,7 @@
                 <textarea class="quote-comment-input" data-idx="${idx}">${escapeHtml(quoteComment)}</textarea>
                 <button class="quote-comment-save" data-idx="${idx}">💾 Сохранить</button>
               </div>
-            </div>
-          `;
+            </div>`;
         } else {
           return `
             <div class="quote-item" data-idx="${idx}">
@@ -2760,10 +2943,8 @@
                 <div class="quote-comment-block">
                   <div class="quote-comment-label">💬 Комментарий</div>
                   <div style="font-size:0.9rem;color:var(--text-secondary);line-height:1.4;white-space:pre-wrap;">${escapeHtml(quoteComment)}</div>
-                </div>
-              ` : ''}
-            </div>
-          `;
+                </div>` : ''}
+            </div>`;
         }
       }).join('');
     } else {
@@ -2824,14 +3005,12 @@
           ${book.status === 'Хочу купить' ? `<button class="edit-btn" id="detailBuyBtn" style="background:var(--success);color:#fff;">✅ Куплено</button>` : ''}
           <button class="edit-btn" id="detailEditBtn">✏️ Редактировать</button>
           <button class="delete-btn" id="detailDeleteBtn">🗑 Удалить</button>
-        </div>
-      `;
+        </div>`;
     } else {
       actionsHtml = `
         <div class="book-detail-actions">
           <button class="copy-btn" id="detailCopyBtn">➕ Добавить к себе</button>
-        </div>
-      `;
+        </div>`;
     }
 
     let quotesBlockHtml = '';
@@ -2844,15 +3023,13 @@
             <input type="text" id="newQuoteInput" placeholder="Введите цитату..." />
             <button id="addQuoteBtn">+ Добавить цитату</button>
           </div>
-        </div>
-      `;
+        </div>`;
     } else if (quotes.length > 0) {
       quotesBlockHtml = `
         <div class="book-quotes">
           <div class="quotes-title">📝 Цитаты</div>
           <div id="quotesList">${quotesHtml}</div>
-        </div>
-      `;
+        </div>`;
     }
 
     bookDetail.innerHTML = `
@@ -2875,6 +3052,7 @@
       </div>
     `;
 
+    // Обработчики страницы книги
     if (mine) {
       const statusBadge = bookDetail.querySelector('.book-status-btn .book-detail-status[data-id]');
       if (statusBadge) {
@@ -2884,11 +3062,9 @@
           const id = statusBadge.dataset.id;
           const dropdown = bookDetail.querySelector(`.status-dropdown[data-id="${id}"]`);
           if (!dropdown) return;
-          
           document.querySelectorAll('.status-dropdown.visible').forEach(d => {
             if (d !== dropdown) d.classList.remove('visible');
           });
-          
           dropdown.classList.toggle('visible');
         });
       }
@@ -2900,7 +3076,7 @@
           const newStatus = option.dataset.status;
           if (newStatus === 'Хочу купить') return;
           bookDetail.querySelectorAll('.status-dropdown.visible').forEach(d => d.classList.remove('visible'));
-          
+
           const currentBook = books.find(b => b.id === id);
           if (!currentBook || currentBook.status === newStatus) return;
 
@@ -2964,17 +3140,11 @@
         btn.addEventListener('click', async () => {
           const idx = parseInt(btn.dataset.idx);
           const comment = document.querySelector(`.quote-comment-input[data-idx="${idx}"]`).value.trim();
-          
           const updatedQuotes = (book.quotes || []).map((q, i) => {
-            if (i !== idx) {
-              return typeof q === 'string' ? q : q;
-            }
-            if (typeof q === 'string') {
-              return { text: q, comment: comment };
-            }
+            if (i !== idx) return typeof q === 'string' ? q : q;
+            if (typeof q === 'string') return { text: q, comment: comment };
             return { ...q, comment: comment };
           });
-          
           await updateInFirebase(book.id, { quotes: updatedQuotes }, true);
           showToast('✅ Комментарий сохранён!', 'success');
         });
@@ -2993,26 +3163,17 @@
 
       const newQuoteInput = document.getElementById('newQuoteInput');
       const addQuoteBtn = document.getElementById('addQuoteBtn');
-
       if (addQuoteBtn) {
         addQuoteBtn.addEventListener('click', async () => {
           const text = newQuoteInput.value.trim();
-          if (!text) {
-            showToast('Введите текст цитаты', 'error');
-            return;
-          }
-
-          const updatedQuotes = [...(book.quotes || []), { text: text, comment: '' }];
+          if (!text) { showToast('Введите текст цитаты', 'error'); return; }
+          const updatedQuotes = [...(book.quotes || []), { text, comment: '' }];
           await updateInFirebase(book.id, { quotes: updatedQuotes }, true);
           newQuoteInput.value = '';
           showToast('✅ Цитата добавлена!', 'success');
         });
-
         newQuoteInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-            addQuoteBtn.click();
-          }
+          if (e.key === 'Enter') { e.preventDefault(); addQuoteBtn.click(); }
         });
       }
 
@@ -3070,11 +3231,7 @@
       }
 
       const detailTimerBtn = document.getElementById('detailTimerBtn');
-      if (detailTimerBtn) {
-        detailTimerBtn.addEventListener('click', () => {
-          openTimer(book.id);
-        });
-      }
+      if (detailTimerBtn) detailTimerBtn.addEventListener('click', () => openTimer(book.id));
 
       document.getElementById('detailEditBtn')?.addEventListener('click', () => {
         showGridView();
@@ -3119,7 +3276,7 @@
   }
 
   // ============================================================
-  // 23. РЕДАКТИРОВАНИЕ
+  // 24. РЕДАКТИРОВАНИЕ КНИГИ
   // ============================================================
   function openEditModal(bookId) {
     const book = books.find(b => b.id === bookId);
@@ -3129,18 +3286,14 @@
       return;
     }
 
-    const covers = book.covers || [];
+    // Локальные копии для редактирования
+    let editCovers = [...(book.covers || [])];
+    if (editCovers.length === 0) editCovers = [''];
+    let editMainCover = book.mainCover || editCovers[0] || null;
+
     const overlay = document.createElement('div');
     overlay.className = 'modal-overlay';
     overlay.style.display = 'flex';
-    
-    let coversHtml = covers.map((url) => `
-      <div class="cover-url-row">
-        <input type="text" class="cover-url-input" value="${escapeHtml(url)}" placeholder="https://example.com/cover.jpg" />
-        <button class="upload-btn">📤 Загрузить <input type="file" accept="image/*" /></button>
-        <button class="remove-cover-btn" style="visibility:${covers.length > 1 ? 'visible' : 'hidden'}">✕</button>
-      </div>
-    `).join('');
 
     overlay.innerHTML = `
       <div class="modal">
@@ -3161,10 +3314,17 @@
             <label>Количество страниц</label>
             <input type="number" id="editPages" value="${book.pages || ''}" min="1" />
           </div>
-          <div class="form-group">
+            <div class="form-group" style="grid-column: 1 / -1;">
             <label>Обложки</label>
-            <div class="covers-input" id="editCoversContainer">${coversHtml}</div>
-            <button class="add-cover-btn" id="editAddCoverBtn">+ Добавить ещё обложку</button>
+            <div class="covers-block">
+              <div class="covers-grid" id="editCoversGrid"></div>
+              <div class="covers-actions-row">
+                <button type="button" class="upload-tile-btn">📤 Загрузить
+                  <input type="file" accept="image/*" id="editCoverFileInput" />
+                </button>
+                <button type="button" class="add-tile-btn" id="editAddCoverBtn">+ Добавить по URL</button>
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label>Статус</label>
@@ -3208,69 +3368,55 @@
     document.body.appendChild(overlay);
     document.body.style.overflow = 'hidden';
 
-    const editCoversContainer = document.getElementById('editCoversContainer');
+    const editCoversGrid = document.getElementById('editCoversGrid');
+    const editCoverFileInput = document.getElementById('editCoverFileInput');
     const editAddCoverBtn = document.getElementById('editAddCoverBtn');
 
-    function updateEditRemoveButtons() {
-      const rows = editCoversContainer.querySelectorAll('.cover-url-row');
-      rows.forEach((row, index) => {
-        const btn = row.querySelector('.remove-cover-btn');
-        if (rows.length > 1) {
-          btn.style.visibility = 'visible';
-        } else {
-          btn.style.visibility = 'hidden';
+    function renderEditCovers() {
+      renderCoversGrid(editCoversGrid, { covers: editCovers, mainCover: editMainCover }, (action) => {
+        if (action.type === 'remove') {
+          if (editCovers.length <= 1) {
+            showToast('Нужна хотя бы одна обложка', 'error');
+            return;
+          }
+          const removed = editCovers[action.index];
+          editCovers.splice(action.index, 1);
+          if (editMainCover === removed) editMainCover = editCovers[0] || null;
+        } else if (action.type === 'setMain') {
+          const url = editCovers[action.index];
+          editMainCover = (editMainCover === url) ? null : url;
+        } else if (action.type === 'edit') {
+          const oldUrl = editCovers[action.index];
+          editCovers[action.index] = action.value;
+          if (editMainCover === oldUrl) editMainCover = action.value;
         }
+        renderEditCovers();
       });
     }
 
-    function initEditUploadButtons() {
-      const fileInputs = editCoversContainer.querySelectorAll('.upload-btn input[type="file"]');
-      fileInputs.forEach(fileInput => {
-        fileInput.removeEventListener('change', handleFileUpload);
-        fileInput.addEventListener('change', handleFileUpload);
-      });
-    }
-
-    initEditUploadButtons();
-    updateEditRemoveButtons();
+    renderEditCovers();
 
     editAddCoverBtn.addEventListener('click', () => {
-      const row = document.createElement('div');
-      row.className = 'cover-url-row';
-      row.innerHTML = `
-        <input type="text" class="cover-url-input" placeholder="https://example.com/cover.jpg" />
-        <button class="upload-btn">📤 Загрузить <input type="file" accept="image/*" /></button>
-        <button class="remove-cover-btn">✕</button>
-      `;
-      const fileInput = row.querySelector('.upload-btn input[type="file"]');
-      fileInput.addEventListener('change', handleFileUpload);
-      row.querySelector('.remove-cover-btn').addEventListener('click', () => {
-        row.remove();
-        updateEditRemoveButtons();
-      });
-      editCoversContainer.appendChild(row);
-      updateEditRemoveButtons();
+      editCovers.push('');
+      renderEditCovers();
     });
 
-    editCoversContainer.addEventListener('click', (e) => {
-      if (e.target.classList.contains('remove-cover-btn')) {
-        const row = e.target.closest('.cover-url-row');
-        if (row && editCoversContainer.children.length > 1) {
-          row.remove();
-          updateEditRemoveButtons();
+    editCoverFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      processCoverFile(file, (compressed) => {
+        const emptyIdx = editCovers.findIndex(c => !c || !c.trim());
+        if (emptyIdx !== -1) {
+          editCovers[emptyIdx] = compressed;
+        } else {
+          editCovers.push(compressed);
         }
-      }
-    });
-
-    function getEditCovers() {
-      const inputs = editCoversContainer.querySelectorAll('.cover-url-input');
-      const urls = [];
-      inputs.forEach(input => {
-        const val = input.value.trim();
-        if (val) urls.push(val);
+        if (!editMainCover) editMainCover = compressed;
+        renderEditCovers();
+        showToast('✅ Обложка загружена и сжата!', 'success');
+        e.target.value = '';
       });
-      return urls;
-    }
+    });
 
     const editStatus = document.getElementById('editStatus');
     const editStartGroup = document.getElementById('editStartDateGroup');
@@ -3285,11 +3431,7 @@
 
     editRating.addEventListener('input', () => {
       const val = parseInt(editRating.value);
-      if (val >= 1 && val <= 5) {
-        editStarsPreview.textContent = getStars(val);
-      } else {
-        editStarsPreview.textContent = '☆☆☆☆☆';
-      }
+      editStarsPreview.textContent = (val >= 1 && val <= 5) ? getStars(val) : '☆☆☆☆☆';
     });
 
     function updateEditFields() {
@@ -3328,7 +3470,7 @@
         showToast('Введите название', 'error');
         return;
       }
-      
+
       const newAuthor = document.getElementById('editAuthor').value.trim() || null;
       const newPages = parseInt(document.getElementById('editPages').value) || null;
       const newStatus = document.getElementById('editStatus').value;
@@ -3337,8 +3479,8 @@
       const newRating = parseInt(document.getElementById('editRating').value) || null;
       const newReview = document.getElementById('editReview').value.trim() || null;
       const newAnnotation = document.getElementById('editAnnotation').value.trim() || null;
-      const newCovers = getEditCovers();
-      const oldMainCover = book.mainCover;
+
+      const newCovers = editCovers.map(c => (c || '').trim()).filter(c => c);
 
       if (newStatus === 'Прочитано' && (!newStart || !newEnd)) {
         showToast('Для "Прочитано" укажите даты', 'error');
@@ -3361,8 +3503,8 @@
         return;
       }
 
-      let mainCover = oldMainCover;
-      if (!newCovers.includes(oldMainCover)) {
+      let mainCover = editMainCover;
+      if (!mainCover || !newCovers.includes(mainCover)) {
         mainCover = newCovers[0];
       }
 
@@ -3377,7 +3519,7 @@
         endDate: (newStatus === 'Прочитано' ? newEnd : null),
         rating: (newStatus === 'Прочитано' ? newRating : null),
         review: (newStatus === 'Прочитано' ? newReview : null),
-        annotation: newAnnotation,
+        annotation: newAnnotation
       };
 
       await updateInFirebase(bookId, updatedData);
@@ -3399,7 +3541,7 @@
   }
 
   // ============================================================
-  // 24. СЧЁТЧИК
+  // 25. СЧЁТЧИК
   // ============================================================
   function updateCounter() {
     if (!currentUser) return;
