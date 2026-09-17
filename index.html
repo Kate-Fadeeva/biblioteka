@@ -1204,10 +1204,10 @@
   // ============================================================
   // 0. СОСТОЯНИЕ ГЛОБАЛЬНОЕ
   // ============================================================
-  let currentUser = null;          // firebase user
-  let allUsers = {};                // { uid: 'Катя', ... }
-  let currentShelf = null;          // uid чьей полки мы смотрим
-  let books = [];                   // все книги (и свои, и чужие)
+  let currentUser = null;
+  let allUsers = {};                // { uid: { name, genitive } }
+  let currentShelf = null;
+  let books = [];
   let currentFilter = 'all';
   let currentTheme = localStorage.getItem('libraryTheme') || 'light';
   let currentView = 'grid';
@@ -1220,7 +1220,7 @@
   let timerBookId = null;
   let timerMode = 'timer';
 
-  let copySourceBook = null;        // книга, которую копируем
+  let copySourceBook = null;
   let copySelectedStatus = null;
 
   // ============================================================
@@ -1389,8 +1389,10 @@
     return currentUser && currentShelf === currentUser.uid;
   }
 
-  function getShelfOwnerName() {
-    return allUsers[currentShelf] || 'Неизвестный';
+  // Имя в родительном падеже (для «Полка Даши» и т.п.)
+  function getShelfOwnerGenitive() {
+    const u = allUsers[currentShelf];
+    return (u && u.genitive) ? u.genitive : 'Неизвестный';
   }
 
   // ============================================================
@@ -1480,11 +1482,18 @@
       const snap = await db.collection('users').get();
       allUsers = {};
       snap.forEach(doc => {
-        allUsers[doc.id] = doc.data().displayName || 'Без имени';
+        const data = doc.data();
+        allUsers[doc.id] = {
+          name: data.displayName || 'Без имени',
+          genitive: data.displayNameGenitive || data.displayName || 'Без имени'
+        };
       });
-      // Гарантируем, что мы сами есть
       if (currentUser && !allUsers[currentUser.uid]) {
-        allUsers[currentUser.uid] = currentUser.email.split('@')[0];
+        const fallback = currentUser.email.split('@')[0];
+        allUsers[currentUser.uid] = {
+          name: fallback,
+          genitive: fallback
+        };
       }
     } catch (err) {
       console.error('Load users error:', err);
@@ -1493,7 +1502,8 @@
 
   function updateUserLabel() {
     if (!currentUser) return;
-    const name = allUsers[currentUser.uid] || currentUser.email;
+    const u = allUsers[currentUser.uid];
+    const name = (u && u.name) ? u.name : currentUser.email;
     userLabel.textContent = `👤 ${name}`;
   }
 
@@ -1508,9 +1518,10 @@
     html += `<button class="${currentShelf === currentUser.uid ? 'active' : ''}" data-uid="${currentUser.uid}">📚 Моя полка</button>`;
 
     otherUids.forEach(uid => {
-      const name = allUsers[uid];
+      const u = allUsers[uid];
+      const genitiveName = (u && u.genitive) ? u.genitive : 'Неизвестный';
       const activeClass = currentShelf === uid ? 'active readonly' : 'readonly';
-      html += `<button class="${activeClass}" data-uid="${uid}">👤 Полка ${escapeHtml(name)}</button>`;
+      html += `<button class="${activeClass}" data-uid="${uid}">👤 Полка ${escapeHtml(genitiveName)}</button>`;
     });
 
     shelfSwitcher.innerHTML = html;
@@ -1533,7 +1544,6 @@
   }
 
   function updateAddBookVisibility() {
-    // Кнопка «Добавить книгу» показывается только на своей полке
     if (isMyShelf()) {
       openAddModal.style.display = '';
     } else {
@@ -2367,7 +2377,6 @@
     const mine = isMyShelf();
 
     let filtered = books.filter(book => {
-      // Только книги выбранной полки
       if (book.ownerId !== currentShelf) return false;
 
       if (currentFilter === 'all' && book.status === 'Хочу купить') return false;
@@ -2451,7 +2460,6 @@
           progressHtml = `<div class="book-pages">${book.pages} стр.</div>`;
         }
 
-        // === ТОЛЬКО ДЛЯ СВОЕЙ ПОЛКИ ===
         let statusBlockHtml = '';
         if (mine) {
           statusBlockHtml = book.status === 'Хочу купить' ? `
@@ -2514,7 +2522,6 @@
         `;
       }).join('');
 
-      // === ОБРАБОТЧИКИ ===
       document.querySelectorAll('.book-card').forEach(card => {
         card.addEventListener('click', (e) => {
           if (e.target.closest('button')) return;
@@ -2682,7 +2689,7 @@
     } else if (book.status === 'Прочитано' && !mine && book.review) {
       quickReviewHtml = `
         <div class="quick-review">
-          <div class="label">📝 Отзыв ${escapeHtml(getShelfOwnerName())}</div>
+          <div class="label">📝 Отзыв ${escapeHtml(getShelfOwnerGenitive())}</div>
           <div style="font-size:0.95rem;color:var(--text-secondary);line-height:1.5;white-space:pre-wrap;">${escapeHtml(book.review)}</div>
         </div>
       `;
@@ -2827,7 +2834,6 @@
       `;
     }
 
-    // Модифицируем блок цитат для чужой полки
     let quotesBlockHtml = '';
     if (mine) {
       quotesBlockHtml = `
@@ -2869,7 +2875,6 @@
       </div>
     `;
 
-    // === КЛИКАБЕЛЬНЫЙ СТАТУС (только mine) ===
     if (mine) {
       const statusBadge = bookDetail.querySelector('.book-status-btn .book-detail-status[data-id]');
       if (statusBadge) {
@@ -3082,7 +3087,6 @@
         }
       });
     } else {
-      // Чужая полка — только просмотр галереи и кнопка «К себе»
       if (covers.length > 1) {
         const prevBtn = document.getElementById('galleryPrev');
         const nextBtn = document.getElementById('galleryNext');
