@@ -332,123 +332,6 @@
       white-space: nowrap;
     }
     .book-status.reading { border-color: var(--accent); color: var(--accent-text); }
-    .book-status.done { border-color: var    .header-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-    .header-left .back-btn { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 40px; padding: 8px 16px; font-size: 1rem; color: var(--text); cursor: pointer; transition: 0.2s; display: none; align-items: center; gap: 6px; }
-    .header-left .back-btn:hover { background: var(--hover); border-color: var(--accent); }
-    .header-left .back-btn.visible { display: flex; }
-    h1 { font-size: 2.8rem; font-weight: 600; letter-spacing: -0.5px; color: var(--text); display: flex; align-items: center; gap: 12px; }
-    h1 small { font-size: 1rem; font-weight: 400; color: var(--text-secondary); margin-left: 8px; }
-    h1 .accent { color: var(--accent-text); }
-    .header-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-    .btn-add-book { background: var(--accent); color: var(--bg); border: none; padding: 12px 24px; border-radius: 40px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-    .btn-add-book:hover { transform: scale(1.04); box-shadow: 0 0 30px var(--accent-glow); }
-    .theme-toggle { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 40px; padding: 10px 20px; font-size: 1rem; font-weight: 500; color: var(--text); cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; white-space: nowrap; }
-    .theme-toggle:hover { background: var(--hover); transform: scale(1.03); border-color: var(--accent); }
-
-    /* ----- ПОИСК ----- */
-    .search-wrap { margin-bottom: 1rem; }
-    .search-wrap input {
-      width: 100%; padding: 12px 18px; border: 1.5px solid var(--border); border-radius: 40px;
-      font-size: 1rem; background: var(--bg-card); color: var(--text); box-shadow: 0 2px 8px var(--shadow);
-      transition: 0.2s; outline: none;
-    }
-    .search-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim), 0 2px 12px var(--shadow); }
-    .search-wrap input::placeholder { color: var(--text-muted); }
-
-    /* ----- МОДАЛКИ ----- */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 2000; animation: fadeIn 0.2s ease; padding: 1rem; }
-    .modal-overlay.active { display: flex; }
-    [data-theme="dark"] .modal-overlay { background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); }
-    .modal { background: var(--bg-card); border-radius: 32px; padding: 2rem; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; border: 1px solid var(--border); box-shadow: 0 20px 60px var(--shadow); }
-    .modal:focus-within { border-color: var(--accent); }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-    .modal-header h2 { color: var(--text); }
-    .modal-header h2 .accent { color: var(--accent-text); }
-    .modal-close { background: var(--status-bg); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 40px; cursor: pointer; font-size: 1.2rem; color: var(--text-secondary); transition: 0.2s; display: flex; align-items: center; justify-content: center; }
-    .modal-close:hover { background: var(--hover); color: var(--text); border-color: var(--accent); transform: rotate(90deg); }
-    .modal .form-card { box-shadow: none; padding: 0; margin: 0; border: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; background: transparent; }
-    .modal .form-card .btn-add { grid-column: 2 / 3; max-width: 100%; }
-
-    /* ----- ФОРМА ----- */
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
-    .form-group label .badge { font-size: 0.6rem; text-transform: none; background: var(--accent-dim); color: var(--accent-text); padding: 2px 10px; border-radius: 20px; font-weight: 400; }
-    .form-group input, .form-group select, .form-group textarea { padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 16px; font-size: 1rem; background: var(--input-bg); color: var(--text); transition: 0.2s; font-family: inherit; resize: vertical; }
-    .form-group textarea { min-height: 70px; max-height: 200px; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
-    .form-group input[type="number"] { width: 100px; }
-    .form-group .rating-input { display: flex; align-items: center; gap: 12px; }
-    .form-group .rating-input input { width: 80px; }
-    .form-group .rating-input .stars-preview { font-size: 1.6rem; letter-spacing: 3px; color: var(--star-color); }
-    .form-group .covers-input { display: flex; flex-direction: column; gap: 8px; }
-    .form-group .covers-input .cover-url-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .form-group .covers-input .cover-url-row input[type="text"] { flex: 1; min-width: 150px; }
-    .form-group .covers-input .cover-url-row .upload-btn { background: var(--bg); border: 1.5px solid var(--border); border-radius: 16px; padding: 10px 14px; cursor: pointer; font-size: 0.85rem; color: var(--text-secondary); transition: 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 6px; position: relative; overflow: hidden; }
-    .form-group .covers-input .cover-url-row .upload-btn:hover { border-color: var(--accent); color: var(--accent-text); background: var(--accent-dim); }
-    .form-group .covers-input .cover-url-row .upload-btn input[type="file"] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
-    .form-group .covers-input .cover-url-row .remove-cover-btn { background: var(--delete-bg); color: var(--error); border: none; border-radius: 40px; padding: 8px 12px; cursor: pointer; font-size: 1rem; transition: 0.2s; }
-    .form-group .covers-input .cover-url-row .remove-cover-btn:hover { background: var(--delete-hover); transform: scale(1.05); }
-    .form-group .covers-input .add-cover-btn { background: var(--bg); border: 1.5px dashed var(--border); border-radius: 16px; padding: 10px; cursor: pointer; color: var(--text-secondary); transition: 0.2s; font-size: 0.9rem; }
-    .form-group .covers-input .add-cover-btn:hover { border-color: var(--accent); color: var(--accent-text); background: var(--accent-dim); }
-
-    .date-row { display: flex; gap: 12px; flex-wrap: wrap; }
-    .date-row .form-group { flex: 1; min-width: 120px; }
-    .btn-add { background: var(--accent); color: var(--bg); border: none; padding: 14px 28px; border-radius: 40px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.2s; grid-column: 2 / 3; justify-self: end; width: 100%; max-width: 200px; }
-    .btn-add:hover { transform: scale(1.02); box-shadow: 0 0 30px var(--accent-glow); }
-
-    /* ----- ФИЛЬТРЫ ----- */
-    .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem; }
-    .filters button { padding: 8px 16px; border-radius: 40px; border: 1.5px solid var(--border); background: transparent; font-weight: 500; font-size: 0.85rem; cursor: pointer; transition: 0.15s; color: var(--text-secondary); white-space: nowrap; }
-    .filters button:hover { background: var(--hover); color: var(--text); border-color: var(--border-light); }
-    .filters button.active { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 600; }
-
-    /* ----- СЕТКА КНИГ ----- */
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.8rem; }
-    .book-card { background: var(--bg-card); border-radius: 28px; padding: 1.2rem 1.2rem 1.5rem; box-shadow: 0 6px 18px var(--shadow); transition: 0.3s; border: 1px solid var(--border); display: flex; flex-direction: column; position: relative; cursor: pointer; }
-    .book-card:hover { transform: translateY(-6px); box-shadow: 0 14px 30px var(--shadow); border-color: var(--accent); background: var(--bg-card-hover); }
-    .book-card:hover .cover-wrapper { border-color: var(--accent); }
-
-    /* ----- ОБЛОЖКА ----- */
-    .cover-wrapper { position: relative; width: 100%; aspect-ratio: 3/4; border-radius: 18px; margin-bottom: 14px; overflow: hidden; background: var(--cover-placeholder); border: 1px solid var(--border); transition: border-color 0.3s; }
-    .cover { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; background: var(--cover-placeholder); }
-    .cover img { width: 100%; height: 100%; object-fit: contain; position: absolute; top: 0; left: 0; }
-    .cover .no-cover { font-size: 0.85rem; color: var(--text-muted); text-align: center; padding: 10px; font-weight: 300; letter-spacing: 0.5px; }
-    .cover .no-cover span { display: block; font-size: 2.5rem; margin-bottom: 6px; }
-    .cover-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); border-radius: 20px; padding: 3px 10px; font-size: 0.7rem; color: #fff; font-weight: 500; z-index: 5; pointer-events: none; }
-
-    /* ----- ИЗБРАННОЕ ----- */
-    .favorite-btn {
-      position: absolute; top: 8px; right: 8px; z-index: 10;
-      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
-      border: none; border-radius: 40px; padding: 4px 10px; font-size: 1.2rem;
-      cursor: pointer; transition: 0.2s; color: rgba(255,255,255,0.6);
-      display: flex; align-items: center; gap: 4px;
-    }
-    .favorite-btn:hover { transform: scale(1.15); background: rgba(0,0,0,0.7); }
-    .favorite-btn.active { color: var(--favorite-color); }
-
-    .book-title { font-size: 1.1rem; font-weight: 600; color: var(--text); margin-bottom: 2px; word-break: break-word; }
-    .book-author { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px; font-weight: 400; }
-    
-    /* ----- СТАТУСЫ ----- */
-        .book-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      padding: 4px 12px;
-      border-radius: 40px;
-      background: var(--status-bg);
-      color: var(--text-secondary);
-      margin: 6px 0 8px;
-      align-self: flex-start;
-      border: 1px solid var(--border);
-      white-space: nowrap;
-    }
-    .book-status.reading { border-color: var(--accent); color: var(--accent-text); }
     .book-status.done { border-color: var(--star-color); color: var(--star-color); }
     .book-status.want-to-buy { border-color: var(--want-to-buy-color); color: var(--want-to-buy-color); background: var(--want-to-buy-bg); }
 
@@ -525,7 +408,7 @@
     .book-progress { font-size: 0.8rem; color: var(--accent-text); font-weight: 500; margin-bottom: 4px; }
 
     /* ----- КНОПКА ТАЙМЕРА ----- */
-       .book-timer-btn {
+    .book-timer-btn {
       background: var(--status-bg);
       color: var(--text);
       border: 1px solid var(--border);
@@ -555,7 +438,6 @@
       animation: pulse 1s infinite;
     }
 
-    /* В тёмной теме кнопка остаётся тёмной, как раньше */
     [data-theme="dark"] .book-timer-btn {
       background: var(--timer-bg);
       color: var(--timer-text);
@@ -575,8 +457,39 @@
     .book-actions .delete-btn:hover { background: var(--delete-hover); }
     .book-actions .buy-btn { color: var(--success); background: var(--accent-dim); }
     .book-actions .buy-btn:hover { background: var(--accent); color: var(--bg); }
+    .book-actions .copy-btn { color: var(--accent-text); background: var(--accent-dim); font-weight: 600; }
+    .book-actions .copy-btn:hover { background: var(--accent); color: var(--bg); }
 
     .empty { text-align: center; padding: 4rem 0; color: var(--text-muted); font-size: 1.2rem; grid-column: 1 / -1; }
+
+    /* ----- БАННЕР МИГРАЦИИ ----- */
+    .migrate-banner {
+      background: var(--accent-dim);
+      border: 1.5px solid var(--accent);
+      border-radius: 20px;
+      padding: 16px 20px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .migrate-banner .mb-text { font-size: 0.9rem; color: var(--text); flex: 1; min-width: 200px; }
+    .migrate-banner button {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      white-space: nowrap;
+    }
+    .migrate-banner button:hover { transform: scale(1.03); box-shadow: 0 0 20px var(--accent-glow); }
+    .migrate-banner button:disabled { opacity: 0.6; cursor: wait; }
 
     /* ----- СТРАНИЦА КНИГИ ----- */
     .book-page { display: none; animation: fadeIn 0.3s ease; }
@@ -602,7 +515,7 @@
     .book-page .book-detail-title { font-size: 2.2rem; font-weight: 700; color: var(--text); line-height: 1.2; }
     .book-page .book-detail-author { font-size: 1.2rem; color: var(--text-secondary); }
     
-        .book-page .book-detail-status {
+    .book-page .book-detail-status {
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -887,9 +800,11 @@
     .book-page .book-detail-actions .edit-btn:hover { transform: scale(1.03); box-shadow: 0 0 20px var(--accent-glow); }
     .book-page .book-detail-actions .delete-btn { background: var(--delete-bg); color: var(--error); }
     .book-page .book-detail-actions .delete-btn:hover { background: var(--delete-hover); transform: scale(1.03); }
+    .book-page .book-detail-actions .copy-btn { background: var(--accent); color: var(--bg); }
+    .book-page .book-detail-actions .copy-btn:hover { transform: scale(1.03); box-shadow: 0 0 20px var(--accent-glow); }
 
     /* ----- TOAST ----- */
-    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--bg-card); color: var(--text); padding: 14px 28px; border-radius: 40px; box-shadow: 0 8px 30px var(--shadow); border: 1px solid var(--border); font-weight: 500; z-index: 1000; animation: slideUp 0.3s ease; max-width: 90%; }
+    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--bg-card); color: var(--text); padding: 14px 28px; border-radius: 40px; box-shadow: 0 8px 30px var(--shadow); border: 1px solid var(--border); font-weight: 500; z-index: 10000; animation: slideUp 0.3s ease; max-width: 90%; }
     .toast.success { border-color: var(--success); }
     .toast.error { border-color: var(--error); }
     @keyframes slideUp { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
@@ -909,7 +824,7 @@
     .timer-controls .start-btn.active { background: var(--error); }
     .timer-controls .stop-btn { background: var(--status-bg); color: var(--text); }
     .timer-controls .stop-btn:hover { background: var(--hover); }
-        .timer-section {
+    .timer-section {
       margin-top: 1rem;
     }
     .timer-mode-toggle {
@@ -959,7 +874,7 @@
     .timer-manual-fields.visible {
       display: flex;
     }
-        .timer-manual-fields input {
+    .timer-manual-fields input {
       width: 64px;
       padding: 10px 8px;
       border: 1.5px solid var(--border);
@@ -1056,6 +971,7 @@
       .header-actions { width: 100%; justify-content: stretch; }
       .btn-add-book { flex: 1; justify-content: center; }
       .theme-toggle { flex: 1; justify-content: center; }
+      .logout-btn { flex: 0 1 auto; }
       .modal .form-card { grid-template-columns: 1fr; gap: 1.2rem; }
       .modal .form-card .btn-add { grid-column: 1 / 2; max-width: 100%; }
       .date-row { flex-direction: column; }
@@ -1074,6 +990,7 @@
       .filters { gap: 6px; }
       .login-screen .login-box { padding: 1.5rem; }
       .quick-rating { flex-wrap: wrap; }
+      .shelf-switcher button { font-size: 0.8rem; padding: 8px 14px; }
     }
   </style>
 </head>
@@ -1083,10 +1000,11 @@
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
     <h1>📖 <span class="accent">Библиотека</span></h1>
-    <p>Введите пароль, чтобы войти</p>
-    <input type="password" id="passwordInput" placeholder="Введите пароль" />
+    <p>Войдите, чтобы продолжить</p>
+    <input type="email" id="emailInput" placeholder="Email" autocomplete="username" />
+    <input type="password" id="passwordInput" placeholder="Пароль" autocomplete="current-password" />
     <button class="login-btn" id="loginBtn">🔑 Войти</button>
-    <div class="login-error" id="loginError">Неверный пароль. Попробуйте ещё раз.</div>
+    <div class="login-error" id="loginError"></div>
   </div>
 </div>
 
@@ -1102,9 +1020,20 @@
         <h1>📖 <span class="accent">Библиотека</span> <small id="counter">0 книг</small></h1>
       </div>
       <div class="header-actions">
+        <span class="user-label" id="userLabel">👤</span>
         <button class="btn-add-book" id="openAddModal">+ Добавить книгу</button>
         <button class="theme-toggle" id="themeToggle">🌙 Тёмная тема</button>
+        <button class="logout-btn" id="logoutBtn">Выйти</button>
       </div>
+    </div>
+
+    <!-- ПЕРЕКЛЮЧАТЕЛЬ ПОЛОК -->
+    <div class="shelf-switcher" id="shelfSwitcher"></div>
+
+    <!-- БАННЕР МИГРАЦИИ -->
+    <div class="migrate-banner" id="migrateBanner" style="display:none;">
+      <div class="mb-text">🔧 Найдены книги без владельца. Проставить их вам?</div>
+      <button id="migrateBtn">Проставить мне</button>
     </div>
 
     <!-- ПОИСК -->
@@ -1200,6 +1129,31 @@
       </div>
     </div>
 
+    <!-- МОДАЛКА КОПИРОВАНИЯ -->
+    <div class="modal-overlay copy-modal" id="copyModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>➕ <span class="accent">Добавить</span> к себе</h2>
+          <button class="modal-close" id="closeCopyModal">✕</button>
+        </div>
+        <div class="copy-book-info">
+          <div class="cb-title" id="copyBookTitle"></div>
+          <div class="cb-author" id="copyBookAuthor"></div>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:10px;">В каком статусе добавить книгу?</p>
+        <div class="copy-status-list" id="copyStatusList">
+          <button data-status="В плане">📌 В плане</button>
+          <button data-status="Читаю">📖 Читаю</button>
+          <button data-status="Прочитано">✅ Прочитано</button>
+          <button data-status="Хочу купить">🛒 Хочу купить</button>
+        </div>
+        <div class="copy-actions">
+          <button class="btn-copy-cancel" id="copyCancelBtn">Отмена</button>
+          <button class="btn-copy-confirm" id="copyConfirmBtn" disabled>Добавить</button>
+        </div>
+      </div>
+    </div>
+
     <!-- МОДАЛКА ТАЙМЕРА -->
     <div class="modal-overlay timer-modal" id="timerModal">
       <div class="modal">
@@ -1207,7 +1161,7 @@
           <h2>⏱️ <span class="accent">Чтение</span></h2>
           <button class="modal-close" id="closeTimerModal">✕</button>
         </div>
-               <div class="timer-section">
+        <div class="timer-section">
           <div class="timer-mode-toggle" id="timerModeToggle">
             <button class="active" data-mode="timer">⏱️ Таймер</button>
             <button data-mode="manual">✍️ Вручную</button>
@@ -1221,7 +1175,7 @@
             </div>
           </div>
 
-                    <div class="timer-manual-fields" id="timerManualFields">
+          <div class="timer-manual-fields" id="timerManualFields">
             <input type="number" id="manualHours" min="0" max="999" placeholder="0" />
             <span>ч</span>
             <input type="number" id="manualMinutes" min="0" max="59" placeholder="0" />
@@ -1248,55 +1202,29 @@
 
 <script>
   // ============================================================
-  // 0. ЗАЩИТА ПАРОЛЕМ
+  // 0. СОСТОЯНИЕ ГЛОБАЛЬНОЕ
   // ============================================================
-  const CORRECT_PASSWORD = 'StarKoforeva';
+  let currentUser = null;          // firebase user
+  let allUsers = {};                // { uid: 'Катя', ... }
+  let currentShelf = null;          // uid чьей полки мы смотрим
+  let books = [];                   // все книги (и свои, и чужие)
+  let currentFilter = 'all';
+  let currentTheme = localStorage.getItem('libraryTheme') || 'light';
+  let currentView = 'grid';
+  let currentBookId = null;
+  let galleryIndex = 0;
 
-  const loginScreen = document.getElementById('loginScreen');
-  const appContent = document.getElementById('appContent');
-  const passwordInput = document.getElementById('passwordInput');
-  const loginBtn = document.getElementById('loginBtn');
-  const loginError = document.getElementById('loginError');
+  let timerInterval = null;
+  let timerSeconds = 0;
+  let timerRunning = false;
+  let timerBookId = null;
+  let timerMode = 'timer';
 
-  function checkPassword() {
-    const input = passwordInput.value;
-    if (input === CORRECT_PASSWORD) {
-      sessionStorage.setItem('library_logged_in', 'true');
-      loginScreen.style.display = 'none';
-      appContent.classList.add('visible');
-      initApp();
-    } else {
-      loginError.classList.add('visible');
-      passwordInput.value = '';
-      passwordInput.focus();
-    }
-  }
-
-  loginBtn.addEventListener('click', checkPassword);
-  passwordInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') checkPassword();
-  });
-
-  if (sessionStorage.getItem('library_logged_in') === 'true') {
-    loginScreen.style.display = 'none';
-    appContent.classList.add('visible');
-  }
+  let copySourceBook = null;        // книга, которую копируем
+  let copySelectedStatus = null;
 
   // ============================================================
-  // 1. PWA SERVICE WORKER
-  // ============================================================
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
-    window.addEventListener('online', () => {
-      document.getElementById('offlineBadge').classList.remove('visible');
-    });
-    window.addEventListener('offline', () => {
-      document.getElementById('offlineBadge').classList.add('visible');
-    });
-  }
-
-  // ============================================================
-  // 2. FIREBASE
+  // 1. FIREBASE
   // ============================================================
   const firebaseConfig = {
     apiKey: "AIzaSyB5GwhAJTznFiM2lAY1hliazCadZmXXFUM",
@@ -1308,25 +1236,22 @@
   };
 
   firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
   const db = firebase.firestore();
 
   // ============================================================
-  // 3. СОСТОЯНИЕ
+  // 2. DOM
   // ============================================================
-  let books = [];
-  let currentFilter = 'all';
-  let currentTheme = localStorage.getItem('libraryTheme') || 'light';
-  let currentView = 'grid';
-  let currentBookId = null;
-  let galleryIndex = 0;
+  const loginScreen = document.getElementById('loginScreen');
+  const appContent = document.getElementById('appContent');
+  const emailInput = document.getElementById('emailInput');
+  const passwordInput = document.getElementById('passwordInput');
+  const loginBtn = document.getElementById('loginBtn');
+  const loginError = document.getElementById('loginError');
 
-  let timerInterval = null;
-  let timerSeconds = 0;
-  let timerRunning = false;
-  let timerBookId = null;
-  let timerMode = 'timer'; // 'timer' | 'manual'
+  const userLabel = document.getElementById('userLabel');
+  const logoutBtn = document.getElementById('logoutBtn');
 
-  // DOM
   const titleInput = document.getElementById('titleInput');
   const authorInput = document.getElementById('authorInput');
   const pagesInput = document.getElementById('pagesInput');
@@ -1356,6 +1281,17 @@
   const backBtn = document.getElementById('backBtn');
   const searchInput = document.getElementById('searchInput');
   const searchWrap = document.getElementById('searchWrap');
+  const shelfSwitcher = document.getElementById('shelfSwitcher');
+  const migrateBanner = document.getElementById('migrateBanner');
+  const migrateBtn = document.getElementById('migrateBtn');
+
+  const copyModal = document.getElementById('copyModal');
+  const closeCopyModal = document.getElementById('closeCopyModal');
+  const copyBookTitle = document.getElementById('copyBookTitle');
+  const copyBookAuthor = document.getElementById('copyBookAuthor');
+  const copyStatusList = document.getElementById('copyStatusList');
+  const copyCancelBtn = document.getElementById('copyCancelBtn');
+  const copyConfirmBtn = document.getElementById('copyConfirmBtn');
 
   const timerModal = document.getElementById('timerModal');
   const closeTimerModal = document.getElementById('closeTimerModal');
@@ -1374,7 +1310,7 @@
   const timerClockBlock = document.getElementById('timerClockBlock');
 
   // ============================================================
-  // 4. ТЕМА
+  // 3. ТЕМА
   // ============================================================
   function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
@@ -1388,7 +1324,7 @@
   applyTheme(currentTheme);
 
   // ============================================================
-  // 5. TOAST
+  // 4. TOAST
   // ============================================================
   function showToast(message, type = '') {
     const existing = document.querySelector('.toast');
@@ -1401,7 +1337,7 @@
   }
 
   // ============================================================
-  // 6. HELPERS
+  // 5. HELPERS
   // ============================================================
   function escapeHtml(text) {
     if (!text) return '';
@@ -1449,8 +1385,177 @@
     return status === 'Читаю' ? 'reading' : status === 'Прочитано' ? 'done' : status === 'Хочу купить' ? 'want-to-buy' : '';
   }
 
+  function isMyShelf() {
+    return currentUser && currentShelf === currentUser.uid;
+  }
+
+  function getShelfOwnerName() {
+    return allUsers[currentShelf] || 'Неизвестный';
+  }
+
   // ============================================================
-  // 7. ЗАГРУЗКА ОБЛОЖЕК
+  // 6. АУТЕНТИФИКАЦИЯ
+  // ============================================================
+  loginBtn.addEventListener('click', async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    loginError.classList.remove('visible');
+    loginError.textContent = '';
+
+    if (!email || !password) {
+      loginError.textContent = 'Введите email и пароль';
+      loginError.classList.add('visible');
+      return;
+    }
+
+    loginBtn.disabled = true;
+    loginBtn.textContent = '⏳ Вход...';
+
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+    } catch (err) {
+      console.error('Login error:', err);
+      let msg = 'Не удалось войти';
+      if (err.code === 'auth/user-not-found') msg = 'Пользователь не найден';
+      else if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') msg = 'Неверный email или пароль';
+      else if (err.code === 'auth/invalid-email') msg = 'Некорректный email';
+      loginError.textContent = msg;
+      loginError.classList.add('visible');
+    } finally {
+      loginBtn.disabled = false;
+      loginBtn.textContent = '🔑 Войти';
+    }
+  });
+
+  passwordInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') loginBtn.click();
+  });
+
+  emailInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') passwordInput.focus();
+  });
+
+  logoutBtn.addEventListener('click', async () => {
+    if (!confirm('Выйти из библиотеки?')) return;
+    await auth.signOut();
+    location.reload();
+  });
+
+  // ============================================================
+  // 7. ПОДПИСКА НА АВТОРИЗАЦИЮ
+  // ============================================================
+  auth.onAuthStateChanged(async (user) => {
+    if (user) {
+      currentUser = user;
+      loginScreen.style.display = 'none';
+      appContent.classList.add('visible');
+
+      await loadUsers();
+      currentShelf = user.uid;
+      updateUserLabel();
+      renderShelfSwitcher();
+      subscribeToBooks();
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.target.closest('#bookForm') && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+          addBook();
+        }
+      });
+
+      initCoverRows(coversContainer);
+    } else {
+      currentUser = null;
+      loginScreen.style.display = 'flex';
+      appContent.classList.remove('visible');
+    }
+  });
+
+  // ============================================================
+  // 8. ЗАГРУЗКА ИМЁН ПОЛЬЗОВАТЕЛЕЙ
+  // ============================================================
+  async function loadUsers() {
+    try {
+      const snap = await db.collection('users').get();
+      allUsers = {};
+      snap.forEach(doc => {
+        allUsers[doc.id] = doc.data().displayName || 'Без имени';
+      });
+      // Гарантируем, что мы сами есть
+      if (currentUser && !allUsers[currentUser.uid]) {
+        allUsers[currentUser.uid] = currentUser.email.split('@')[0];
+      }
+    } catch (err) {
+      console.error('Load users error:', err);
+    }
+  }
+
+  function updateUserLabel() {
+    if (!currentUser) return;
+    const name = allUsers[currentUser.uid] || currentUser.email;
+    userLabel.textContent = `👤 ${name}`;
+  }
+
+  // ============================================================
+  // 9. ПЕРЕКЛЮЧАТЕЛЬ ПОЛОК
+  // ============================================================
+  function renderShelfSwitcher() {
+    if (!currentUser) return;
+    const otherUids = Object.keys(allUsers).filter(uid => uid !== currentUser.uid);
+
+    let html = '';
+    html += `<button class="${currentShelf === currentUser.uid ? 'active' : ''}" data-uid="${currentUser.uid}">📚 Моя полка</button>`;
+
+    otherUids.forEach(uid => {
+      const name = allUsers[uid];
+      const activeClass = currentShelf === uid ? 'active readonly' : 'readonly';
+      html += `<button class="${activeClass}" data-uid="${uid}">👤 Полка ${escapeHtml(name)}</button>`;
+    });
+
+    shelfSwitcher.innerHTML = html;
+
+    shelfSwitcher.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const uid = btn.dataset.uid;
+        if (uid === currentShelf) return;
+        currentShelf = uid;
+        currentFilter = 'all';
+        document.querySelectorAll('#filterBar button').forEach(b => b.classList.remove('active'));
+        document.querySelector('#filterBar button[data-filter="all"]').classList.add('active');
+        showGridView();
+        renderShelfSwitcher();
+        render();
+        updateCounter();
+        updateAddBookVisibility();
+      });
+    });
+  }
+
+  function updateAddBookVisibility() {
+    // Кнопка «Добавить книгу» показывается только на своей полке
+    if (isMyShelf()) {
+      openAddModal.style.display = '';
+    } else {
+      openAddModal.style.display = 'none';
+    }
+  }
+
+  // ============================================================
+  // 10. PWA SERVICE WORKER
+  // ============================================================
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+    window.addEventListener('online', () => {
+      document.getElementById('offlineBadge').classList.remove('visible');
+    });
+    window.addEventListener('offline', () => {
+      document.getElementById('offlineBadge').classList.add('visible');
+    });
+  }
+
+  // ============================================================
+  // 11. ЗАГРУЗКА ОБЛОЖЕК
   // ============================================================
   function initUploadButtons(container) {
     const fileInputs = container.querySelectorAll('.upload-btn input[type="file"]');
@@ -1580,7 +1685,7 @@
   });
 
   // ============================================================
-  // 8. ДАТЫ И СТАТУСЫ
+  // 12. ДАТЫ И СТАТУСЫ
   // ============================================================
   function updateFields() {
     const status = statusSelect.value;
@@ -1630,7 +1735,7 @@
   updateFields();
 
   // ============================================================
-  // 9. МОДАЛКА ДОБАВЛЕНИЯ
+  // 13. МОДАЛКА ДОБАВЛЕНИЯ
   // ============================================================
   function openModal() {
     addModal.classList.add('active');
@@ -1669,7 +1774,7 @@
   });
 
   // ============================================================
-  // 10. НАВИГАЦИЯ
+  // 14. НАВИГАЦИЯ
   // ============================================================
   function showGridView() {
     currentView = 'grid';
@@ -1678,8 +1783,10 @@
     bookPage.classList.remove('active');
     filterBar.style.display = 'flex';
     searchWrap.style.display = 'block';
+    shelfSwitcher.style.display = 'flex';
     backBtn.classList.remove('visible');
     document.querySelector('.header-actions').style.display = 'flex';
+    updateAddBookVisibility();
     updateCounter();
   }
 
@@ -1693,6 +1800,7 @@
     bookPage.classList.add('active');
     filterBar.style.display = 'none';
     searchWrap.style.display = 'none';
+    shelfSwitcher.style.display = 'none';
     backBtn.classList.add('visible');
     document.querySelector('.header-actions').style.display = 'none';
     renderBookPage(book);
@@ -1701,7 +1809,7 @@
   backBtn.addEventListener('click', showGridView);
 
   // ============================================================
-  // 11. FIREBASE — ЧТЕНИЕ (реальное время)
+  // 15. FIREBASE — ЧТЕНИЕ (реальное время)
   // ============================================================
   function subscribeToBooks() {
     db.collection('books')
@@ -1718,6 +1826,7 @@
         books = newBooks;
         render();
         updateCounter();
+        checkMigration();
 
         if (currentView === 'book' && currentBookId) {
           const updatedBook = books.find(b => b.id === currentBookId);
@@ -1730,13 +1839,57 @@
   }
 
   // ============================================================
-  // 12. FIREBASE — ЗАПИСЬ
+  // 16. ПРОВЕРКА МИГРАЦИИ
+  // ============================================================
+  function checkMigration() {
+    if (!currentUser || !isMyShelf()) {
+      migrateBanner.style.display = 'none';
+      return;
+    }
+    const orphanBooks = books.filter(b => !b.ownerId);
+    if (orphanBooks.length > 0) {
+      migrateBanner.style.display = 'flex';
+    } else {
+      migrateBanner.style.display = 'none';
+    }
+  }
+
+  migrateBtn.addEventListener('click', async () => {
+    if (!currentUser) return;
+    const orphanBooks = books.filter(b => !b.ownerId);
+    if (orphanBooks.length === 0) return;
+
+    if (!confirm(`Проставить вам ${orphanBooks.length} книг(и) без владельца?`)) return;
+
+    migrateBtn.disabled = true;
+    migrateBtn.textContent = '⏳ Обработка...';
+
+    try {
+      const batch = db.batch();
+      orphanBooks.forEach(book => {
+        const ref = db.collection('books').doc(book.id);
+        batch.update(ref, { ownerId: currentUser.uid });
+      });
+      await batch.commit();
+      showToast(`✅ Проставлено владельцев: ${orphanBooks.length}`, 'success');
+    } catch (err) {
+      console.error('Migration error:', err);
+      showToast('❌ Ошибка миграции', 'error');
+    } finally {
+      migrateBtn.disabled = false;
+      migrateBtn.textContent = 'Проставить мне';
+    }
+  });
+
+  // ============================================================
+  // 17. FIREBASE — ЗАПИСЬ
   // ============================================================
   async function saveToFirebase(bookData) {
     try {
       const docRef = db.collection('books').doc();
       await docRef.set({
         ...bookData,
+        ownerId: currentUser.uid,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       });
@@ -1773,9 +1926,14 @@
   }
 
   // ============================================================
-  // 13. ДОБАВЛЕНИЕ КНИГИ
+  // 18. ДОБАВЛЕНИЕ КНИГИ
   // ============================================================
   function addBook() {
+    if (!isMyShelf()) {
+      showToast('Нельзя добавлять книги на чужую полку', 'error');
+      return;
+    }
+
     const title = titleInput.value.trim();
     if (!title) {
       showToast('Введите название книги', 'error');
@@ -1840,7 +1998,93 @@
   addBtn.addEventListener('click', addBook);
 
   // ============================================================
-  // 14. ТАЙМЕР
+  // 19. КОПИРОВАНИЕ КНИГИ К СЕБЕ
+  // ============================================================
+  function openCopyModal(book) {
+    copySourceBook = book;
+    copySelectedStatus = null;
+    copyBookTitle.textContent = book.title;
+    copyBookAuthor.textContent = book.author || '';
+
+    copyStatusList.querySelectorAll('button').forEach(btn => {
+      btn.classList.remove('selected');
+    });
+    copyConfirmBtn.disabled = true;
+
+    copyModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCopyModalFn() {
+    copyModal.classList.remove('active');
+    document.body.style.overflow = '';
+    copySourceBook = null;
+    copySelectedStatus = null;
+  }
+
+  closeCopyModal.addEventListener('click', closeCopyModalFn);
+  copyCancelBtn.addEventListener('click', closeCopyModalFn);
+  copyModal.addEventListener('click', (e) => {
+    if (e.target === copyModal) closeCopyModalFn();
+  });
+
+  copyStatusList.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      copyStatusList.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      copySelectedStatus = btn.dataset.status;
+      copyConfirmBtn.disabled = false;
+    });
+  });
+
+  copyConfirmBtn.addEventListener('click', async () => {
+    if (!copySourceBook || !copySelectedStatus || !currentUser) return;
+
+    const src = copySourceBook;
+    const today = new Date().toISOString().split('T')[0];
+
+    const newBook = {
+      title: src.title,
+      author: src.author || null,
+      pages: src.pages || null,
+      covers: src.covers || [],
+      mainCover: src.mainCover || (src.covers && src.covers[0]) || null,
+      status: copySelectedStatus,
+      startDate: (copySelectedStatus === 'Читаю' || copySelectedStatus === 'Прочитано') ? today : null,
+      endDate: (copySelectedStatus === 'Прочитано') ? today : null,
+      rating: null,
+      review: null,
+      annotation: src.annotation || null,
+      readingHistory: [],
+      currentPage: null,
+      quotes: [],
+      favorite: false
+    };
+
+    copyConfirmBtn.disabled = true;
+    copyConfirmBtn.textContent = '⏳ Добавляем...';
+
+    try {
+      const docRef = db.collection('books').doc();
+      await docRef.set({
+        ...newBook,
+        ownerId: currentUser.uid,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      });
+      showToast(`✅ Книга добавлена в «${copySelectedStatus}»`, 'success');
+      closeCopyModalFn();
+    } catch (err) {
+      console.error('Copy error:', err);
+      showToast('❌ Ошибка добавления', 'error');
+    } finally {
+      copyConfirmBtn.disabled = false;
+      copyConfirmBtn.textContent = 'Добавить';
+    }
+  });
+
+  // ============================================================
+  // 20. ТАЙМЕР
   // ============================================================
   function openTimer(bookId) {
     const book = books.find(b => b.id === bookId);
@@ -1855,8 +2099,8 @@
     timerError.textContent = '';
     manualHours.value = '';
     manualMinutes.value = '';
+    manualSeconds.value = '';
 
-        // Сброс режима на «Таймер»
     timerMode = 'timer';
     timerModeToggle.querySelectorAll('button').forEach(b => {
       b.classList.toggle('active', b.dataset.mode === 'timer');
@@ -1929,8 +2173,7 @@
     timerDisplay.textContent = '00:00:00';
   });
 
-  // Переключатель режима
-    timerModeToggle.addEventListener('click', (e) => {
+  timerModeToggle.addEventListener('click', (e) => {
     const btn = e.target.closest('button[data-mode]');
     if (!btn) return;
     timerMode = btn.dataset.mode;
@@ -1941,12 +2184,9 @@
 
     const isManual = timerMode === 'manual';
 
-    // Показываем/скрываем блок с таймером
     timerClockBlock.classList.toggle('hidden', isManual);
-    // Показываем/скрываем поля «ч / мин»
     timerManualFields.classList.toggle('visible', isManual);
 
-    // Если переключились на «Вручную» и таймер шёл — останавливаем его
     if (isManual && timerRunning) {
       timerRunning = false;
       timerStartBtn.textContent = '▶ Старт';
@@ -1961,7 +2201,6 @@
     timerError.textContent = '';
   });
 
-  // Единая кнопка «Записать»
   timerSaveBtn.addEventListener('click', async () => {
     timerError.style.display = 'none';
     timerError.textContent = '';
@@ -1969,7 +2208,6 @@
     const book = books.find(b => b.id === timerBookId);
     if (!book) return;
 
-    // Проверяем страницу (если указана)
     const pageInput = timerPageInput.value.trim();
     const page = pageInput ? parseInt(pageInput) : (book.currentPage || null);
 
@@ -1989,7 +2227,7 @@
     let totalSeconds = 0;
     let entry;
 
-        if (timerMode === 'manual') {
+    if (timerMode === 'manual') {
       const h = parseInt(manualHours.value) || 0;
       const m = parseInt(manualMinutes.value) || 0;
       const s = parseInt(manualSeconds.value) || 0;
@@ -2047,7 +2285,6 @@
       showToast('✅ Запись сохранена!', 'success');
     }
 
-    // Сбрасываем секундомер и поля
     timerSeconds = 0;
     timerDisplay.textContent = '00:00:00';
     if (timerRunning) {
@@ -2078,8 +2315,6 @@
       return;
     }
 
-    // Показываем последние 10 записей (в обратном порядке),
-    // но сохраняем их реальные индексы в history
     const indexed = history.map((entry, idx) => ({ entry, idx }));
     const sorted = indexed.reverse().slice(0, 10);
 
@@ -2119,16 +2354,22 @@
   }
 
   // ============================================================
-  // 15. РЕНДЕР
+  // 21. РЕНДЕР
   // ============================================================
   function getSearchQuery() {
     return searchInput.value.trim().toLowerCase();
   }
 
   function render() {
+    if (!currentUser) return;
+
     const query = getSearchQuery();
+    const mine = isMyShelf();
 
     let filtered = books.filter(book => {
+      // Только книги выбранной полки
+      if (book.ownerId !== currentShelf) return false;
+
       if (currentFilter === 'all' && book.status === 'Хочу купить') return false;
       
       if (currentFilter === 'favorite') {
@@ -2145,11 +2386,6 @@
       return true;
     });
 
-       // Порядок статусов на главной:
-    // 1) Читаю
-    // 2) В плане (сначала недавно добавленные)
-    // 3) Прочитано (сначала недавно прочитанные, по endDate)
-    // 4) Хочу купить (по дате добавления)
     const statusOrder = {
       'Читаю': 1,
       'В плане': 2,
@@ -2163,13 +2399,10 @@
 
       if (orderA !== orderB) return orderA - orderB;
 
-      // Внутри одной группы:
       if (a.status === 'Прочитано') {
-        // по убыванию endDate
         return (b.endDate || '').localeCompare(a.endDate || '');
       }
 
-      // для «В плане», «Читаю», «Хочу купить» — по убыванию createdAt (новые выше)
       return (b.createdAt || '').localeCompare(a.createdAt || '');
     });
 
@@ -2218,33 +2451,51 @@
           progressHtml = `<div class="book-pages">${book.pages} стр.</div>`;
         }
 
-        const timerBtnHtml = book.status === 'Читаю' ? `
+        // === ТОЛЬКО ДЛЯ СВОЕЙ ПОЛКИ ===
+        let statusBlockHtml = '';
+        if (mine) {
+          statusBlockHtml = book.status === 'Хочу купить' ? `
+            <span class="book-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>
+          ` : `
+            <div class="book-status-btn">
+              <span class="book-status ${statusClass}" data-id="${book.id}">${getStatusEmoji(book.status)} ${book.status} ▼</span>
+              <div class="status-dropdown" data-id="${book.id}">
+                ${book.status !== 'Прочитано' ? `<button class="status-option ${book.status === 'В плане' ? 'active' : ''}" data-id="${book.id}" data-status="В плане">📌 В плане</button>` : ''}
+                <button class="status-option ${book.status === 'Читаю' ? 'active' : ''}" data-id="${book.id}" data-status="Читаю">📖 Читаю</button>
+                <button class="status-option ${book.status === 'Прочитано' ? 'active' : ''}" data-id="${book.id}" data-status="Прочитано">✅ Прочитано</button>
+              </div>
+            </div>
+          `;
+        } else {
+          statusBlockHtml = `<span class="book-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>`;
+        }
+
+        const timerBtnHtml = (mine && book.status === 'Читаю') ? `
           <button class="book-timer-btn" data-id="${book.id}">⏱️ Читать</button>
         ` : '';
 
-        const buyBtnHtml = book.status === 'Хочу купить' ? `
+        const buyBtnHtml = (mine && book.status === 'Хочу купить') ? `
           <button class="buy-btn" data-id="${book.id}">✅ Куплено</button>
         ` : '';
 
-                const statusBlockHtml = book.status === 'Хочу купить' ? `
-          <span class="book-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>
-        ` : `
-          <div class="book-status-btn">
-            <span class="book-status ${statusClass}" data-id="${book.id}">${getStatusEmoji(book.status)} ${book.status} ▼</span>
-            <div class="status-dropdown" data-id="${book.id}">
-              ${book.status !== 'Прочитано' ? `<button class="status-option ${book.status === 'В плане' ? 'active' : ''}" data-id="${book.id}" data-status="В плане">📌 В плане</button>` : ''}
-              <button class="status-option ${book.status === 'Читаю' ? 'active' : ''}" data-id="${book.id}" data-status="Читаю">📖 Читаю</button>
-              <button class="status-option ${book.status === 'Прочитано' ? 'active' : ''}" data-id="${book.id}" data-status="Прочитано">✅ Прочитано</button>
-            </div>
-          </div>
-        `;
+        const copyBtnHtml = !mine ? `
+          <button class="copy-btn" data-id="${book.id}">➕ К себе</button>
+        ` : '';
+
+        const deleteBtnHtml = mine ? `
+          <button class="delete-btn" data-id="${book.id}">🗑 Удалить</button>
+        ` : '';
+
+        const favoriteBtnHtml = mine ? `
+          <button class="favorite-btn ${book.favorite ? 'active' : ''}" data-id="${book.id}" title="Избранное">⭐</button>
+        ` : `<span class="favorite-btn ${book.favorite ? 'active' : ''}" style="pointer-events:none;opacity:${book.favorite ? 1 : 0.3};">⭐</span>`;
 
         return `
           <div class="book-card" data-id="${book.id}">
             <div class="cover-wrapper">
               <div class="cover">${coverHtml}</div>
               ${coverCount > 1 ? `<div class="cover-badge">📷 ${coverCount}</div>` : ''}
-              <button class="favorite-btn ${book.favorite ? 'active' : ''}" data-id="${book.id}" title="Избранное">⭐</button>
+              ${favoriteBtnHtml}
             </div>
             <div class="book-title">${escapeHtml(book.title)}</div>
             ${book.author ? `<div class="book-author">${escapeHtml(book.author)}</div>` : ''}
@@ -2256,12 +2507,14 @@
             ${timerBtnHtml}
             <div class="book-actions">
               ${buyBtnHtml}
-              <button class="delete-btn" data-id="${book.id}">🗑 Удалить</button>
+              ${copyBtnHtml}
+              ${deleteBtnHtml}
             </div>
           </div>
         `;
       }).join('');
 
+      // === ОБРАБОТЧИКИ ===
       document.querySelectorAll('.book-card').forEach(card => {
         card.addEventListener('click', (e) => {
           if (e.target.closest('button')) return;
@@ -2271,9 +2524,10 @@
         });
       });
 
-      document.querySelectorAll('.favorite-btn').forEach(btn => {
+      document.querySelectorAll('.favorite-btn[data-id]').forEach(btn => {
         btn.addEventListener('click', async (e) => {
           e.stopPropagation();
+          if (!mine) return;
           const id = btn.dataset.id;
           const book = books.find(b => b.id === id);
           if (!book) return;
@@ -2281,92 +2535,102 @@
         });
       });
 
-      // ===== БЫСТРОЕ ПЕРЕКЛЮЧЕНИЕ СТАТУСА =====
-      document.querySelectorAll('.book-status-btn .book-status').forEach(badge => {
-        badge.addEventListener('click', (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          const id = badge.dataset.id;
-          const dropdown = document.querySelector(`.status-dropdown[data-id="${id}"]`);
-          if (!dropdown) return;
-          
-          document.querySelectorAll('.status-dropdown.visible').forEach(d => {
-            if (d !== dropdown) d.classList.remove('visible');
+      if (mine) {
+        document.querySelectorAll('.book-status-btn .book-status').forEach(badge => {
+          badge.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            const id = badge.dataset.id;
+            const dropdown = document.querySelector(`.status-dropdown[data-id="${id}"]`);
+            if (!dropdown) return;
+            
+            document.querySelectorAll('.status-dropdown.visible').forEach(d => {
+              if (d !== dropdown) d.classList.remove('visible');
+            });
+            
+            dropdown.classList.toggle('visible');
           });
-          
-          dropdown.classList.toggle('visible');
         });
-      });
 
-      document.querySelectorAll('.status-option').forEach(option => {
-        option.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          const id = option.dataset.id;
-          const newStatus = option.dataset.status;
-          if (newStatus === 'Хочу купить') return;
-          const book = books.find(b => b.id === id);
-          if (!book) return;
-          
-          document.querySelectorAll('.status-dropdown.visible').forEach(d => d.classList.remove('visible'));
-          
-          if (book.status === newStatus) return;
-
-          const updatedData = { status: newStatus };
-          const today = new Date().toISOString().split('T')[0];
-
-          if (newStatus === 'В плане') {
-            updatedData.startDate = null;
-            updatedData.endDate = null;
-            updatedData.rating = null;
-          } else if (newStatus === 'Читаю') {
-            updatedData.startDate = book.startDate || today;
-            updatedData.endDate = null;
-            updatedData.rating = null;
-          } else if (newStatus === 'Прочитано') {
-            updatedData.startDate = book.startDate || today;
-            updatedData.endDate = book.endDate || today;
-          }
-
-          await updateInFirebase(id, updatedData, true);
-          showToast(`✅ Статус: ${newStatus}`, 'success');
-        });
-      });
-
-      // ===== ЗАКРЫТИЕ МЕНЮ ПРИ КЛИКЕ ВНЕ =====
-      if (!window._statusCloseListenerAdded) {
-        window._statusCloseListenerAdded = true;
-        document.addEventListener('click', (e) => {
-          if (!e.target.closest('.book-status-btn')) {
+        document.querySelectorAll('.status-option').forEach(option => {
+          option.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const id = option.dataset.id;
+            const newStatus = option.dataset.status;
+            if (newStatus === 'Хочу купить') return;
+            const book = books.find(b => b.id === id);
+            if (!book) return;
+            
             document.querySelectorAll('.status-dropdown.visible').forEach(d => d.classList.remove('visible'));
-          }
+            
+            if (book.status === newStatus) return;
+
+            const updatedData = { status: newStatus };
+            const today = new Date().toISOString().split('T')[0];
+
+            if (newStatus === 'В плане') {
+              updatedData.startDate = null;
+              updatedData.endDate = null;
+              updatedData.rating = null;
+            } else if (newStatus === 'Читаю') {
+              updatedData.startDate = book.startDate || today;
+              updatedData.endDate = null;
+              updatedData.rating = null;
+            } else if (newStatus === 'Прочитано') {
+              updatedData.startDate = book.startDate || today;
+              updatedData.endDate = book.endDate || today;
+            }
+
+            await updateInFirebase(id, updatedData, true);
+            showToast(`✅ Статус: ${newStatus}`, 'success');
+          });
+        });
+
+        if (!window._statusCloseListenerAdded) {
+          window._statusCloseListenerAdded = true;
+          document.addEventListener('click', (e) => {
+            if (!e.target.closest('.book-status-btn')) {
+              document.querySelectorAll('.status-dropdown.visible').forEach(d => d.classList.remove('visible'));
+            }
+          });
+        }
+
+        document.querySelectorAll('.book-timer-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = btn.dataset.id;
+            openTimer(id);
+          });
+        });
+
+        document.querySelectorAll('.buy-btn').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const id = btn.dataset.id;
+            await updateInFirebase(id, { status: 'В плане' }, true);
+            showToast('✅ Книга добавлена в "В плане"!', 'success');
+          });
+        });
+
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const id = btn.dataset.id;
+            const book = books.find(b => b.id === id);
+            if (confirm(`Удалить книгу "${book?.title}"?`)) {
+              await deleteFromFirebase(id);
+            }
+          });
         });
       }
 
-      document.querySelectorAll('.book-timer-btn').forEach(btn => {
+      document.querySelectorAll('.copy-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
           const id = btn.dataset.id;
-          openTimer(id);
-        });
-      });
-
-      document.querySelectorAll('.buy-btn').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          const id = btn.dataset.id;
-          await updateInFirebase(id, { status: 'В плане' }, true);
-          showToast('✅ Книга добавлена в "В плане"!', 'success');
-        });
-      });
-
-      document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          const id = btn.dataset.id;
           const book = books.find(b => b.id === id);
-          if (confirm(`Удалить книгу "${book?.title}"?`)) {
-            await deleteFromFirebase(id);
-          }
+          if (!book) return;
+          openCopyModal(book);
         });
       });
     }
@@ -2376,16 +2640,17 @@
   searchInput.addEventListener('input', render);
 
   // ============================================================
-  // 16. РЕНДЕР СТРАНИЦЫ КНИГИ
+  // 22. РЕНДЕР СТРАНИЦЫ КНИГИ
   // ============================================================
   function renderBookPage(book) {
+    const mine = book.ownerId === currentUser.uid;
     const covers = book.covers || [];
     const mainCover = book.mainCover || (covers.length > 0 ? covers[0] : null);
 
     const statusClass = getStatusClass(book.status);
     
     let quickRatingHtml = '';
-    if (book.status === 'Прочитано') {
+    if (book.status === 'Прочитано' && mine) {
       quickRatingHtml = `
         <div class="quick-rating" id="quickRating">
           <span class="label">Оценка:</span>
@@ -2395,15 +2660,30 @@
           <span class="value" id="ratingValue">${book.rating ? book.rating + '/5' : '—'}</span>
         </div>
       `;
+    } else if (book.status === 'Прочитано' && !mine && book.rating) {
+      quickRatingHtml = `
+        <div class="quick-rating">
+          <span class="label">Оценка:</span>
+          <span style="font-size:1.4rem;color:var(--star-color);">${getStars(book.rating)}</span>
+          <span class="value">${book.rating}/5</span>
+        </div>
+      `;
     }
 
     let quickReviewHtml = '';
-    if (book.status === 'Прочитано') {
+    if (book.status === 'Прочитано' && mine) {
       quickReviewHtml = `
         <div class="quick-review">
           <div class="label">📝 Мой отзыв</div>
           <textarea id="quickReviewTextarea">${escapeHtml(book.review || '')}</textarea>
           <button class="save-review-btn" id="saveQuickReview">💾 Сохранить отзыв</button>
+        </div>
+      `;
+    } else if (book.status === 'Прочитано' && !mine && book.review) {
+      quickReviewHtml = `
+        <div class="quick-review">
+          <div class="label">📝 Отзыв ${escapeHtml(getShelfOwnerName())}</div>
+          <div style="font-size:0.95rem;color:var(--text-secondary);line-height:1.5;white-space:pre-wrap;">${escapeHtml(book.review)}</div>
         </div>
       `;
     }
@@ -2449,19 +2729,35 @@
       quotesHtml = quotes.map((q, idx) => {
         const quoteText = typeof q === 'string' ? q : (q.text || '');
         const quoteComment = typeof q === 'object' && q.comment ? q.comment : '';
-        return `
-          <div class="quote-item" data-idx="${idx}">
-            <div class="quote-text-row">
-              <span class="quote-text">“${escapeHtml(quoteText)}”</span>
-              <button class="delete-quote" data-idx="${idx}" title="Удалить цитату">✕</button>
+        if (mine) {
+          return `
+            <div class="quote-item" data-idx="${idx}">
+              <div class="quote-text-row">
+                <span class="quote-text">“${escapeHtml(quoteText)}”</span>
+                <button class="delete-quote" data-idx="${idx}" title="Удалить цитату">✕</button>
+              </div>
+              <div class="quote-comment-block">
+                <div class="quote-comment-label">💬 Мой комментарий</div>
+                <textarea class="quote-comment-input" data-idx="${idx}">${escapeHtml(quoteComment)}</textarea>
+                <button class="quote-comment-save" data-idx="${idx}">💾 Сохранить</button>
+              </div>
             </div>
-            <div class="quote-comment-block">
-              <div class="quote-comment-label">💬 Мой комментарий</div>
-              <textarea class="quote-comment-input" data-idx="${idx}">${escapeHtml(quoteComment)}</textarea>
-              <button class="quote-comment-save" data-idx="${idx}">💾 Сохранить</button>
+          `;
+        } else {
+          return `
+            <div class="quote-item" data-idx="${idx}">
+              <div class="quote-text-row">
+                <span class="quote-text">“${escapeHtml(quoteText)}”</span>
+              </div>
+              ${quoteComment ? `
+                <div class="quote-comment-block">
+                  <div class="quote-comment-label">💬 Комментарий</div>
+                  <div style="font-size:0.9rem;color:var(--text-secondary);line-height:1.4;white-space:pre-wrap;">${escapeHtml(quoteComment)}</div>
+                </div>
+              ` : ''}
             </div>
-          </div>
-        `;
+          `;
+        }
       }).join('');
     } else {
       quotesHtml = `<div class="empty-quotes">Пока нет цитат</div>`;
@@ -2480,33 +2776,78 @@
           <div class="gallery-dots">
             ${covers.map((_, i) => `<button class="dot ${i === galleryIndex ? 'active' : ''}" data-index="${i}"></button>`).join('')}
           </div>
-          <button class="set-main-btn ${mainCover === covers[galleryIndex] ? 'active' : ''}" id="setMainBtn">
+          ${mine ? `<button class="set-main-btn ${mainCover === covers[galleryIndex] ? 'active' : ''}" id="setMainBtn">
             ${mainCover === covers[galleryIndex] ? '⭐ Главная' : '☆ Сделать главной'}
-          </button>
+          </button>` : ''}
         ` : ''}
-        <button class="favorite-btn ${book.favorite ? 'active' : ''}" id="detailFavoriteBtn" style="top:56px;" title="Избранное">⭐</button>
+        ${mine ? `<button class="favorite-btn ${book.favorite ? 'active' : ''}" id="detailFavoriteBtn" style="top:56px;" title="Избранное">⭐</button>` : ''}
       `;
     } else {
       coverHtml = `
         <div class="cover-slide">
           <div class="no-cover"><span>📖</span>Нет обложки</div>
         </div>
-        <button class="favorite-btn ${book.favorite ? 'active' : ''}" id="detailFavoriteBtn" style="top:8px;" title="Избранное">⭐</button>
+        ${mine ? `<button class="favorite-btn ${book.favorite ? 'active' : ''}" id="detailFavoriteBtn" style="top:8px;" title="Избранное">⭐</button>` : ''}
       `;
     }
 
-        const detailStatusHtml = book.status === 'Хочу купить' ? `
-      <span class="book-detail-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>
-    ` : `
-      <div class="book-status-btn" style="align-self: flex-start;">
-        <span class="book-detail-status ${statusClass}" data-id="${book.id}">${getStatusEmoji(book.status)} ${book.status} ▼</span>
-        <div class="status-dropdown" data-id="${book.id}">
-          ${book.status !== 'Прочитано' ? `<button class="status-option ${book.status === 'В плане' ? 'active' : ''}" data-id="${book.id}" data-status="В плане">📌 В плане</button>` : ''}
-          <button class="status-option ${book.status === 'Читаю' ? 'active' : ''}" data-id="${book.id}" data-status="Читаю">📖 Читаю</button>
-          <button class="status-option ${book.status === 'Прочитано' ? 'active' : ''}" data-id="${book.id}" data-status="Прочитано">✅ Прочитано</button>
+    let detailStatusHtml = '';
+    if (mine) {
+      detailStatusHtml = book.status === 'Хочу купить' ? `
+        <span class="book-detail-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>
+      ` : `
+        <div class="book-status-btn" style="align-self: flex-start;">
+          <span class="book-detail-status ${statusClass}" data-id="${book.id}">${getStatusEmoji(book.status)} ${book.status} ▼</span>
+          <div class="status-dropdown" data-id="${book.id}">
+            ${book.status !== 'Прочитано' ? `<button class="status-option ${book.status === 'В плане' ? 'active' : ''}" data-id="${book.id}" data-status="В плане">📌 В плане</button>` : ''}
+            <button class="status-option ${book.status === 'Читаю' ? 'active' : ''}" data-id="${book.id}" data-status="Читаю">📖 Читаю</button>
+            <button class="status-option ${book.status === 'Прочитано' ? 'active' : ''}" data-id="${book.id}" data-status="Прочитано">✅ Прочитано</button>
+          </div>
         </div>
-      </div>
-    `;
+      `;
+    } else {
+      detailStatusHtml = `<span class="book-detail-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>`;
+    }
+
+    let actionsHtml = '';
+    if (mine) {
+      actionsHtml = `
+        <div class="book-detail-actions">
+          ${book.status === 'Читаю' ? `<button class="edit-btn" id="detailTimerBtn">⏱️ Читать</button>` : ''}
+          ${book.status === 'Хочу купить' ? `<button class="edit-btn" id="detailBuyBtn" style="background:var(--success);color:#fff;">✅ Куплено</button>` : ''}
+          <button class="edit-btn" id="detailEditBtn">✏️ Редактировать</button>
+          <button class="delete-btn" id="detailDeleteBtn">🗑 Удалить</button>
+        </div>
+      `;
+    } else {
+      actionsHtml = `
+        <div class="book-detail-actions">
+          <button class="copy-btn" id="detailCopyBtn">➕ Добавить к себе</button>
+        </div>
+      `;
+    }
+
+    // Модифицируем блок цитат для чужой полки
+    let quotesBlockHtml = '';
+    if (mine) {
+      quotesBlockHtml = `
+        <div class="book-quotes">
+          <div class="quotes-title">📝 Цитаты</div>
+          <div id="quotesList">${quotesHtml}</div>
+          <div class="add-quote-row">
+            <input type="text" id="newQuoteInput" placeholder="Введите цитату..." />
+            <button id="addQuoteBtn">+ Добавить цитату</button>
+          </div>
+        </div>
+      `;
+    } else if (quotes.length > 0) {
+      quotesBlockHtml = `
+        <div class="book-quotes">
+          <div class="quotes-title">📝 Цитаты</div>
+          <div id="quotesList">${quotesHtml}</div>
+        </div>
+      `;
+    }
 
     bookDetail.innerHTML = `
       <div class="book-detail-cover-wrapper" id="galleryWrapper">
@@ -2523,85 +2864,74 @@
         ${totalTimeHtml}
         ${quickReviewHtml}
         ${annotationHtml}
-        <div class="book-quotes">
-          <div class="quotes-title">📝 Цитаты</div>
-          <div id="quotesList">${quotesHtml}</div>
-          <div class="add-quote-row">
-            <input type="text" id="newQuoteInput" placeholder="Введите цитату..." />
-            <button id="addQuoteBtn">+ Добавить цитату</button>
-          </div>
-        </div>
-        <div class="book-detail-actions">
-          ${book.status === 'Читаю' ? `<button class="edit-btn" id="detailTimerBtn">⏱️ Читать</button>` : ''}
-          ${book.status === 'Хочу купить' ? `<button class="edit-btn" id="detailBuyBtn" style="background:var(--success);color:#fff;">✅ Куплено</button>` : ''}
-          <button class="edit-btn" id="detailEditBtn">✏️ Редактировать</button>
-          <button class="delete-btn" id="detailDeleteBtn">🗑 Удалить</button>
-        </div>
+        ${quotesBlockHtml}
+        ${actionsHtml}
       </div>
     `;
 
-    // ===== КЛИКАБЕЛЬНЫЙ СТАТУС НА СТРАНИЦЕ КНИГИ =====
-    const statusBadge = bookDetail.querySelector('.book-status-btn .book-detail-status[data-id]');
-    if (statusBadge) {
-      statusBadge.addEventListener('click', (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        const id = statusBadge.dataset.id;
-        const dropdown = bookDetail.querySelector(`.status-dropdown[data-id="${id}"]`);
-        if (!dropdown) return;
-        
-        document.querySelectorAll('.status-dropdown.visible').forEach(d => {
-          if (d !== dropdown) d.classList.remove('visible');
+    // === КЛИКАБЕЛЬНЫЙ СТАТУС (только mine) ===
+    if (mine) {
+      const statusBadge = bookDetail.querySelector('.book-status-btn .book-detail-status[data-id]');
+      if (statusBadge) {
+        statusBadge.addEventListener('click', (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          const id = statusBadge.dataset.id;
+          const dropdown = bookDetail.querySelector(`.status-dropdown[data-id="${id}"]`);
+          if (!dropdown) return;
+          
+          document.querySelectorAll('.status-dropdown.visible').forEach(d => {
+            if (d !== dropdown) d.classList.remove('visible');
+          });
+          
+          dropdown.classList.toggle('visible');
         });
-        
-        dropdown.classList.toggle('visible');
+      }
+
+      bookDetail.querySelectorAll('.status-option').forEach(option => {
+        option.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const id = option.dataset.id;
+          const newStatus = option.dataset.status;
+          if (newStatus === 'Хочу купить') return;
+          bookDetail.querySelectorAll('.status-dropdown.visible').forEach(d => d.classList.remove('visible'));
+          
+          const currentBook = books.find(b => b.id === id);
+          if (!currentBook || currentBook.status === newStatus) return;
+
+          const updatedData = { status: newStatus };
+          const today = new Date().toISOString().split('T')[0];
+
+          if (newStatus === 'В плане') {
+            updatedData.startDate = null;
+            updatedData.endDate = null;
+            updatedData.rating = null;
+          } else if (newStatus === 'Читаю') {
+            updatedData.startDate = currentBook.startDate || today;
+            updatedData.endDate = null;
+            updatedData.rating = null;
+          } else if (newStatus === 'Прочитано') {
+            updatedData.startDate = currentBook.startDate || today;
+            updatedData.endDate = currentBook.endDate || today;
+          }
+
+          await updateInFirebase(id, updatedData, true);
+          showToast(`✅ Статус: ${newStatus}`, 'success');
+        });
       });
-    }
 
-    bookDetail.querySelectorAll('.status-option').forEach(option => {
-      option.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        const id = option.dataset.id;
-        const newStatus = option.dataset.status;
-        if (newStatus === 'Хочу купить') return;
-        bookDetail.querySelectorAll('.status-dropdown.visible').forEach(d => d.classList.remove('visible'));
-        
-        const currentBook = books.find(b => b.id === id);
-        if (!currentBook || currentBook.status === newStatus) return;
-
-        const updatedData = { status: newStatus };
-        const today = new Date().toISOString().split('T')[0];
-
-        if (newStatus === 'В плане') {
-          updatedData.startDate = null;
-          updatedData.endDate = null;
-          updatedData.rating = null;
-        } else if (newStatus === 'Читаю') {
-          updatedData.startDate = currentBook.startDate || today;
-          updatedData.endDate = null;
-          updatedData.rating = null;
-        } else if (newStatus === 'Прочитано') {
-          updatedData.startDate = currentBook.startDate || today;
-          updatedData.endDate = currentBook.endDate || today;
-        }
-
-        await updateInFirebase(id, updatedData, true);
-        showToast(`✅ Статус: ${newStatus}`, 'success');
-      });
-    });
-
-    // Закрытие меню при клике вне
-    if (!window._detailStatusCloseListenerAdded) {
-      window._detailStatusCloseListenerAdded = true;
-      document.addEventListener('click', (e) => {
-        if (!e.target.closest('.book-status-btn')) {
-          document.querySelectorAll('.status-dropdown.visible').forEach(d => d.classList.remove('visible'));
-        }
-      });
+      if (!window._detailStatusCloseListenerAdded) {
+        window._detailStatusCloseListenerAdded = true;
+        document.addEventListener('click', (e) => {
+          if (!e.target.closest('.book-status-btn')) {
+            document.querySelectorAll('.status-dropdown.visible').forEach(d => d.classList.remove('visible'));
+          }
+        });
+      }
     }
 
     const starsClickable = document.getElementById('starsClickable');
-    if (starsClickable) {
+    if (starsClickable && mine) {
       starsClickable.addEventListener('click', async (e) => {
         const star = e.target.closest('.star');
         if (!star) return;
@@ -2616,7 +2946,7 @@
     }
 
     const saveQuickReview = document.getElementById('saveQuickReview');
-    if (saveQuickReview) {
+    if (saveQuickReview && mine) {
       saveQuickReview.addEventListener('click', async () => {
         const text = document.getElementById('quickReviewTextarea').value.trim();
         await updateInFirebase(book.id, { review: text || null }, true);
@@ -2624,136 +2954,176 @@
       });
     }
 
-    document.querySelectorAll('.quote-comment-save').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const idx = parseInt(btn.dataset.idx);
-        const comment = document.querySelector(`.quote-comment-input[data-idx="${idx}"]`).value.trim();
-        
-        const updatedQuotes = (book.quotes || []).map((q, i) => {
-          if (i !== idx) {
-            return typeof q === 'string' ? q : q;
-          }
-          if (typeof q === 'string') {
-            return { text: q, comment: comment };
-          }
-          return { ...q, comment: comment };
+    if (mine) {
+      document.querySelectorAll('.quote-comment-save').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const idx = parseInt(btn.dataset.idx);
+          const comment = document.querySelector(`.quote-comment-input[data-idx="${idx}"]`).value.trim();
+          
+          const updatedQuotes = (book.quotes || []).map((q, i) => {
+            if (i !== idx) {
+              return typeof q === 'string' ? q : q;
+            }
+            if (typeof q === 'string') {
+              return { text: q, comment: comment };
+            }
+            return { ...q, comment: comment };
+          });
+          
+          await updateInFirebase(book.id, { quotes: updatedQuotes }, true);
+          showToast('✅ Комментарий сохранён!', 'success');
         });
-        
-        await updateInFirebase(book.id, { quotes: updatedQuotes }, true);
-        showToast('✅ Комментарий сохранён!', 'success');
       });
-    });
 
-    document.querySelectorAll('.delete-quote').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        const idx = parseInt(btn.dataset.idx);
-        if (!confirm('Удалить эту цитату?')) return;
-        const updatedQuotes = (book.quotes || []).filter((_, i) => i !== idx);
-        await updateInFirebase(book.id, { quotes: updatedQuotes }, true);
-        showToast('✅ Цитата удалена', 'success');
-      });
-    });
-
-    const newQuoteInput = document.getElementById('newQuoteInput');
-    const addQuoteBtn = document.getElementById('addQuoteBtn');
-
-    addQuoteBtn.addEventListener('click', async () => {
-      const text = newQuoteInput.value.trim();
-      if (!text) {
-        showToast('Введите текст цитаты', 'error');
-        return;
-      }
-
-      const updatedQuotes = [...(book.quotes || []), { text: text, comment: '' }];
-      await updateInFirebase(book.id, { quotes: updatedQuotes }, true);
-      newQuoteInput.value = '';
-      showToast('✅ Цитата добавлена!', 'success');
-    });
-
-    newQuoteInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        addQuoteBtn.click();
-      }
-    });
-
-    const detailFavoriteBtn = document.getElementById('detailFavoriteBtn');
-    if (detailFavoriteBtn) {
-      detailFavoriteBtn.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        await updateInFirebase(book.id, { favorite: !book.favorite }, true);
-      });
-    }
-
-    const detailBuyBtn = document.getElementById('detailBuyBtn');
-    if (detailBuyBtn) {
-      detailBuyBtn.addEventListener('click', async () => {
-        await updateInFirebase(book.id, { status: 'В плане' }, true);
-        showToast('✅ Книга добавлена в "В плане"!', 'success');
-      });
-    }
-
-    if (covers.length > 1) {
-      const prevBtn = document.getElementById('galleryPrev');
-      const nextBtn = document.getElementById('galleryNext');
-      const dots = document.querySelectorAll('.dot');
-      const setMainBtn = document.getElementById('setMainBtn');
-      const slide = document.querySelector('.cover-slide');
-
-      function updateGallery(newIndex) {
-        galleryIndex = newIndex;
-        if (galleryIndex < 0) galleryIndex = covers.length - 1;
-        if (galleryIndex >= covers.length) galleryIndex = 0;
-        const cover = covers[galleryIndex];
-        slide.innerHTML = `<img src="${escapeHtml(cover)}" alt="Обложка" onerror="this.parentElement.innerHTML='<div class=\\'no-cover\\'><span>📖</span>Нет обложки</div>'" />`;
-        dots.forEach((dot, i) => dot.classList.toggle('active', i === galleryIndex));
-        const isMain = covers[galleryIndex] === book.mainCover;
-        setMainBtn.textContent = isMain ? '⭐ Главная' : '☆ Сделать главной';
-        setMainBtn.classList.toggle('active', isMain);
-      }
-
-      prevBtn.addEventListener('click', (e) => { e.stopPropagation(); updateGallery(galleryIndex - 1); });
-      nextBtn.addEventListener('click', (e) => { e.stopPropagation(); updateGallery(galleryIndex + 1); });
-      dots.forEach(dot => {
-        dot.addEventListener('click', (e) => {
+      document.querySelectorAll('.delete-quote').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
           e.stopPropagation();
-          updateGallery(parseInt(dot.dataset.index));
+          const idx = parseInt(btn.dataset.idx);
+          if (!confirm('Удалить эту цитату?')) return;
+          const updatedQuotes = (book.quotes || []).filter((_, i) => i !== idx);
+          await updateInFirebase(book.id, { quotes: updatedQuotes }, true);
+          showToast('✅ Цитата удалена', 'success');
         });
       });
-      setMainBtn.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        const currentCover = covers[galleryIndex];
-        const newMain = book.mainCover === currentCover ? null : currentCover;
-        await updateInFirebase(book.id, { mainCover: newMain }, true);
-      });
-    }
 
-    const detailTimerBtn = document.getElementById('detailTimerBtn');
-    if (detailTimerBtn) {
-      detailTimerBtn.addEventListener('click', () => {
-        openTimer(book.id);
-      });
-    }
+      const newQuoteInput = document.getElementById('newQuoteInput');
+      const addQuoteBtn = document.getElementById('addQuoteBtn');
 
-    document.getElementById('detailEditBtn').addEventListener('click', () => {
-      showGridView();
-      setTimeout(() => openEditModal(book.id), 100);
-    });
+      if (addQuoteBtn) {
+        addQuoteBtn.addEventListener('click', async () => {
+          const text = newQuoteInput.value.trim();
+          if (!text) {
+            showToast('Введите текст цитаты', 'error');
+            return;
+          }
 
-    document.getElementById('detailDeleteBtn').addEventListener('click', async () => {
-      if (confirm(`Удалить книгу "${book.title}"?`)) {
-        await deleteFromFirebase(book.id);
+          const updatedQuotes = [...(book.quotes || []), { text: text, comment: '' }];
+          await updateInFirebase(book.id, { quotes: updatedQuotes }, true);
+          newQuoteInput.value = '';
+          showToast('✅ Цитата добавлена!', 'success');
+        });
+
+        newQuoteInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            addQuoteBtn.click();
+          }
+        });
       }
-    });
+
+      const detailFavoriteBtn = document.getElementById('detailFavoriteBtn');
+      if (detailFavoriteBtn) {
+        detailFavoriteBtn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          await updateInFirebase(book.id, { favorite: !book.favorite }, true);
+        });
+      }
+
+      const detailBuyBtn = document.getElementById('detailBuyBtn');
+      if (detailBuyBtn) {
+        detailBuyBtn.addEventListener('click', async () => {
+          await updateInFirebase(book.id, { status: 'В плане' }, true);
+          showToast('✅ Книга добавлена в "В плане"!', 'success');
+        });
+      }
+
+      if (covers.length > 1) {
+        const prevBtn = document.getElementById('galleryPrev');
+        const nextBtn = document.getElementById('galleryNext');
+        const dots = document.querySelectorAll('.dot');
+        const setMainBtn = document.getElementById('setMainBtn');
+        const slide = document.querySelector('.cover-slide');
+
+        function updateGallery(newIndex) {
+          galleryIndex = newIndex;
+          if (galleryIndex < 0) galleryIndex = covers.length - 1;
+          if (galleryIndex >= covers.length) galleryIndex = 0;
+          const cover = covers[galleryIndex];
+          slide.innerHTML = `<img src="${escapeHtml(cover)}" alt="Обложка" onerror="this.parentElement.innerHTML='<div class=\\'no-cover\\'><span>📖</span>Нет обложки</div>'" />`;
+          dots.forEach((dot, i) => dot.classList.toggle('active', i === galleryIndex));
+          const isMain = covers[galleryIndex] === book.mainCover;
+          setMainBtn.textContent = isMain ? '⭐ Главная' : '☆ Сделать главной';
+          setMainBtn.classList.toggle('active', isMain);
+        }
+
+        prevBtn.addEventListener('click', (e) => { e.stopPropagation(); updateGallery(galleryIndex - 1); });
+        nextBtn.addEventListener('click', (e) => { e.stopPropagation(); updateGallery(galleryIndex + 1); });
+        dots.forEach(dot => {
+          dot.addEventListener('click', (e) => {
+            e.stopPropagation();
+            updateGallery(parseInt(dot.dataset.index));
+          });
+        });
+        if (setMainBtn) {
+          setMainBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const currentCover = covers[galleryIndex];
+            const newMain = book.mainCover === currentCover ? null : currentCover;
+            await updateInFirebase(book.id, { mainCover: newMain }, true);
+          });
+        }
+      }
+
+      const detailTimerBtn = document.getElementById('detailTimerBtn');
+      if (detailTimerBtn) {
+        detailTimerBtn.addEventListener('click', () => {
+          openTimer(book.id);
+        });
+      }
+
+      document.getElementById('detailEditBtn')?.addEventListener('click', () => {
+        showGridView();
+        setTimeout(() => openEditModal(book.id), 100);
+      });
+
+      document.getElementById('detailDeleteBtn')?.addEventListener('click', async () => {
+        if (confirm(`Удалить книгу "${book.title}"?`)) {
+          await deleteFromFirebase(book.id);
+        }
+      });
+    } else {
+      // Чужая полка — только просмотр галереи и кнопка «К себе»
+      if (covers.length > 1) {
+        const prevBtn = document.getElementById('galleryPrev');
+        const nextBtn = document.getElementById('galleryNext');
+        const dots = document.querySelectorAll('.dot');
+        const slide = document.querySelector('.cover-slide');
+
+        function updateGallery(newIndex) {
+          galleryIndex = newIndex;
+          if (galleryIndex < 0) galleryIndex = covers.length - 1;
+          if (galleryIndex >= covers.length) galleryIndex = 0;
+          const cover = covers[galleryIndex];
+          slide.innerHTML = `<img src="${escapeHtml(cover)}" alt="Обложка" onerror="this.parentElement.innerHTML='<div class=\\'no-cover\\'><span>📖</span>Нет обложки</div>'" />`;
+          dots.forEach((dot, i) => dot.classList.toggle('active', i === galleryIndex));
+        }
+
+        prevBtn.addEventListener('click', (e) => { e.stopPropagation(); updateGallery(galleryIndex - 1); });
+        nextBtn.addEventListener('click', (e) => { e.stopPropagation(); updateGallery(galleryIndex + 1); });
+        dots.forEach(dot => {
+          dot.addEventListener('click', (e) => {
+            e.stopPropagation();
+            updateGallery(parseInt(dot.dataset.index));
+          });
+        });
+      }
+
+      document.getElementById('detailCopyBtn')?.addEventListener('click', () => {
+        openCopyModal(book);
+      });
+    }
   }
 
   // ============================================================
-  // 17. РЕДАКТИРОВАНИЕ
+  // 23. РЕДАКТИРОВАНИЕ
   // ============================================================
   function openEditModal(bookId) {
     const book = books.find(b => b.id === bookId);
     if (!book) return;
+    if (book.ownerId !== currentUser.uid) {
+      showToast('Нельзя редактировать чужую книгу', 'error');
+      return;
+    }
 
     const covers = book.covers || [];
     const overlay = document.createElement('div');
@@ -3025,12 +3395,13 @@
   }
 
   // ============================================================
-  // 18. СЧЁТЧИК
+  // 24. СЧЁТЧИК
   // ============================================================
   function updateCounter() {
+    if (!currentUser) return;
     if (currentView === 'grid') {
-      const libraryBooks = books.filter(b => b.status !== 'Хочу купить');
-      counter.textContent = `${libraryBooks.length} книг`;
+      const shelfBooks = books.filter(b => b.ownerId === currentShelf && b.status !== 'Хочу купить');
+      counter.textContent = `${shelfBooks.length} книг`;
     }
   }
 
@@ -3045,26 +3416,6 @@
     render();
   });
 
-  // ============================================================
-  // 19. ЗАПУСК
-  // ============================================================
-  function initApp() {
-    initCoverRows(coversContainer);
-    subscribeToBooks();
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && e.target.closest('#bookForm') && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'TEXTAREA') {
-        e.preventDefault();
-        addBook();
-      }
-    });
-
-    render();
-  }
-
-  if (sessionStorage.getItem('library_logged_in') === 'true') {
-    initApp();
-  }
 </script>
 </body>
 </html>
