@@ -2951,9 +2951,10 @@
       quotesHtml = `<div class="empty-quotes">Пока нет цитат</div>`;
     }
 
-    let coverHtml = '';
+       let coverHtml = '';
     if (covers.length > 0) {
       const currentCover = covers[galleryIndex] || covers[0];
+      const favoriteTopOffset = (covers.length > 1 && mine) ? '56px' : '8px';
       coverHtml = `
         <div class="cover-slide">
           <img src="${escapeHtml(currentCover)}" alt="Обложка" onerror="this.parentElement.innerHTML='<div class=\\'no-cover\\'><span>📖</span>Нет обложки</div>'" />
@@ -2968,7 +2969,7 @@
             ${mainCover === covers[galleryIndex] ? '⭐ Главная' : '☆ Сделать главной'}
           </button>` : ''}
         ` : ''}
-        ${mine ? `<button class="favorite-btn ${book.favorite ? 'active' : ''}" id="detailFavoriteBtn" style="top:56px;" title="Избранное">⭐</button>` : ''}
+        ${mine ? `<button class="favorite-btn ${book.favorite ? 'active' : ''}" id="detailFavoriteBtn" style="top:${favoriteTopOffset};" title="Избранное">⭐</button>` : ''}
       `;
     } else {
       coverHtml = `
