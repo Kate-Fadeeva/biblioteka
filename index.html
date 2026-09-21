@@ -499,9 +499,13 @@
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.8rem; }
     .book-card { background: var(--bg-card); border-radius: 28px; padding: 1.2rem 1.2rem 1.5rem; box-shadow: 0 6px 18px var(--shadow); transition: 0.3s; border: 1px solid var(--border); display: flex; flex-direction: column; position: relative; cursor: pointer; }
     .book-card:hover { transform: translateY(-6px); box-shadow: 0 14px 30px var(--shadow); border-color: var(--accent); background: var(--bg-card-hover); }
-    .book-card:hover .cover-wrapper { border-color: var(--accent); }
-    .book-card.manga { border-color: var(--manga-bg); }
-    .book-card.manga:hover { border-color: var(--manga-color); }
+        .book-card:hover .cover-wrapper { border-color: var(--accent); }
+
+    /* У манги обложка тоже подсвечивается фиолетовым при наведении */
+    .book-card.manga .cover-wrapper { border-color: var(--border); }
+    .book-card.manga:hover .cover-wrapper { border-color: var(--manga-color); }
+        .book-card.manga { border-color: var(--border); }
+        .book-card.manga:hover { border-color: var(--manga-color); box-shadow: 0 14px 30px var(--shadow); }
 
     /* ----- ОБЛОЖКА ----- */
     .cover-wrapper { position: relative; width: 100%; aspect-ratio: 3/4; border-radius: 18px; margin-bottom: 14px; overflow: hidden; background: var(--cover-placeholder); border: 1px solid var(--border); transition: border-color 0.3s; }
