@@ -42,6 +42,11 @@
       --favorite-color: #ffb800;
       --want-to-buy-color: #4fc3f7;
       --want-to-buy-bg: rgba(79, 195, 247, 0.12);
+      --manga-color: #7c4dff;
+      --manga-bg: rgba(124, 77, 255, 0.12);
+      --release-ongoing: #4caf50;
+      --release-hiatus: #ff9800;
+      --release-completed: #2196f3;
     }
 
     /* ----- ТЁМНАЯ ТЕМА ----- */
@@ -74,6 +79,11 @@
       --favorite-color: #f5a623;
       --want-to-buy-color: #4fc3f7;
       --want-to-buy-bg: rgba(79, 195, 247, 0.15);
+      --manga-color: #b388ff;
+      --manga-bg: rgba(179, 136, 255, 0.15);
+      --release-ongoing: #66bb6a;
+      --release-hiatus: #ffa726;
+      --release-completed: #42a5f5;
     }
 
     /* ----- БАЗОВЫЕ СТИЛИ ----- */
@@ -130,16 +140,6 @@
     .logout-btn { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 40px; padding: 10px 18px; font-size: 0.9rem; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: 0.2s; white-space: nowrap; }
     .logout-btn:hover { background: var(--delete-bg); color: var(--error); border-color: var(--error); }
 
-    /* ----- ПОИСК ----- */
-    .search-wrap { margin-bottom: 1rem; }
-    .search-wrap input {
-      width: 100%; padding: 12px 18px; border: 1.5px solid var(--border); border-radius: 40px;
-      font-size: 1rem; background: var(--bg-card); color: var(--text); box-shadow: 0 2px 8px var(--shadow);
-      transition: 0.2s; outline: none;
-    }
-    .search-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim), 0 2px 12px var(--shadow); }
-    .search-wrap input::placeholder { color: var(--text-muted); }
-
     /* ----- ПЕРЕКЛЮЧАТЕЛЬ ПОЛОК ----- */
     .shelf-switcher {
       display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap;
@@ -171,6 +171,48 @@
       border-color: var(--want-to-buy-color);
       color: #fff;
     }
+
+    /* ----- ПЕРЕКЛЮЧАТЕЛЬ ТИПА ----- */
+    .type-switcher {
+      display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap;
+    }
+    .type-switcher button {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: 40px;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: inherit;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .type-switcher button:hover { background: var(--hover); color: var(--text); }
+    .type-switcher button.active {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+    .type-switcher button[data-type="manga"].active {
+      background: var(--manga-color);
+      border-color: var(--manga-color);
+      color: #fff;
+    }
+
+    /* ----- ПОИСК ----- */
+    .search-wrap { margin-bottom: 1rem; }
+    .search-wrap input {
+      width: 100%; padding: 12px 18px; border: 1.5px solid var(--border); border-radius: 40px;
+      font-size: 1rem; background: var(--bg-card); color: var(--text); box-shadow: 0 2px 8px var(--shadow);
+      transition: 0.2s; outline: none;
+    }
+    .search-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim), 0 2px 12px var(--shadow); }
+    .search-wrap input::placeholder { color: var(--text-muted); }
 
     /* ----- МОДАЛКИ ----- */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 2000; animation: fadeIn 0.2s ease; padding: 1rem; }
@@ -262,7 +304,7 @@
     .form-group .rating-input input { width: 80px; }
     .form-group .rating-input .stars-preview { font-size: 1.6rem; letter-spacing: 3px; color: var(--star-color); }
 
-    /* ----- ОБЛОЖКИ: НОВАЯ СЕТКА ПЛИТОК ----- */
+    /* ----- ОБЛОЖКИ: СЕТКА ПЛИТОК ----- */
     .covers-block {
       display: flex;
       flex-direction: column;
@@ -361,7 +403,7 @@
       background: var(--error);
       transform: scale(1.1);
     }
-        .cover-tile-url {
+    .cover-tile-url {
       padding: 4px 6px;
       font-size: 0.65rem;
       color: var(--text-muted);
@@ -374,7 +416,6 @@
       user-select: all;
       font-family: monospace;
     }
-    /* Пустой URL — не показываем полоску вообще */
     .cover-tile-url:empty {
       display: none;
     }
@@ -459,6 +500,8 @@
     .book-card { background: var(--bg-card); border-radius: 28px; padding: 1.2rem 1.2rem 1.5rem; box-shadow: 0 6px 18px var(--shadow); transition: 0.3s; border: 1px solid var(--border); display: flex; flex-direction: column; position: relative; cursor: pointer; }
     .book-card:hover { transform: translateY(-6px); box-shadow: 0 14px 30px var(--shadow); border-color: var(--accent); background: var(--bg-card-hover); }
     .book-card:hover .cover-wrapper { border-color: var(--accent); }
+    .book-card.manga { border-color: var(--manga-bg); }
+    .book-card.manga:hover { border-color: var(--manga-color); }
 
     /* ----- ОБЛОЖКА ----- */
     .cover-wrapper { position: relative; width: 100%; aspect-ratio: 3/4; border-radius: 18px; margin-bottom: 14px; overflow: hidden; background: var(--cover-placeholder); border: 1px solid var(--border); transition: border-color 0.3s; }
@@ -467,6 +510,7 @@
     .cover .no-cover { font-size: 0.85rem; color: var(--text-muted); text-align: center; padding: 10px; font-weight: 300; letter-spacing: 0.5px; }
     .cover .no-cover span { display: block; font-size: 2.5rem; margin-bottom: 6px; }
     .cover-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); border-radius: 20px; padding: 3px 10px; font-size: 0.7rem; color: #fff; font-weight: 500; z-index: 5; pointer-events: none; }
+    .manga-badge { position: absolute; top: 8px; left: 8px; background: var(--manga-color); color: #fff; border-radius: 20px; padding: 3px 8px; font-size: 0.7rem; font-weight: 600; z-index: 5; pointer-events: none; }
 
     /* ----- ИЗБРАННОЕ ----- */
     .favorite-btn {
@@ -481,6 +525,44 @@
 
     .book-title { font-size: 1.1rem; font-weight: 600; color: var(--text); margin-bottom: 2px; word-break: break-word; }
     .book-author { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px; font-weight: 400; }
+    
+    /* ----- РЕЛИЗ-СТАТУС МАНГИ ----- */
+    .release-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 40px;
+      margin: 4px 0 6px;
+      align-self: flex-start;
+      white-space: nowrap;
+      border: 1px solid transparent;
+    }
+    .release-status-badge.ongoing {
+      background: rgba(76, 175, 80, 0.12);
+      color: var(--release-ongoing);
+      border-color: var(--release-ongoing);
+    }
+    .release-status-badge.hiatus {
+      background: rgba(255, 152, 0, 0.12);
+      color: var(--release-hiatus);
+      border-color: var(--release-hiatus);
+    }
+    .release-status-badge.completed {
+      background: rgba(33, 150, 243, 0.12);
+      color: var(--release-completed);
+      border-color: var(--release-completed);
+    }
+
+    /* ----- ТОМ/ГЛАВА ----- */
+    .book-volumes {
+      font-size: 0.85rem;
+      color: var(--manga-color);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
     
     /* ----- СТАТУСЫ ----- */
     .book-status {
@@ -1158,6 +1240,7 @@
       .login-screen .login-box { padding: 1.5rem; }
       .quick-rating { flex-wrap: wrap; }
       .shelf-switcher button { font-size: 0.8rem; padding: 8px 14px; }
+      .type-switcher button { font-size: 0.8rem; padding: 8px 14px; }
       .covers-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
     }
   </style>
@@ -1185,11 +1268,11 @@
     <div class="header">
       <div class="header-left">
         <button class="back-btn" id="backBtn">← Назад</button>
-        <h1>📖 <span class="accent">Библиотека</span> <small id="counter">0 книг</small></h1>
+        <h1>📖 <span class="accent">Библиотека</span> <small id="counter">0</small></h1>
       </div>
       <div class="header-actions">
         <span class="user-label" id="userLabel">👤</span>
-        <button class="btn-add-book" id="openAddModal">+ Добавить книгу</button>
+        <button class="btn-add-book" id="openAddModal">+ Добавить</button>
         <button class="theme-toggle" id="themeToggle">🌙 Тёмная тема</button>
         <button class="logout-btn" id="logoutBtn">Выйти</button>
       </div>
@@ -1198,9 +1281,15 @@
     <!-- ПЕРЕКЛЮЧАТЕЛЬ ПОЛОК -->
     <div class="shelf-switcher" id="shelfSwitcher"></div>
 
+    <!-- ПЕРЕКЛЮЧАТЕЛЬ ТИПА -->
+    <div class="type-switcher" id="typeSwitcher">
+      <button class="active" data-type="book">📚 Книги</button>
+      <button data-type="manga">🎌 Манга</button>
+    </div>
+
     <!-- БАННЕР МИГРАЦИИ -->
     <div class="migrate-banner" id="migrateBanner" style="display:none;">
-      <div class="mb-text">🔧 Найдены книги без владельца. Проставить их вам?</div>
+      <div class="mb-text">🔧 Найдены записи без владельца. Проставить их вам?</div>
       <button id="migrateBtn">Проставить мне</button>
     </div>
 
@@ -1215,7 +1304,7 @@
       <button data-filter="В плане">📌 В плане</button>
       <button data-filter="Читаю">📖 Читаю</button>
       <button data-filter="Прочитано">✅ Прочитано</button>
-      <button data-filter="Хочу купить">🛒 Хочу купить</button>
+      <button data-filter="Хочу купить" id="filterWantToBuy">🛒 Хочу купить</button>
       <button data-filter="favorite">⭐ Избранное</button>
     </div>
 
@@ -1231,23 +1320,46 @@
     <div class="modal-overlay" id="addModal">
       <div class="modal">
         <div class="modal-header">
-          <h2>➕ <span class="accent">Новая</span> книга</h2>
+          <h2>➕ <span class="accent">Новая</span> запись</h2>
           <button class="modal-close" id="closeAddModal">✕</button>
         </div>
         <div class="form-card" id="bookForm">
           <div class="form-group">
-            <label>Название книги *</label>
+            <label>Тип *</label>
+            <select id="typeSelect">
+              <option value="book">📚 Книга</option>
+              <option value="manga">🎌 Манга</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Название *</label>
             <input type="text" id="titleInput" placeholder="Например: 1984" required />
           </div>
           <div class="form-group">
             <label>Автор</label>
             <input type="text" id="authorInput" placeholder="Джордж Оруэлл" />
           </div>
-          <div class="form-group">
+          <div class="form-group" id="pagesInputGroup">
             <label>Количество страниц</label>
             <input type="number" id="pagesInput" placeholder="328" min="1" />
           </div>
-            <div class="form-group" style="grid-column: 1 / -1;">
+          <div class="form-group" id="volumeInputGroup" style="display:none;">
+            <label>Том</label>
+            <input type="number" id="volumeInput" placeholder="1" min="1" />
+          </div>
+          <div class="form-group" id="chapterInputGroup" style="display:none;">
+            <label>Глава</label>
+            <input type="number" id="chapterInput" placeholder="1" min="1" />
+          </div>
+          <div class="form-group" id="releaseStatusGroup" style="display:none;">
+            <label>Статус выхода</label>
+            <select id="releaseStatusSelect">
+              <option value="ongoing">🟢 Выходит</option>
+              <option value="hiatus">⏸ Заморожена</option>
+              <option value="completed">🏁 Завершена</option>
+            </select>
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
             <label>Обложки</label>
             <div class="covers-block">
               <div class="covers-grid" id="coversContainer"></div>
@@ -1260,12 +1372,12 @@
             </div>
           </div>
           <div class="form-group">
-            <label>Статус</label>
+            <label>Статус чтения</label>
             <select id="statusSelect">
               <option value="В плане">В плане</option>
               <option value="Читаю">Читаю</option>
               <option value="Прочитано">Прочитано</option>
-              <option value="Хочу купить">Хочу купить</option>
+              <option value="Хочу купить" id="statusWantToBuyOption">Хочу купить</option>
             </select>
           </div>
           <div class="date-row" id="dateRow">
@@ -1287,11 +1399,11 @@
           </div>
           <div class="form-group" id="reviewGroup" style="display:none;">
             <label>Отзыв</label>
-            <textarea id="reviewInput" placeholder="Поделитесь впечатлениями о книге..." rows="2"></textarea>
+            <textarea id="reviewInput" placeholder="Поделитесь впечатлениями..." rows="2"></textarea>
           </div>
           <div class="form-group" style="grid-column: 1 / -1;">
             <label>Аннотация</label>
-            <textarea id="annotationInput" placeholder="Краткое описание книги..." rows="3"></textarea>
+            <textarea id="annotationInput" placeholder="Краткое описание..." rows="3"></textarea>
           </div>
           <button class="btn-add" id="addBtn">+ Добавить</button>
         </div>
@@ -1309,12 +1421,12 @@
           <div class="cb-title" id="copyBookTitle"></div>
           <div class="cb-author" id="copyBookAuthor"></div>
         </div>
-        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:10px;">В каком статусе добавить книгу?</p>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:10px;">В каком статусе добавить?</p>
         <div class="copy-status-list" id="copyStatusList">
           <button data-status="В плане">📌 В плане</button>
           <button data-status="Читаю">📖 Читаю</button>
           <button data-status="Прочитано">✅ Прочитано</button>
-          <button data-status="Хочу купить">🛒 Хочу купить</button>
+          <button data-status="Хочу купить" id="copyStatusWantToBuy">🛒 Хочу купить</button>
         </div>
         <div class="copy-actions">
           <button class="btn-copy-cancel" id="copyCancelBtn">Отмена</button>
@@ -1376,6 +1488,7 @@
   let currentUser = null;
   let allUsers = {};
   let currentShelf = null;
+  let currentType = 'book';
   let books = [];
   let currentFilter = 'all';
   let currentTheme = localStorage.getItem('libraryTheme') || 'light';
@@ -1392,9 +1505,8 @@
   let copySourceBook = null;
   let copySelectedStatus = null;
 
-  // Временное состояние модалки добавления (обложки + главная)
-  let addCovers = [];      // массив строк (URL или base64)
-  let addMainCover = null; // строка — главная обложка
+  let addCovers = [];
+  let addMainCover = null;
 
   // ============================================================
   // 1. FIREBASE
@@ -1425,13 +1537,22 @@
   const userLabel = document.getElementById('userLabel');
   const logoutBtn = document.getElementById('logoutBtn');
 
+  const typeSelect = document.getElementById('typeSelect');
   const titleInput = document.getElementById('titleInput');
   const authorInput = document.getElementById('authorInput');
   const pagesInput = document.getElementById('pagesInput');
+  const pagesInputGroup = document.getElementById('pagesInputGroup');
+  const volumeInput = document.getElementById('volumeInput');
+  const volumeInputGroup = document.getElementById('volumeInputGroup');
+  const chapterInput = document.getElementById('chapterInput');
+  const chapterInputGroup = document.getElementById('chapterInputGroup');
+  const releaseStatusSelect = document.getElementById('releaseStatusSelect');
+  const releaseStatusGroup = document.getElementById('releaseStatusGroup');
   const coversContainer = document.getElementById('coversContainer');
   const addCoverBtn = document.getElementById('addCoverBtn');
   const addCoverFileInput = document.getElementById('addCoverFileInput');
   const statusSelect = document.getElementById('statusSelect');
+  const statusWantToBuyOption = document.getElementById('statusWantToBuyOption');
   const startDate = document.getElementById('startDate');
   const endDate = document.getElementById('endDate');
   const startDateGroup = document.getElementById('startDateGroup');
@@ -1448,6 +1569,7 @@
   const bookDetail = document.getElementById('bookDetail');
   const counter = document.getElementById('counter');
   const filterBar = document.getElementById('filterBar');
+  const filterWantToBuy = document.getElementById('filterWantToBuy');
   const themeToggle = document.getElementById('themeToggle');
   const openAddModal = document.getElementById('openAddModal');
   const closeAddModal = document.getElementById('closeAddModal');
@@ -1456,6 +1578,7 @@
   const searchInput = document.getElementById('searchInput');
   const searchWrap = document.getElementById('searchWrap');
   const shelfSwitcher = document.getElementById('shelfSwitcher');
+  const typeSwitcher = document.getElementById('typeSwitcher');
   const migrateBanner = document.getElementById('migrateBanner');
   const migrateBtn = document.getElementById('migrateBtn');
 
@@ -1466,6 +1589,7 @@
   const copyStatusList = document.getElementById('copyStatusList');
   const copyCancelBtn = document.getElementById('copyCancelBtn');
   const copyConfirmBtn = document.getElementById('copyConfirmBtn');
+  const copyStatusWantToBuy = document.getElementById('copyStatusWantToBuy');
 
   const timerModal = document.getElementById('timerModal');
   const closeTimerModal = document.getElementById('closeTimerModal');
@@ -1541,6 +1665,13 @@
     return '';
   }
 
+  function getReleaseStatusInfo(releaseStatus) {
+    if (releaseStatus === 'ongoing') return { emoji: '🟢', label: 'Выходит', cssClass: 'ongoing' };
+    if (releaseStatus === 'hiatus') return { emoji: '⏸', label: 'Заморожена', cssClass: 'hiatus' };
+    if (releaseStatus === 'completed') return { emoji: '🏁', label: 'Завершена', cssClass: 'completed' };
+    return null;
+  }
+
   function getStars(rating) {
     if (!rating || rating < 1 || rating > 5) return '☆☆☆☆☆';
     return '★'.repeat(rating) + '☆'.repeat(5 - rating);
@@ -1568,16 +1699,13 @@
     return (u && u.genitive) ? u.genitive : 'Неизвестный';
   }
 
+  function getBookType(book) {
+    return book.type === 'manga' ? 'manga' : 'book';
+  }
+
   // ============================================================
-  // 6. КОМПОНЕНТ «СЕТКА ОБЛОЖЕК»
+  // 6. СЕТКА ОБЛОЖЕК
   // ============================================================
-  // Рендерит плитки обложек в контейнер.
-  // options:
-  //   getState() — функция, возвращающая { covers: [], mainCover: string|null }
-  //   setCovers(newCovers) — обновить массив
-  //   setMainCover(v) — обновить главную
-  //   onRemove(i) — удалить обложку по индексу
-  //   onImageUpload(file) — загрузка файла
   function renderCoversGrid(container, state, onUpdate) {
     container.innerHTML = '';
 
@@ -1585,7 +1713,6 @@
       const tile = document.createElement('div');
       tile.className = 'cover-tile' + (state.mainCover === url ? ' main' : '');
 
-      // Миниатюра
       const thumb = document.createElement('div');
       thumb.className = 'cover-tile-thumb';
 
@@ -1602,7 +1729,6 @@
       }
       tile.appendChild(thumb);
 
-      // Кнопки: звезда + удалить
       const actions = document.createElement('div');
       actions.className = 'cover-tile-actions';
 
@@ -1630,7 +1756,6 @@
 
       tile.appendChild(actions);
 
-           // URL (мелкий) + скрытое поле ввода
       const urlDiv = document.createElement('div');
       urlDiv.className = 'cover-tile-url' + (url ? '' : ' empty');
       urlDiv.textContent = url || '';
@@ -1644,7 +1769,6 @@
       urlInput.placeholder = 'https://...';
       tile.appendChild(urlInput);
 
-      // Клик по URL — открыть редактирование
       urlDiv.addEventListener('click', () => {
         urlDiv.style.display = 'none';
         urlInput.classList.add('visible');
@@ -1671,7 +1795,6 @@
         }
       });
 
-      // Клик по миниатюре — открыть редактирование URL
       thumb.addEventListener('click', () => {
         urlDiv.style.display = 'none';
         urlInput.classList.add('visible');
@@ -1745,6 +1868,7 @@
       currentShelf = user.uid;
       updateUserLabel();
       renderShelfSwitcher();
+      renderTypeSwitcher();
       subscribeToBooks();
 
       document.addEventListener('keydown', (e) => {
@@ -1826,12 +1950,50 @@
     });
   }
 
+  // ============================================================
+  // 11. ПЕРЕКЛЮЧАТЕЛЬ ТИПА
+  // ============================================================
+  function renderTypeSwitcher() {
+    typeSwitcher.querySelectorAll('button').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.type === currentType);
+      btn.addEventListener('click', () => {
+        const newType = btn.dataset.type;
+        if (newType === currentType) return;
+        currentType = newType;
+        currentFilter = 'all';
+
+        typeSwitcher.querySelectorAll('button').forEach(b => {
+          b.classList.toggle('active', b.dataset.type === currentType);
+        });
+
+        document.querySelectorAll('#filterBar button').forEach(b => b.classList.remove('active'));
+        document.querySelector('#filterBar button[data-filter="all"]').classList.add('active');
+
+        if (currentType === 'manga') {
+          filterWantToBuy.style.display = 'none';
+        } else {
+          filterWantToBuy.style.display = '';
+        }
+
+        updateAddBookVisibility();
+        render();
+        updateCounter();
+      });
+    });
+
+    if (currentType === 'manga') {
+      filterWantToBuy.style.display = 'none';
+    } else {
+      filterWantToBuy.style.display = '';
+    }
+  }
+
   function updateAddBookVisibility() {
     openAddModal.style.display = isMyShelf() ? '' : 'none';
   }
 
   // ============================================================
-  // 11. PWA SERVICE WORKER
+  // 12. PWA
   // ============================================================
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
@@ -1844,7 +2006,7 @@
   }
 
   // ============================================================
-  // 12. ЗАГРУЗКА ФАЙЛА (СЖАТИЕ)
+  // 13. ЗАГРУЗКА ФАЙЛА
   // ============================================================
   function processCoverFile(file, onDone) {
     if (file.size > 10 * 1024 * 1024) {
@@ -1884,38 +2046,59 @@
   }
 
   // ============================================================
-  // 13. ДАТЫ И СТАТУСЫ (модалка добавления)
+  // 14. ДИНАМИКА ПОЛЕЙ ФОРМЫ
   // ============================================================
-  function updateFields() {
-    const status = statusSelect.value;
-    if (status === 'В плане' || status === 'Хочу купить') {
+  function updateFormByType() {
+    const type = typeSelect.value;
+    const isManga = type === 'manga';
+
+    pagesInputGroup.style.display = isManga ? 'none' : '';
+    volumeInputGroup.style.display = isManga ? '' : 'none';
+    chapterInputGroup.style.display = isManga ? '' : 'none';
+    releaseStatusGroup.style.display = isManga ? '' : 'none';
+
+    statusWantToBuyOption.style.display = isManga ? 'none' : '';
+    if (isManga && statusSelect.value === 'Хочу купить') {
+      statusSelect.value = 'В плане';
+    }
+
+    updateDatesByStatus();
+  }
+
+  function updateDatesByStatus() {
+    const type = typeSelect.value;
+    const isManga = type === 'manga';
+
+    if (isManga) {
       startDateGroup.style.display = 'none';
       endDateGroup.style.display = 'none';
       startDate.value = '';
       endDate.value = '';
-      ratingGroup.style.display = 'none';
-      reviewGroup.style.display = 'none';
+    } else {
+      const status = statusSelect.value;
+      if (status === 'В плане' || status === 'Хочу купить') {
+        startDateGroup.style.display = 'none';
+        endDateGroup.style.display = 'none';
+        startDate.value = '';
+        endDate.value = '';
+      } else if (status === 'Читаю') {
+        startDateGroup.style.display = 'flex';
+        endDateGroup.style.display = 'none';
+        endDate.value = '';
+      } else if (status === 'Прочитано') {
+        startDateGroup.style.display = 'flex';
+        endDateGroup.style.display = 'flex';
+      }
+    }
+
+    const status = statusSelect.value;
+    const showRating = (status === 'Прочитано');
+    ratingGroup.style.display = showRating ? 'flex' : 'none';
+    reviewGroup.style.display = showRating ? 'flex' : 'none';
+    if (!showRating) {
       ratingInput.value = '';
       reviewInput.value = '';
       starsPreview.textContent = '☆☆☆☆☆';
-    } else if (status === 'Читаю') {
-      startDateGroup.style.display = 'flex';
-      endDateGroup.style.display = 'none';
-      startDate.required = true;
-      endDate.required = false;
-      endDate.value = '';
-      ratingGroup.style.display = 'none';
-      reviewGroup.style.display = 'none';
-      ratingInput.value = '';
-      reviewInput.value = '';
-      starsPreview.textContent = '☆☆☆☆☆';
-    } else if (status === 'Прочитано') {
-      startDateGroup.style.display = 'flex';
-      endDateGroup.style.display = 'flex';
-      startDate.required = true;
-      endDate.required = true;
-      ratingGroup.style.display = 'flex';
-      reviewGroup.style.display = 'flex';
     }
   }
 
@@ -1924,11 +2107,11 @@
     starsPreview.textContent = (val >= 1 && val <= 5) ? getStars(val) : '☆☆☆☆☆';
   });
 
-  statusSelect.addEventListener('change', updateFields);
-  updateFields();
+  typeSelect.addEventListener('change', updateFormByType);
+  statusSelect.addEventListener('change', updateDatesByStatus);
 
   // ============================================================
-  // 14. МОДАЛКА ДОБАВЛЕНИЯ
+  // 15. МОДАЛКА ДОБАВЛЕНИЯ
   // ============================================================
   function renderAddCovers() {
     renderCoversGrid(coversContainer, { covers: addCovers, mainCover: addMainCover }, (action) => {
@@ -1957,9 +2140,14 @@
   function openModal() {
     addModal.classList.add('active');
     document.body.style.overflow = 'hidden';
+
+    typeSelect.value = currentType;
     titleInput.value = '';
     authorInput.value = '';
     pagesInput.value = '';
+    volumeInput.value = '';
+    chapterInput.value = '';
+    releaseStatusSelect.value = 'ongoing';
     statusSelect.value = 'В плане';
     startDate.value = '';
     endDate.value = '';
@@ -1972,7 +2160,7 @@
     addMainCover = null;
     renderAddCovers();
 
-    updateFields();
+    updateFormByType();
     setTimeout(() => titleInput.focus(), 100);
   }
 
@@ -1991,18 +2179,15 @@
     if (e.key === 'Escape' && addModal.classList.contains('active')) closeModal();
   });
 
-  // Кнопка «Добавить по URL»
   addCoverBtn.addEventListener('click', () => {
     addCovers.push('');
     renderAddCovers();
   });
 
-  // Кнопка «Загрузить файл»
   addCoverFileInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file) return;
     processCoverFile(file, (compressed) => {
-      // Заполняем первую пустую, иначе добавляем новую
       const emptyIdx = addCovers.findIndex(c => !c || !c.trim());
       if (emptyIdx !== -1) {
         addCovers[emptyIdx] = compressed;
@@ -2017,7 +2202,7 @@
   });
 
   // ============================================================
-  // 15. НАВИГАЦИЯ
+  // 16. НАВИГАЦИЯ
   // ============================================================
   function showGridView() {
     currentView = 'grid';
@@ -2027,6 +2212,7 @@
     filterBar.style.display = 'flex';
     searchWrap.style.display = 'block';
     shelfSwitcher.style.display = 'flex';
+    typeSwitcher.style.display = 'flex';
     backBtn.classList.remove('visible');
     document.querySelector('.header-actions').style.display = 'flex';
     updateAddBookVisibility();
@@ -2044,6 +2230,7 @@
     filterBar.style.display = 'none';
     searchWrap.style.display = 'none';
     shelfSwitcher.style.display = 'none';
+    typeSwitcher.style.display = 'none';
     backBtn.classList.add('visible');
     document.querySelector('.header-actions').style.display = 'none';
     renderBookPage(book);
@@ -2052,7 +2239,7 @@
   backBtn.addEventListener('click', showGridView);
 
   // ============================================================
-  // 16. FIREBASE — ЧТЕНИЕ
+  // 17. FIREBASE — ЧТЕНИЕ
   // ============================================================
   function subscribeToBooks() {
     db.collection('books')
@@ -2078,7 +2265,7 @@
   }
 
   // ============================================================
-  // 17. МИГРАЦИЯ
+  // 18. МИГРАЦИЯ
   // ============================================================
   function checkMigration() {
     if (!currentUser || !isMyShelf()) {
@@ -2093,7 +2280,7 @@
     if (!currentUser) return;
     const orphanBooks = books.filter(b => !b.ownerId);
     if (orphanBooks.length === 0) return;
-    if (!confirm(`Проставить вам ${orphanBooks.length} книг(и) без владельца?`)) return;
+    if (!confirm(`Проставить вам ${orphanBooks.length} записей без владельца?`)) return;
 
     migrateBtn.disabled = true;
     migrateBtn.textContent = '⏳ Обработка...';
@@ -2114,7 +2301,7 @@
   });
 
   // ============================================================
-  // 18. FIREBASE — ЗАПИСЬ
+  // 19. FIREBASE — ЗАПИСЬ
   // ============================================================
   async function saveToFirebase(bookData) {
     try {
@@ -2125,7 +2312,7 @@
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       });
-      showToast('✅ Книга добавлена!', 'success');
+      showToast('✅ Запись добавлена!', 'success');
     } catch (error) {
       console.error('Ошибка сохранения:', error);
       showToast('❌ Ошибка сохранения', 'error');
@@ -2139,7 +2326,7 @@
         ...updatedData,
         updatedAt: new Date().toISOString()
       }, { merge: true });
-      if (!silent) showToast('✅ Книга обновлена!', 'success');
+      if (!silent) showToast('✅ Запись обновлена!', 'success');
     } catch (error) {
       console.error('Ошибка обновления:', error);
       showToast('❌ Ошибка обновления', 'error');
@@ -2149,7 +2336,7 @@
   async function deleteFromFirebase(bookId) {
     try {
       await db.collection('books').doc(bookId).delete();
-      showToast('✅ Книга удалена!', 'success');
+      showToast('✅ Запись удалена!', 'success');
     } catch (error) {
       console.error('Ошибка удаления:', error);
       showToast('❌ Ошибка удаления', 'error');
@@ -2157,68 +2344,79 @@
   }
 
   // ============================================================
-  // 19. ДОБАВЛЕНИЕ КНИГИ
+  // 20. ДОБАВЛЕНИЕ
   // ============================================================
   function addBook() {
     if (!isMyShelf()) {
-      showToast('Нельзя добавлять книги на чужую полку', 'error');
+      showToast('Нельзя добавлять на чужую полку', 'error');
       return;
     }
 
+    const type = typeSelect.value;
+    const isManga = type === 'manga';
+
     const title = titleInput.value.trim();
     if (!title) {
-      showToast('Введите название книги', 'error');
+      showToast('Введите название', 'error');
       titleInput.focus();
       return;
     }
 
     const author = authorInput.value.trim() || null;
-    const pages = parseInt(pagesInput.value) || null;
+    const pages = isManga ? null : (parseInt(pagesInput.value) || null);
+    const volume = isManga ? (parseInt(volumeInput.value) || null) : null;
+    const chapter = isManga ? (parseInt(chapterInput.value) || null) : null;
+    const releaseStatus = isManga ? releaseStatusSelect.value : null;
+
     const status = statusSelect.value;
-    const start = startDate.value || null;
-    let end = endDate.value || null;
-    const rating = parseInt(ratingInput.value) || null;
-    const review = reviewInput.value.trim() || null;
+    const start = isManga ? null : (startDate.value || null);
+    const end = isManga ? null : (endDate.value || null);
+    const rating = (status === 'Прочитано') ? (parseInt(ratingInput.value) || null) : null;
+    const review = (status === 'Прочитано') ? (reviewInput.value.trim() || null) : null;
     const annotation = annotationInput.value.trim() || null;
 
-    // Собираем непустые обложки
     const covers = addCovers.map(c => (c || '').trim()).filter(c => c);
     if (covers.length === 0) {
       showToast('Добавьте хотя бы одну обложку', 'error');
       return;
     }
 
-    // Главная: если выбрана и есть в массиве, иначе первая
     let mainCover = (addMainCover && covers.includes(addMainCover)) ? addMainCover : covers[0];
 
-    if (status === 'Прочитано' && (!start || !end)) {
-      showToast('Для "Прочитано" укажите даты', 'error');
-      return;
-    }
-    if (status === 'Читаю' && !start) {
-      showToast('Для "Читаю" укажите дату начала', 'error');
-      return;
-    }
-    if (start && end && new Date(end) < new Date(start)) {
-      showToast('Дата окончания не может быть раньше даты начала', 'error');
-      return;
-    }
-    if (rating && (rating < 1 || rating > 5)) {
-      showToast('Оценка должна быть от 1 до 5', 'error');
-      return;
+    if (!isManga) {
+      if (status === 'Прочитано' && (!start || !end)) {
+        showToast('Для "Прочитано" укажите даты', 'error');
+        return;
+      }
+      if (status === 'Читаю' && !start) {
+        showToast('Для "Читаю" укажите дату начала', 'error');
+        return;
+      }
+      if (start && end && new Date(end) < new Date(start)) {
+        showToast('Дата окончания не может быть раньше даты начала', 'error');
+        return;
+      }
+      if (rating && (rating < 1 || rating > 5)) {
+        showToast('Оценка должна быть от 1 до 5', 'error');
+        return;
+      }
     }
 
     const newBook = {
+      type,
       title,
       author,
       pages,
+      volume,
+      chapter,
+      releaseStatus,
       covers,
       mainCover,
       status,
       startDate: start,
-      endDate: (status === 'Прочитано' ? end : null),
-      rating: (status === 'Прочитано' ? rating : null),
-      review: (status === 'Прочитано' ? review : null),
+      endDate: (status === 'Прочитано' && !isManga) ? end : null,
+      rating: (status === 'Прочитано') ? rating : null,
+      review,
       annotation,
       readingHistory: [],
       currentPage: null,
@@ -2233,7 +2431,7 @@
   addBtn.addEventListener('click', addBook);
 
   // ============================================================
-  // 20. КОПИРОВАНИЕ КНИГИ
+  // 21. КОПИРОВАНИЕ
   // ============================================================
   function openCopyModal(book) {
     copySourceBook = book;
@@ -2243,6 +2441,12 @@
 
     copyStatusList.querySelectorAll('button').forEach(btn => btn.classList.remove('selected'));
     copyConfirmBtn.disabled = true;
+
+    if (getBookType(book) === 'manga') {
+      copyStatusWantToBuy.style.display = 'none';
+    } else {
+      copyStatusWantToBuy.style.display = '';
+    }
 
     copyModal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -2263,6 +2467,7 @@
 
   copyStatusList.querySelectorAll('button').forEach(btn => {
     btn.addEventListener('click', () => {
+      if (btn.style.display === 'none') return;
       copyStatusList.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
       copySelectedStatus = btn.dataset.status;
@@ -2275,16 +2480,22 @@
 
     const src = copySourceBook;
     const today = new Date().toISOString().split('T')[0];
+    const srcType = getBookType(src);
+    const isManga = srcType === 'manga';
 
     const newBook = {
+      type: srcType,
       title: src.title,
       author: src.author || null,
       pages: src.pages || null,
+      volume: src.volume || null,
+      chapter: src.chapter || null,
+      releaseStatus: src.releaseStatus || null,
       covers: src.covers || [],
       mainCover: src.mainCover || (src.covers && src.covers[0]) || null,
       status: copySelectedStatus,
-      startDate: (copySelectedStatus === 'Читаю' || copySelectedStatus === 'Прочитано') ? today : null,
-      endDate: (copySelectedStatus === 'Прочитано') ? today : null,
+      startDate: (!isManga && (copySelectedStatus === 'Читаю' || copySelectedStatus === 'Прочитано')) ? today : null,
+      endDate: (!isManga && copySelectedStatus === 'Прочитано') ? today : null,
       rating: null,
       review: null,
       annotation: src.annotation || null,
@@ -2305,7 +2516,7 @@
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       });
-      showToast(`✅ Книга добавлена в «${copySelectedStatus}»`, 'success');
+      showToast(`✅ Добавлено в «${copySelectedStatus}»`, 'success');
       closeCopyModalFn();
     } catch (err) {
       console.error('Copy error:', err);
@@ -2317,11 +2528,15 @@
   });
 
   // ============================================================
-  // 21. ТАЙМЕР
+  // 22. ТАЙМЕР
   // ============================================================
   function openTimer(bookId) {
     const book = books.find(b => b.id === bookId);
     if (!book) return;
+    if (getBookType(book) === 'manga') {
+      showToast('Таймер только для книг', 'error');
+      return;
+    }
 
     timerBookId = bookId;
     timerSeconds = 0;
@@ -2511,7 +2726,7 @@
     await updateInFirebase(timerBookId, updates, true);
 
     if (newStatus === 'Прочитано') {
-      showToast(`🎉 Книга дочитана! Статус изменён на "Прочитано"`, 'success');
+      showToast(`🎉 Книга дочитана!`, 'success');
     } else {
       showToast('✅ Запись сохранена!', 'success');
     }
@@ -2584,7 +2799,7 @@
   }
 
   // ============================================================
-  // 22. РЕНДЕР СПИСКА КНИГ
+  // 23. РЕНДЕР СПИСКА
   // ============================================================
   function getSearchQuery() {
     return searchInput.value.trim().toLowerCase();
@@ -2598,6 +2813,8 @@
 
     let filtered = books.filter(book => {
       if (book.ownerId !== currentShelf) return false;
+      if (getBookType(book) !== currentType) return false;
+
       if (currentFilter === 'all' && book.status === 'Хочу купить') return false;
       if (currentFilter === 'favorite') {
         if (!book.favorite) return false;
@@ -2618,28 +2835,32 @@
       const orderA = statusOrder[a.status] || 99;
       const orderB = statusOrder[b.status] || 99;
       if (orderA !== orderB) return orderA - orderB;
-      if (a.status === 'Прочитано') {
+
+      if (currentType === 'book' && a.status === 'Прочитано') {
         return (b.endDate || '').localeCompare(a.endDate || '');
       }
       return (b.createdAt || '').localeCompare(a.createdAt || '');
     });
 
     if (filtered.length === 0) {
-      booksGrid.innerHTML = `<div class="empty">📭 Нет книг по вашему запросу</div>`;
+      booksGrid.innerHTML = `<div class="empty">📭 Пусто</div>`;
     } else {
       booksGrid.innerHTML = filtered.map((book) => {
+        const isManga = getBookType(book) === 'manga';
         const covers = book.covers || [];
         let mainCover = book.mainCover || (covers.length > 0 ? covers[0] : null);
-        
+
         let coverHtml = mainCover
           ? `<img src="${escapeHtml(mainCover)}" alt="Обложка" onerror="this.style.display='none'" />`
           : `<div class="no-cover"><span>📖</span>Нет обложки</div>`;
-        
+
         let datesHtml = '';
-        if (book.status === 'Читаю' && book.startDate) {
-          datesHtml = `с ${formatDate(book.startDate)}`;
-        } else if (book.status === 'Прочитано' && book.startDate) {
-          datesHtml = `${formatDate(book.startDate)} → ${formatDate(book.endDate)}`;
+        if (!isManga) {
+          if (book.status === 'Читаю' && book.startDate) {
+            datesHtml = `с ${formatDate(book.startDate)}`;
+          } else if (book.status === 'Прочитано' && book.startDate) {
+            datesHtml = `${formatDate(book.startDate)} → ${formatDate(book.endDate)}`;
+          }
         }
 
         let ratingHtml = '';
@@ -2656,14 +2877,40 @@
         const coverCount = covers.length;
 
         let progressHtml = '';
-        if (book.status === 'Читаю' && book.pages && book.currentPage) {
+        if (!isManga && book.status === 'Читаю' && book.pages && book.currentPage) {
           const percent = Math.round((book.currentPage / book.pages) * 100);
           progressHtml = `<div class="book-progress">${book.currentPage}/${book.pages} стр. (${percent}%)</div>`;
-        } else if (book.status === 'Читаю' && book.currentPage) {
+        } else if (!isManga && book.status === 'Читаю' && book.currentPage) {
           progressHtml = `<div class="book-progress">${book.currentPage} стр.</div>`;
-        } else if (book.status === 'Читаю' && book.pages) {
+        } else if (!isManga && book.status === 'Читаю' && book.pages) {
           progressHtml = `<div class="book-pages">${book.pages} стр.</div>`;
         }
+
+        let mangaInfoHtml = '';
+        if (isManga) {
+          const parts = [];
+          if (book.volume) parts.push(`Том ${book.volume}`);
+          if (book.chapter) parts.push(`Глава ${book.chapter}`);
+          if (parts.length > 0) {
+            mangaInfoHtml = `<div class="book-volumes">🎌 ${parts.join(' · ')}</div>`;
+          }
+        }
+
+        const timerBtnHtml = (!isManga && mine && book.status === 'Читаю')
+          ? `<button class="book-timer-btn" data-id="${book.id}">⏱️ Читать</button>` : '';
+
+        const buyBtnHtml = (mine && !isManga && book.status === 'Хочу купить')
+          ? `<button class="buy-btn" data-id="${book.id}">✅ Куплено</button>` : '';
+
+        const copyBtnHtml = !mine
+          ? `<button class="copy-btn" data-id="${book.id}">➕ К себе</button>` : '';
+
+        const deleteBtnHtml = mine
+          ? `<button class="delete-btn" data-id="${book.id}">🗑 Удалить</button>` : '';
+
+        const favoriteBtnHtml = mine
+          ? `<button class="favorite-btn ${book.favorite ? 'active' : ''}" data-id="${book.id}" title="Избранное">⭐</button>`
+          : `<span class="favorite-btn ${book.favorite ? 'active' : ''}" style="pointer-events:none;opacity:${book.favorite ? 1 : 0.3};">⭐</span>`;
 
         let statusBlockHtml = '';
         if (mine) {
@@ -2683,24 +2930,8 @@
           statusBlockHtml = `<span class="book-status ${statusClass}">${getStatusEmoji(book.status)} ${book.status}</span>`;
         }
 
-        const timerBtnHtml = (mine && book.status === 'Читаю')
-          ? `<button class="book-timer-btn" data-id="${book.id}">⏱️ Читать</button>` : '';
-
-        const buyBtnHtml = (mine && book.status === 'Хочу купить')
-          ? `<button class="buy-btn" data-id="${book.id}">✅ Куплено</button>` : '';
-
-        const copyBtnHtml = !mine
-          ? `<button class="copy-btn" data-id="${book.id}">➕ К себе</button>` : '';
-
-        const deleteBtnHtml = mine
-          ? `<button class="delete-btn" data-id="${book.id}">🗑 Удалить</button>` : '';
-
-        const favoriteBtnHtml = mine
-          ? `<button class="favorite-btn ${book.favorite ? 'active' : ''}" data-id="${book.id}" title="Избранное">⭐</button>`
-          : `<span class="favorite-btn ${book.favorite ? 'active' : ''}" style="pointer-events:none;opacity:${book.favorite ? 1 : 0.3};">⭐</span>`;
-
         return `
-          <div class="book-card" data-id="${book.id}">
+          <div class="book-card ${isManga ? 'manga' : ''}" data-id="${book.id}">
             <div class="cover-wrapper">
               <div class="cover">${coverHtml}</div>
               ${coverCount > 1 ? `<div class="cover-badge">📷 ${coverCount}</div>` : ''}
@@ -2708,10 +2939,11 @@
             </div>
             <div class="book-title">${escapeHtml(book.title)}</div>
             ${book.author ? `<div class="book-author">${escapeHtml(book.author)}</div>` : ''}
-            ${book.pages ? `<div class="book-pages">${book.pages} стр.</div>` : ''}
+            ${mangaInfoHtml}
+            ${!isManga && book.pages ? `<div class="book-pages">${book.pages} стр.</div>` : ''}
             ${statusBlockHtml}
             ${ratingHtml}
-            <div class="book-dates">${datesHtml}</div>
+            ${datesHtml ? `<div class="book-dates">${datesHtml}</div>` : ''}
             ${progressHtml}
             ${timerBtnHtml}
             <div class="book-actions">
@@ -2723,7 +2955,6 @@
         `;
       }).join('');
 
-      // Обработчики карточек
       document.querySelectorAll('.book-card').forEach(card => {
         card.addEventListener('click', (e) => {
           if (e.target.closest('button')) return;
@@ -2770,6 +3001,7 @@
             document.querySelectorAll('.status-dropdown.visible').forEach(d => d.classList.remove('visible'));
             if (book.status === newStatus) return;
 
+            const isManga = getBookType(book) === 'manga';
             const updatedData = { status: newStatus };
             const today = new Date().toISOString().split('T')[0];
 
@@ -2778,12 +3010,16 @@
               updatedData.endDate = null;
               updatedData.rating = null;
             } else if (newStatus === 'Читаю') {
-              updatedData.startDate = book.startDate || today;
-              updatedData.endDate = null;
+              if (!isManga) {
+                updatedData.startDate = book.startDate || today;
+                updatedData.endDate = null;
+              }
               updatedData.rating = null;
             } else if (newStatus === 'Прочитано') {
-              updatedData.startDate = book.startDate || today;
-              updatedData.endDate = book.endDate || today;
+              if (!isManga) {
+                updatedData.startDate = book.startDate || today;
+                updatedData.endDate = book.endDate || today;
+              }
             }
 
             await updateInFirebase(id, updatedData, true);
@@ -2811,7 +3047,7 @@
           btn.addEventListener('click', async (e) => {
             e.stopPropagation();
             await updateInFirebase(btn.dataset.id, { status: 'В плане' }, true);
-            showToast('✅ Книга добавлена в "В плане"!', 'success');
+            showToast('✅ Добавлено в "В плане"!', 'success');
           });
         });
 
@@ -2820,7 +3056,7 @@
             e.stopPropagation();
             const id = btn.dataset.id;
             const book = books.find(b => b.id === id);
-            if (confirm(`Удалить книгу "${book?.title}"?`)) {
+            if (confirm(`Удалить "${book?.title}"?`)) {
               await deleteFromFirebase(id);
             }
           });
@@ -2841,13 +3077,32 @@
   searchInput.addEventListener('input', render);
 
   // ============================================================
-  // 23. СТРАНИЦА КНИГИ
+  // 24. СТРАНИЦА
   // ============================================================
   function renderBookPage(book) {
     const mine = book.ownerId === currentUser.uid;
+    const isManga = getBookType(book) === 'manga';
     const covers = book.covers || [];
     const mainCover = book.mainCover || (covers.length > 0 ? covers[0] : null);
     const statusClass = getStatusClass(book.status);
+
+    let releaseStatusHtml = '';
+    if (isManga && book.releaseStatus) {
+      const info = getReleaseStatusInfo(book.releaseStatus);
+      if (info) {
+        releaseStatusHtml = `<span class="release-status-badge ${info.cssClass}">${info.emoji} ${info.label}</span>`;
+      }
+    }
+
+    let mangaInfoHtml = '';
+    if (isManga) {
+      const parts = [];
+      if (book.volume) parts.push(`Том ${book.volume}`);
+      if (book.chapter) parts.push(`Глава ${book.chapter}`);
+      if (parts.length > 0) {
+        mangaInfoHtml = `<div class="book-volumes" style="font-size:1rem;">🎌 ${parts.join(' · ')}</div>`;
+      }
+    }
 
     let quickRatingHtml = '';
     if (book.status === 'Прочитано' && mine) {
@@ -2889,25 +3144,27 @@
       </div>`;
 
     let datesHtml = '';
-    if (book.status === 'Читаю' && book.startDate) {
-      datesHtml = `Начало: ${formatDate(book.startDate)}`;
-    } else if (book.status === 'Прочитано' && book.startDate) {
-      datesHtml = `${formatDate(book.startDate)} → ${formatDate(book.endDate)}`;
-    } else if (book.startDate) {
-      datesHtml = `${formatDate(book.startDate)}`;
+    if (!isManga) {
+      if (book.status === 'Читаю' && book.startDate) {
+        datesHtml = `Начало: ${formatDate(book.startDate)}`;
+      } else if (book.status === 'Прочитано' && book.startDate) {
+        datesHtml = `${formatDate(book.startDate)} → ${formatDate(book.endDate)}`;
+      } else if (book.startDate) {
+        datesHtml = `${formatDate(book.startDate)}`;
+      }
     }
 
     let progressHtml = '';
-    if (book.status === 'Читаю' && book.pages && book.currentPage) {
+    if (!isManga && book.status === 'Читаю' && book.pages && book.currentPage) {
       const percent = Math.round((book.currentPage / book.pages) * 100);
       progressHtml = `<div style="font-size:1rem;color:var(--accent-text);">Прочитано ${book.currentPage}/${book.pages} стр. (${percent}%)</div>`;
-    } else if (book.status === 'Читаю' && book.currentPage) {
+    } else if (!isManga && book.status === 'Читаю' && book.currentPage) {
       progressHtml = `<div style="font-size:1rem;color:var(--accent-text);">${book.currentPage} стр.</div>`;
     }
 
     const history = book.readingHistory || [];
     let totalTimeHtml = '';
-    if (history.length > 0) {
+    if (!isManga && history.length > 0) {
       const totalSeconds = history.reduce((sum, entry) => sum + (entry.timeSpent || 0), 0);
       if (totalSeconds > 0) {
         totalTimeHtml = `<div style="font-size:1rem;color:var(--text-secondary);">⏱️ Общее время чтения: <strong style="color:var(--text);">${formatTime(totalSeconds)}</strong></div>`;
@@ -2951,10 +3208,10 @@
       quotesHtml = `<div class="empty-quotes">Пока нет цитат</div>`;
     }
 
-       let coverHtml = '';
+    let coverHtml = '';
+    const favoriteTopOffset = (covers.length > 1 && mine) ? '56px' : '8px';
     if (covers.length > 0) {
       const currentCover = covers[galleryIndex] || covers[0];
-      const favoriteTopOffset = (covers.length > 1 && mine) ? '56px' : '8px';
       coverHtml = `
         <div class="cover-slide">
           <img src="${escapeHtml(currentCover)}" alt="Обложка" onerror="this.parentElement.innerHTML='<div class=\\'no-cover\\'><span>📖</span>Нет обложки</div>'" />
@@ -3002,8 +3259,8 @@
     if (mine) {
       actionsHtml = `
         <div class="book-detail-actions">
-          ${book.status === 'Читаю' ? `<button class="edit-btn" id="detailTimerBtn">⏱️ Читать</button>` : ''}
-          ${book.status === 'Хочу купить' ? `<button class="edit-btn" id="detailBuyBtn" style="background:var(--success);color:#fff;">✅ Куплено</button>` : ''}
+          ${!isManga && book.status === 'Читаю' ? `<button class="edit-btn" id="detailTimerBtn">⏱️ Читать</button>` : ''}
+          ${!isManga && book.status === 'Хочу купить' ? `<button class="edit-btn" id="detailBuyBtn" style="background:var(--success);color:#fff;">✅ Куплено</button>` : ''}
           <button class="edit-btn" id="detailEditBtn">✏️ Редактировать</button>
           <button class="delete-btn" id="detailDeleteBtn">🗑 Удалить</button>
         </div>`;
@@ -3038,9 +3295,12 @@
         ${coverHtml}
       </div>
       <div class="book-detail-info">
+        ${isManga ? `<div class="manga-badge" style="position:static;align-self:flex-start;margin-bottom:6px;">🎌 Манга</div>` : ''}
         <div class="book-detail-title">${escapeHtml(book.title)}</div>
         ${book.author ? `<div class="book-detail-author">${escapeHtml(book.author)}</div>` : ''}
-        ${book.pages ? `<div style="font-size:1rem;color:var(--text-secondary);">${book.pages} стр.</div>` : ''}
+        ${releaseStatusHtml}
+        ${mangaInfoHtml}
+        ${!isManga && book.pages ? `<div style="font-size:1rem;color:var(--text-secondary);">${book.pages} стр.</div>` : ''}
         ${detailStatusHtml}
         ${quickRatingHtml}
         ${datesHtml ? `<div class="book-detail-dates">${datesHtml}</div>` : ''}
@@ -3053,7 +3313,6 @@
       </div>
     `;
 
-    // Обработчики страницы книги
     if (mine) {
       const statusBadge = bookDetail.querySelector('.book-status-btn .book-detail-status[data-id]');
       if (statusBadge) {
@@ -3081,6 +3340,7 @@
           const currentBook = books.find(b => b.id === id);
           if (!currentBook || currentBook.status === newStatus) return;
 
+          const isM = getBookType(currentBook) === 'manga';
           const updatedData = { status: newStatus };
           const today = new Date().toISOString().split('T')[0];
 
@@ -3089,12 +3349,16 @@
             updatedData.endDate = null;
             updatedData.rating = null;
           } else if (newStatus === 'Читаю') {
-            updatedData.startDate = currentBook.startDate || today;
-            updatedData.endDate = null;
+            if (!isM) {
+              updatedData.startDate = currentBook.startDate || today;
+              updatedData.endDate = null;
+            }
             updatedData.rating = null;
           } else if (newStatus === 'Прочитано') {
-            updatedData.startDate = currentBook.startDate || today;
-            updatedData.endDate = currentBook.endDate || today;
+            if (!isM) {
+              updatedData.startDate = currentBook.startDate || today;
+              updatedData.endDate = currentBook.endDate || today;
+            }
           }
 
           await updateInFirebase(id, updatedData, true);
@@ -3190,7 +3454,7 @@
       if (detailBuyBtn) {
         detailBuyBtn.addEventListener('click', async () => {
           await updateInFirebase(book.id, { status: 'В плане' }, true);
-          showToast('✅ Книга добавлена в "В плане"!', 'success');
+          showToast('✅ Добавлено в "В плане"!', 'success');
         });
       }
 
@@ -3240,7 +3504,7 @@
       });
 
       document.getElementById('detailDeleteBtn')?.addEventListener('click', async () => {
-        if (confirm(`Удалить книгу "${book.title}"?`)) {
+        if (confirm(`Удалить "${book.title}"?`)) {
           await deleteFromFirebase(book.id);
         }
       });
@@ -3277,17 +3541,17 @@
   }
 
   // ============================================================
-  // 24. РЕДАКТИРОВАНИЕ КНИГИ
+  // 25. РЕДАКТИРОВАНИЕ
   // ============================================================
   function openEditModal(bookId) {
     const book = books.find(b => b.id === bookId);
     if (!book) return;
     if (book.ownerId !== currentUser.uid) {
-      showToast('Нельзя редактировать чужую книгу', 'error');
+      showToast('Нельзя редактировать чужое', 'error');
       return;
     }
 
-    // Локальные копии для редактирования
+    const isMangaInit = getBookType(book) === 'manga';
     let editCovers = [...(book.covers || [])];
     if (editCovers.length === 0) editCovers = [''];
     let editMainCover = book.mainCover || editCovers[0] || null;
@@ -3299,23 +3563,46 @@
     overlay.innerHTML = `
       <div class="modal">
         <div class="modal-header">
-          <h2>✏️ <span class="accent">Редактировать</span> книгу</h2>
+          <h2>✏️ <span class="accent">Редактировать</span></h2>
           <button class="modal-close" id="closeEditModalBtn">✕</button>
         </div>
         <div class="form-card" id="editForm">
           <div class="form-group">
-            <label>Название книги *</label>
+            <label>Тип *</label>
+            <select id="editType">
+              <option value="book">📚 Книга</option>
+              <option value="manga">🎌 Манга</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Название *</label>
             <input type="text" id="editTitle" value="${escapeHtml(book.title)}" required />
           </div>
           <div class="form-group">
             <label>Автор</label>
             <input type="text" id="editAuthor" value="${escapeHtml(book.author || '')}" />
           </div>
-          <div class="form-group">
+          <div class="form-group" id="editPagesGroup">
             <label>Количество страниц</label>
             <input type="number" id="editPages" value="${book.pages || ''}" min="1" />
           </div>
-            <div class="form-group" style="grid-column: 1 / -1;">
+          <div class="form-group" id="editVolumeGroup" style="display:none;">
+            <label>Том</label>
+            <input type="number" id="editVolume" value="${book.volume || ''}" min="1" />
+          </div>
+          <div class="form-group" id="editChapterGroup" style="display:none;">
+            <label>Глава</label>
+            <input type="number" id="editChapter" value="${book.chapter || ''}" min="1" />
+          </div>
+          <div class="form-group" id="editReleaseStatusGroup" style="display:none;">
+            <label>Статус выхода</label>
+            <select id="editReleaseStatus">
+              <option value="ongoing">🟢 Выходит</option>
+              <option value="hiatus">⏸ Заморожена</option>
+              <option value="completed">🏁 Завершена</option>
+            </select>
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
             <label>Обложки</label>
             <div class="covers-block">
               <div class="covers-grid" id="editCoversGrid"></div>
@@ -3328,12 +3615,12 @@
             </div>
           </div>
           <div class="form-group">
-            <label>Статус</label>
+            <label>Статус чтения</label>
             <select id="editStatus">
-              <option value="В плане" ${book.status === 'В плане' ? 'selected' : ''}>В плане</option>
-              <option value="Читаю" ${book.status === 'Читаю' ? 'selected' : ''}>Читаю</option>
-              <option value="Прочитано" ${book.status === 'Прочитано' ? 'selected' : ''}>Прочитано</option>
-              <option value="Хочу купить" ${book.status === 'Хочу купить' ? 'selected' : ''}>Хочу купить</option>
+              <option value="В плане">В плане</option>
+              <option value="Читаю">Читаю</option>
+              <option value="Прочитано">Прочитано</option>
+              <option value="Хочу купить" id="editStatusWantToBuy">Хочу купить</option>
             </select>
           </div>
           <div class="date-row" id="editDateRow">
@@ -3341,7 +3628,7 @@
               <label>Дата начала</label>
               <input type="date" id="editStartDate" value="${book.startDate || ''}" />
             </div>
-            <div class="form-group" id="editEndDateGroup" style="${book.status === 'Прочитано' ? 'display:flex;' : 'display:none;'}">
+            <div class="form-group" id="editEndDateGroup" style="${book.status === 'Прочитано' && !isMangaInit ? 'display:flex;' : 'display:none;'}">
               <label>Дата окончания</label>
               <input type="date" id="editEndDate" value="${book.endDate || ''}" />
             </div>
@@ -3369,9 +3656,30 @@
     document.body.appendChild(overlay);
     document.body.style.overflow = 'hidden';
 
+    const editType = document.getElementById('editType');
+    const editPagesGroup = document.getElementById('editPagesGroup');
+    const editVolumeGroup = document.getElementById('editVolumeGroup');
+    const editChapterGroup = document.getElementById('editChapterGroup');
+    const editReleaseStatusGroup = document.getElementById('editReleaseStatusGroup');
+    const editReleaseStatus = document.getElementById('editReleaseStatus');
+    const editStatus = document.getElementById('editStatus');
+    const editStatusWantToBuy = document.getElementById('editStatusWantToBuy');
+    const editStartGroup = document.getElementById('editStartDateGroup');
+    const editEndGroup = document.getElementById('editEndDateGroup');
+    const editStart = document.getElementById('editStartDate');
+    const editEnd = document.getElementById('editEndDate');
+    const editRatingGroup = document.getElementById('editRatingGroup');
+    const editReviewGroup = document.getElementById('editReviewGroup');
+    const editRating = document.getElementById('editRating');
+    const editReview = document.getElementById('editReview');
+    const editStarsPreview = document.getElementById('editStarsPreview');
     const editCoversGrid = document.getElementById('editCoversGrid');
     const editCoverFileInput = document.getElementById('editCoverFileInput');
     const editAddCoverBtn = document.getElementById('editAddCoverBtn');
+
+    editType.value = isMangaInit ? 'manga' : 'book';
+    editStatus.value = book.status || 'В плане';
+    if (book.releaseStatus) editReleaseStatus.value = book.releaseStatus;
 
     function renderEditCovers() {
       renderCoversGrid(editCoversGrid, { covers: editCovers, mainCover: editMainCover }, (action) => {
@@ -3419,53 +3727,61 @@
       });
     });
 
-    const editStatus = document.getElementById('editStatus');
-    const editStartGroup = document.getElementById('editStartDateGroup');
-    const editEndGroup = document.getElementById('editEndDateGroup');
-    const editStart = document.getElementById('editStartDate');
-    const editEnd = document.getElementById('editEndDate');
-    const editRatingGroup = document.getElementById('editRatingGroup');
-    const editReviewGroup = document.getElementById('editReviewGroup');
-    const editRating = document.getElementById('editRating');
-    const editReview = document.getElementById('editReview');
-    const editStarsPreview = document.getElementById('editStarsPreview');
+    function updateEditFormByType() {
+      const isManga = editType.value === 'manga';
+
+      editPagesGroup.style.display = isManga ? 'none' : '';
+      editVolumeGroup.style.display = isManga ? '' : 'none';
+      editChapterGroup.style.display = isManga ? '' : 'none';
+      editReleaseStatusGroup.style.display = isManga ? '' : 'none';
+
+      editStatusWantToBuy.style.display = isManga ? 'none' : '';
+      if (isManga && editStatus.value === 'Хочу купить') {
+        editStatus.value = 'В плане';
+      }
+
+      updateEditDates();
+    }
+
+    function updateEditDates() {
+      const isManga = editType.value === 'manga';
+
+      if (isManga) {
+        editStartGroup.style.display = 'none';
+        editEndGroup.style.display = 'none';
+      } else {
+        const status = editStatus.value;
+        if (status === 'В плане' || status === 'Хочу купить') {
+          editStartGroup.style.display = 'none';
+          editEndGroup.style.display = 'none';
+        } else if (status === 'Читаю') {
+          editStartGroup.style.display = 'flex';
+          editEndGroup.style.display = 'none';
+        } else if (status === 'Прочитано') {
+          editStartGroup.style.display = 'flex';
+          editEndGroup.style.display = 'flex';
+        }
+      }
+
+      const showRating = editStatus.value === 'Прочитано';
+      editRatingGroup.style.display = showRating ? 'flex' : 'none';
+      editReviewGroup.style.display = showRating ? 'flex' : 'none';
+    }
 
     editRating.addEventListener('input', () => {
       const val = parseInt(editRating.value);
       editStarsPreview.textContent = (val >= 1 && val <= 5) ? getStars(val) : '☆☆☆☆☆';
     });
 
-    function updateEditFields() {
-      const status = editStatus.value;
-      if (status === 'В плане' || status === 'Хочу купить') {
-        editStartGroup.style.display = 'none';
-        editEndGroup.style.display = 'none';
-        editStart.value = '';
-        editEnd.value = '';
-        editRatingGroup.style.display = 'none';
-        editReviewGroup.style.display = 'none';
-        editRating.value = '';
-        editReview.value = '';
-      } else if (status === 'Читаю') {
-        editStartGroup.style.display = 'flex';
-        editEndGroup.style.display = 'none';
-        editEnd.value = '';
-        editRatingGroup.style.display = 'none';
-        editReviewGroup.style.display = 'none';
-        editRating.value = '';
-        editReview.value = '';
-      } else if (status === 'Прочитано') {
-        editStartGroup.style.display = 'flex';
-        editEndGroup.style.display = 'flex';
-        editRatingGroup.style.display = 'flex';
-        editReviewGroup.style.display = 'flex';
-      }
-    }
+    editType.addEventListener('change', updateEditFormByType);
+    editStatus.addEventListener('change', updateEditDates);
 
-    editStatus.addEventListener('change', updateEditFields);
-    updateEditFields();
+    updateEditFormByType();
 
     document.getElementById('saveEditBtn').addEventListener('click', async () => {
+      const newType = editType.value;
+      const isManga = newType === 'manga';
+
       const newTitle = document.getElementById('editTitle').value.trim();
       if (!newTitle) {
         showToast('Введите название', 'error');
@@ -3473,31 +3789,37 @@
       }
 
       const newAuthor = document.getElementById('editAuthor').value.trim() || null;
-      const newPages = parseInt(document.getElementById('editPages').value) || null;
-      const newStatus = document.getElementById('editStatus').value;
-      const newStart = document.getElementById('editStartDate').value || null;
-      const newEnd = document.getElementById('editEndDate').value || null;
-      const newRating = parseInt(document.getElementById('editRating').value) || null;
-      const newReview = document.getElementById('editReview').value.trim() || null;
+      const newPages = isManga ? null : (parseInt(document.getElementById('editPages').value) || null);
+      const newVolume = isManga ? (parseInt(document.getElementById('editVolume').value) || null) : null;
+      const newChapter = isManga ? (parseInt(document.getElementById('editChapter').value) || null) : null;
+      const newReleaseStatus = isManga ? editReleaseStatus.value : null;
+
+      const newStatus = editStatus.value;
+      const newStart = isManga ? null : (editStart.value || null);
+      const newEnd = isManga ? null : (editEnd.value || null);
+      const newRating = (newStatus === 'Прочитано') ? (parseInt(editRating.value) || null) : null;
+      const newReview = (newStatus === 'Прочитано') ? (editReview.value.trim() || null) : null;
       const newAnnotation = document.getElementById('editAnnotation').value.trim() || null;
 
       const newCovers = editCovers.map(c => (c || '').trim()).filter(c => c);
 
-      if (newStatus === 'Прочитано' && (!newStart || !newEnd)) {
-        showToast('Для "Прочитано" укажите даты', 'error');
-        return;
-      }
-      if (newStatus === 'Читаю' && !newStart) {
-        showToast('Для "Читаю" укажите дату начала', 'error');
-        return;
-      }
-      if (newStart && newEnd && new Date(newEnd) < new Date(newStart)) {
-        showToast('Дата окончания не может быть раньше даты начала', 'error');
-        return;
-      }
-      if (newRating && (newRating < 1 || newRating > 5)) {
-        showToast('Оценка должна быть от 1 до 5', 'error');
-        return;
+      if (!isManga) {
+        if (newStatus === 'Прочитано' && (!newStart || !newEnd)) {
+          showToast('Для "Прочитано" укажите даты', 'error');
+          return;
+        }
+        if (newStatus === 'Читаю' && !newStart) {
+          showToast('Для "Читаю" укажите дату начала', 'error');
+          return;
+        }
+        if (newStart && newEnd && new Date(newEnd) < new Date(newStart)) {
+          showToast('Дата окончания не может быть раньше даты начала', 'error');
+          return;
+        }
+        if (newRating && (newRating < 1 || newRating > 5)) {
+          showToast('Оценка от 1 до 5', 'error');
+          return;
+        }
       }
       if (newCovers.length === 0) {
         showToast('Добавьте хотя бы одну обложку', 'error');
@@ -3510,16 +3832,20 @@
       }
 
       const updatedData = {
+        type: newType,
         title: newTitle,
         author: newAuthor,
         pages: newPages,
+        volume: newVolume,
+        chapter: newChapter,
+        releaseStatus: newReleaseStatus,
         covers: newCovers,
         mainCover: mainCover,
         status: newStatus,
         startDate: newStart,
-        endDate: (newStatus === 'Прочитано' ? newEnd : null),
-        rating: (newStatus === 'Прочитано' ? newRating : null),
-        review: (newStatus === 'Прочитано' ? newReview : null),
+        endDate: (newStatus === 'Прочитано' && !isManga) ? newEnd : null,
+        rating: newRating,
+        review: newReview,
         annotation: newAnnotation
       };
 
@@ -3542,14 +3868,35 @@
   }
 
   // ============================================================
-  // 25. СЧЁТЧИК
+  // 26. СЧЁТЧИК
   // ============================================================
   function updateCounter() {
     if (!currentUser) return;
     if (currentView === 'grid') {
-      const shelfBooks = books.filter(b => b.ownerId === currentShelf && b.status !== 'Хочу купить');
-      counter.textContent = `${shelfBooks.length} книг`;
+      const shelfBooks = books.filter(b => b.ownerId === currentShelf);
+      const bookCount = shelfBooks.filter(b => getBookType(b) === 'book' && b.status !== 'Хочу купить').length;
+      const mangaCount = shelfBooks.filter(b => getBookType(b) === 'manga').length;
+
+      const parts = [];
+      if (bookCount > 0) parts.push(`${bookCount} ${pluralBooks(bookCount)}`);
+      if (mangaCount > 0) parts.push(`${mangaCount} ${pluralManga(mangaCount)}`);
+
+      counter.textContent = parts.length > 0 ? parts.join(' · ') : '0';
     }
+  }
+
+  function pluralBooks(n) {
+    const mod10 = n % 10, mod100 = n % 100;
+    if (mod10 === 1 && mod100 !== 11) return 'книга';
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return 'книги';
+    return 'книг';
+  }
+
+  function pluralManga(n) {
+    const mod10 = n % 10, mod100 = n % 100;
+    if (mod10 === 1 && mod100 !== 11) return 'манга';
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return 'манги';
+    return 'манг';
   }
 
   filterBar.addEventListener('click', (e) => {
@@ -3557,6 +3904,7 @@
     if (!btn) return;
     const filter = btn.dataset.filter;
     if (!filter) return;
+    if (filter === 'Хочу купить' && currentType === 'manga') return;
     document.querySelectorAll('#filterBar button').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentFilter = filter;
