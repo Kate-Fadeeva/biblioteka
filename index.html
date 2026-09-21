@@ -12,7 +12,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   
   <style>
-    /* ----- СВЕТЛАЯ ТЕМА ----- */
     :root {
       --bg: #faf6f0;
       --bg-card: #ffffff;
@@ -49,7 +48,6 @@
       --release-completed: #2196f3;
     }
 
-    /* ----- ТЁМНАЯ ТЕМА ----- */
     [data-theme="dark"] {
       --bg: #0d0d0d;
       --bg-card: #1a1a1a;
@@ -86,11 +84,9 @@
       --release-completed: #42a5f5;
     }
 
-    /* ----- БАЗОВЫЕ СТИЛИ ----- */
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; transition: background 0.3s, color 0.2s, border-color 0.3s, box-shadow 0.3s; }
     body { background: var(--bg); padding: 2rem 1rem; min-height: 100vh; display: flex; justify-content: center; }
 
-    /* ----- ЭКРАН ВХОДА ----- */
     .login-screen {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: var(--bg); display: flex; align-items: center; justify-content: center;
@@ -117,12 +113,10 @@
     .login-screen .login-box .login-error { color: var(--error); font-size: 0.85rem; margin-top: 8px; min-height: 24px; display: none; }
     .login-screen .login-box .login-error.visible { display: block; }
 
-    /* ----- ОСНОВНОЙ КОНТЕНТ ----- */
     .app-content { display: none; max-width: 1200px; width: 100%; margin: 0 auto; }
     .app-content.visible { display: block; }
     .app { max-width: 1200px; width: 100%; }
 
-    /* ----- ШАПКА ----- */
     .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
     .header-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
     .header-left .back-btn { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 40px; padding: 8px 16px; font-size: 1rem; color: var(--text); cursor: pointer; transition: 0.2s; display: none; align-items: center; gap: 6px; }
@@ -140,7 +134,6 @@
     .logout-btn { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 40px; padding: 10px 18px; font-size: 0.9rem; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: 0.2s; white-space: nowrap; }
     .logout-btn:hover { background: var(--delete-bg); color: var(--error); border-color: var(--error); }
 
-    /* ----- ПЕРЕКЛЮЧАТЕЛЬ ПОЛОК ----- */
     .shelf-switcher {
       display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap;
     }
@@ -172,7 +165,6 @@
       color: #fff;
     }
 
-    /* ----- ПЕРЕКЛЮЧАТЕЛЬ ТИПА ----- */
     .type-switcher {
       display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap;
     }
@@ -204,7 +196,6 @@
       color: #fff;
     }
 
-    /* ----- ПОИСК ----- */
     .search-wrap { margin-bottom: 1rem; }
     .search-wrap input {
       width: 100%; padding: 12px 18px; border: 1.5px solid var(--border); border-radius: 40px;
@@ -214,7 +205,6 @@
     .search-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim), 0 2px 12px var(--shadow); }
     .search-wrap input::placeholder { color: var(--text-muted); }
 
-    /* ----- МОДАЛКИ ----- */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 2000; animation: fadeIn 0.2s ease; padding: 1rem; }
     .modal-overlay.active { display: flex; }
     [data-theme="dark"] .modal-overlay { background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); }
@@ -228,7 +218,6 @@
     .modal .form-card { box-shadow: none; padding: 0; margin: 0; border: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; background: transparent; }
     .modal .form-card .btn-add { grid-column: 2 / 3; max-width: 100%; }
 
-    /* ----- МОДАЛКА «ДОБАВИТЬ К СЕБЕ» ----- */
     .copy-modal .modal { max-width: 420px; }
     .copy-book-info {
       background: var(--bg);
@@ -292,7 +281,24 @@
     .copy-actions .btn-copy-confirm:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--accent-glow); }
     .copy-actions .btn-copy-confirm:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
-    /* ----- ФОРМА ----- */
+    .volume-modal .modal { max-width: 380px; }
+    .volume-book-info {
+      background: var(--bg);
+      padding: 12px 16px;
+      border-radius: 14px;
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--manga-color);
+    }
+    .volume-book-info .vb-title { font-weight: 600; color: var(--text); margin-bottom: 3px; font-size: 0.95rem; }
+    .volume-book-info .vb-author { font-size: 0.8rem; color: var(--text-secondary); }
+    .volume-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 1rem;
+    }
+    .volume-fields .form-group input { width: 100%; }
+
     .form-group { display: flex; flex-direction: column; gap: 6px; }
     .form-group label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
     .form-group label .badge { font-size: 0.6rem; text-transform: none; background: var(--accent-dim); color: var(--accent-text); padding: 2px 10px; border-radius: 20px; font-weight: 400; }
@@ -304,7 +310,6 @@
     .form-group .rating-input input { width: 80px; }
     .form-group .rating-input .stars-preview { font-size: 1.6rem; letter-spacing: 3px; color: var(--star-color); }
 
-    /* ----- ОБЛОЖКИ: СЕТКА ПЛИТОК ----- */
     .covers-block {
       display: flex;
       flex-direction: column;
@@ -489,25 +494,20 @@
     .btn-add { background: var(--accent); color: var(--bg); border: none; padding: 14px 28px; border-radius: 40px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.2s; grid-column: 2 / 3; justify-self: end; width: 100%; max-width: 200px; }
     .btn-add:hover { transform: scale(1.02); box-shadow: 0 0 30px var(--accent-glow); }
 
-    /* ----- ФИЛЬТРЫ ----- */
     .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem; }
     .filters button { padding: 8px 16px; border-radius: 40px; border: 1.5px solid var(--border); background: transparent; font-weight: 500; font-size: 0.85rem; cursor: pointer; transition: 0.15s; color: var(--text-secondary); white-space: nowrap; }
     .filters button:hover { background: var(--hover); color: var(--text); border-color: var(--border-light); }
     .filters button.active { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 600; }
 
-    /* ----- СЕТКА КНИГ ----- */
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.8rem; }
     .book-card { background: var(--bg-card); border-radius: 28px; padding: 1.2rem 1.2rem 1.5rem; box-shadow: 0 6px 18px var(--shadow); transition: 0.3s; border: 1px solid var(--border); display: flex; flex-direction: column; position: relative; cursor: pointer; }
     .book-card:hover { transform: translateY(-6px); box-shadow: 0 14px 30px var(--shadow); border-color: var(--accent); background: var(--bg-card-hover); }
-        .book-card:hover .cover-wrapper { border-color: var(--accent); }
-
-    /* У манги обложка тоже подсвечивается фиолетовым при наведении */
+    .book-card:hover .cover-wrapper { border-color: var(--accent); }
+    .book-card.manga { border-color: var(--border); }
+    .book-card.manga:hover { border-color: var(--manga-color); box-shadow: 0 14px 30px var(--shadow); }
     .book-card.manga .cover-wrapper { border-color: var(--border); }
     .book-card.manga:hover .cover-wrapper { border-color: var(--manga-color); }
-        .book-card.manga { border-color: var(--border); }
-        .book-card.manga:hover { border-color: var(--manga-color); box-shadow: 0 14px 30px var(--shadow); }
 
-    /* ----- ОБЛОЖКА ----- */
     .cover-wrapper { position: relative; width: 100%; aspect-ratio: 3/4; border-radius: 18px; margin-bottom: 14px; overflow: hidden; background: var(--cover-placeholder); border: 1px solid var(--border); transition: border-color 0.3s; }
     .cover { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; background: var(--cover-placeholder); }
     .cover img { width: 100%; height: 100%; object-fit: contain; position: absolute; top: 0; left: 0; }
@@ -516,7 +516,6 @@
     .cover-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); border-radius: 20px; padding: 3px 10px; font-size: 0.7rem; color: #fff; font-weight: 500; z-index: 5; pointer-events: none; }
     .manga-badge { position: absolute; top: 8px; left: 8px; background: var(--manga-color); color: #fff; border-radius: 20px; padding: 3px 8px; font-size: 0.7rem; font-weight: 600; z-index: 5; pointer-events: none; }
 
-    /* ----- ИЗБРАННОЕ ----- */
     .favorite-btn {
       position: absolute; top: 8px; right: 8px; z-index: 10;
       background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
@@ -530,7 +529,6 @@
     .book-title { font-size: 1.1rem; font-weight: 600; color: var(--text); margin-bottom: 2px; word-break: break-word; }
     .book-author { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px; font-weight: 400; }
     
-    /* ----- РЕЛИЗ-СТАТУС МАНГИ ----- */
     .release-status-badge {
       display: inline-flex;
       align-items: center;
@@ -560,7 +558,6 @@
       border-color: var(--release-completed);
     }
 
-    /* ----- ТОМ/ГЛАВА ----- */
     .book-volumes {
       font-size: 0.85rem;
       color: var(--manga-color);
@@ -568,7 +565,6 @@
       margin-bottom: 4px;
     }
     
-    /* ----- СТАТУСЫ ----- */
     .book-status {
       display: inline-flex;
       align-items: center;
@@ -590,7 +586,6 @@
     .book-status.done { border-color: var(--star-color); color: var(--star-color); }
     .book-status.want-to-buy { border-color: var(--want-to-buy-color); color: var(--want-to-buy-color); background: var(--want-to-buy-bg); }
 
-    /* ----- СТАТУС КАК КНОПКА ----- */
     .book-status-btn {
       position: relative;
       display: inline-block;
@@ -611,7 +606,6 @@
       filter: brightness(1.1);
     }
 
-    /* ----- ВЫПАДАЮЩЕЕ МЕНЮ СТАТУСОВ ----- */
     .status-dropdown {
       position: absolute;
       top: 100%;
@@ -662,7 +656,6 @@
     .book-pages { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
     .book-progress { font-size: 0.8rem; color: var(--accent-text); font-weight: 500; margin-bottom: 4px; }
 
-    /* ----- КНОПКА ТАЙМЕРА ----- */
     .book-timer-btn {
       background: var(--status-bg);
       color: var(--text);
@@ -693,6 +686,27 @@
       animation: pulse 1s infinite;
     }
 
+    /* Кнопка «Том/Глава» — как «Читать», но в цвете манги */
+    .book-volume-btn {
+      background: var(--manga-bg);
+      color: var(--manga-color);
+      border-color: var(--manga-color);
+    }
+    .book-volume-btn:hover {
+      background: var(--manga-color);
+      color: #fff;
+      border-color: var(--manga-color);
+    }
+    [data-theme="dark"] .book-volume-btn {
+      background: var(--manga-bg);
+      color: var(--manga-color);
+      border-color: var(--manga-color);
+    }
+    [data-theme="dark"] .book-volume-btn:hover {
+      background: var(--manga-color);
+      color: #fff;
+    }
+
     [data-theme="dark"] .book-timer-btn {
       background: var(--timer-bg);
       color: var(--timer-text);
@@ -704,7 +718,6 @@
     }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
-    /* ----- КНОПКИ ДЕЙСТВИЙ ----- */
     .book-actions { margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap; }
     .book-actions button { background: none; border: none; padding: 6px 12px; border-radius: 40px; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: 0.15s; color: var(--text-secondary); background: var(--status-bg); }
     .book-actions button:hover { background: var(--hover); color: var(--text); }
@@ -717,7 +730,6 @@
 
     .empty { text-align: center; padding: 4rem 0; color: var(--text-muted); font-size: 1.2rem; grid-column: 1 / -1; }
 
-    /* ----- БАННЕР МИГРАЦИИ ----- */
     .migrate-banner {
       background: var(--accent-dim);
       border: 1.5px solid var(--accent);
@@ -746,7 +758,6 @@
     .migrate-banner button:hover { transform: scale(1.03); box-shadow: 0 0 20px var(--accent-glow); }
     .migrate-banner button:disabled { opacity: 0.6; cursor: wait; }
 
-    /* ----- СТРАНИЦА КНИГИ ----- */
     .book-page { display: none; animation: fadeIn 0.3s ease; }
     .book-page.active { display: block; }
     .book-page .book-detail { background: var(--bg-card); border-radius: 32px; padding: 2.5rem; border: 1px solid var(--border); box-shadow: 0 12px 30px var(--shadow); display: grid; grid-template-columns: 300px 1fr; gap: 2.5rem; }
@@ -791,7 +802,6 @@
 
     .book-page .book-detail-dates { font-size: 1rem; color: var(--text-secondary); }
 
-    /* ----- БЫСТРАЯ ОЦЕНКА ----- */
     .quick-rating {
       display: flex;
       align-items: center;
@@ -830,7 +840,6 @@
       margin-left: 4px;
     }
 
-    /* ----- БЫСТРЫЙ ОТЗЫВ ----- */
     .quick-review {
       background: var(--bg);
       padding: 16px 20px;
@@ -880,7 +889,6 @@
       box-shadow: 0 0 20px var(--accent-glow);
     }
 
-    /* ----- АННОТАЦИЯ ----- */
     .book-annotation {
       margin-top: 0.5rem;
       border-top: 1px solid var(--border);
@@ -911,7 +919,6 @@
       font-style: italic;
     }
 
-    /* ----- ЦИТАТЫ ----- */
     .book-quotes {
       margin-top: 0.5rem;
       border-top: 1px solid var(--border);
@@ -1058,7 +1065,6 @@
     .book-page .book-detail-actions .copy-btn { background: var(--accent); color: var(--bg); }
     .book-page .book-detail-actions .copy-btn:hover { transform: scale(1.03); box-shadow: 0 0 20px var(--accent-glow); }
 
-    /* ----- TOAST ----- */
     .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--bg-card); color: var(--text); padding: 14px 28px; border-radius: 40px; box-shadow: 0 8px 30px var(--shadow); border: 1px solid var(--border); font-weight: 500; z-index: 10000; animation: slideUp 0.3s ease; max-width: 90%; }
     .toast.success { border-color: var(--success); }
     .toast.error { border-color: var(--error); }
@@ -1069,7 +1075,6 @@
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-    /* ----- ТАЙМЕР МОДАЛКА ----- */
     .timer-modal .modal { max-width: 420px; }
     .timer-display { font-size: 3.5rem; font-weight: 700; text-align: center; color: var(--text); padding: 1.5rem 0; font-variant-numeric: tabular-nums; letter-spacing: 2px; }
     .timer-controls { display: flex; gap: 12px; justify-content: center; margin-bottom: 1rem; }
@@ -1214,11 +1219,9 @@
       transform: scale(1.2);
     }
 
-    /* ----- PWA: OFFLINE ----- */
     .offline-badge { position: fixed; top: 10px; right: 10px; background: var(--error); color: white; padding: 4px 12px; border-radius: 40px; font-size: 0.7rem; font-weight: 600; z-index: 9999; display: none; }
     .offline-badge.visible { display: block; }
 
-    /* ----- АДАПТИВ ----- */
     @media (max-width: 700px) {
       h1 { font-size: 2rem; flex-wrap: wrap; }
       .header { flex-direction: column; align-items: stretch; }
@@ -1251,7 +1254,6 @@
 </head>
 <body>
 
-<!-- ЭКРАН ВХОДА -->
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
     <h1>📖 <span class="accent">Библиотека</span></h1>
@@ -1263,12 +1265,10 @@
   </div>
 </div>
 
-<!-- ОСНОВНОЙ КОНТЕНТ -->
 <div class="app-content" id="appContent">
   <div class="app">
     <div class="offline-badge" id="offlineBadge">📡 Офлайн</div>
 
-    <!-- ШАПКА -->
     <div class="header">
       <div class="header-left">
         <button class="back-btn" id="backBtn">← Назад</button>
@@ -1282,27 +1282,22 @@
       </div>
     </div>
 
-    <!-- ПЕРЕКЛЮЧАТЕЛЬ ПОЛОК -->
     <div class="shelf-switcher" id="shelfSwitcher"></div>
 
-    <!-- ПЕРЕКЛЮЧАТЕЛЬ ТИПА -->
     <div class="type-switcher" id="typeSwitcher">
       <button class="active" data-type="book">📚 Книги</button>
       <button data-type="manga">🎌 Манга</button>
     </div>
 
-    <!-- БАННЕР МИГРАЦИИ -->
     <div class="migrate-banner" id="migrateBanner" style="display:none;">
       <div class="mb-text">🔧 Найдены записи без владельца. Проставить их вам?</div>
       <button id="migrateBtn">Проставить мне</button>
     </div>
 
-    <!-- ПОИСК -->
     <div class="search-wrap" id="searchWrap">
       <input type="text" id="searchInput" placeholder="🔍 Поиск по названию или автору..." />
     </div>
 
-    <!-- ФИЛЬТРЫ -->
     <div class="filters" id="filterBar">
       <button class="active" data-filter="all">Все</button>
       <button data-filter="В плане">📌 В плане</button>
@@ -1312,10 +1307,8 @@
       <button data-filter="favorite">⭐ Избранное</button>
     </div>
 
-    <!-- СПИСОК КНИГ -->
     <div class="grid" id="booksGrid"></div>
 
-    <!-- СТРАНИЦА КНИГИ -->
     <div class="book-page" id="bookPage">
       <div class="book-detail" id="bookDetail"></div>
     </div>
@@ -1439,6 +1432,34 @@
       </div>
     </div>
 
+    <!-- МИНИ-МОДАЛКА ТОМ/ГЛАВА -->
+    <div class="modal-overlay volume-modal" id="volumeModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>📖 <span class="accent">Том и глава</span></h2>
+          <button class="modal-close" id="closeVolumeModal">✕</button>
+        </div>
+        <div class="volume-book-info">
+          <div class="vb-title" id="volumeBookTitle"></div>
+          <div class="vb-author" id="volumeBookAuthor"></div>
+        </div>
+        <div class="volume-fields">
+          <div class="form-group">
+            <label>Том</label>
+            <input type="number" id="volumeModalVolume" min="1" placeholder="1" />
+          </div>
+          <div class="form-group">
+            <label>Глава</label>
+            <input type="number" id="volumeModalChapter" min="1" placeholder="1" />
+          </div>
+        </div>
+        <div class="copy-actions">
+          <button class="btn-copy-cancel" id="volumeCancelBtn">Отмена</button>
+          <button class="btn-copy-confirm" id="volumeConfirmBtn">💾 Сохранить</button>
+        </div>
+      </div>
+    </div>
+
     <!-- МОДАЛКА ТАЙМЕРА -->
     <div class="modal-overlay timer-modal" id="timerModal">
       <div class="modal">
@@ -1511,6 +1532,8 @@
 
   let addCovers = [];
   let addMainCover = null;
+
+  let volumeEditingBookId = null;
 
   // ============================================================
   // 1. FIREBASE
@@ -1594,6 +1617,15 @@
   const copyCancelBtn = document.getElementById('copyCancelBtn');
   const copyConfirmBtn = document.getElementById('copyConfirmBtn');
   const copyStatusWantToBuy = document.getElementById('copyStatusWantToBuy');
+
+  const volumeModal = document.getElementById('volumeModal');
+  const closeVolumeModal = document.getElementById('closeVolumeModal');
+  const volumeBookTitle = document.getElementById('volumeBookTitle');
+  const volumeBookAuthor = document.getElementById('volumeBookAuthor');
+  const volumeModalVolume = document.getElementById('volumeModalVolume');
+  const volumeModalChapter = document.getElementById('volumeModalChapter');
+  const volumeCancelBtn = document.getElementById('volumeCancelBtn');
+  const volumeConfirmBtn = document.getElementById('volumeConfirmBtn');
 
   const timerModal = document.getElementById('timerModal');
   const closeTimerModal = document.getElementById('closeTimerModal');
@@ -1705,6 +1737,13 @@
 
   function getBookType(book) {
     return book.type === 'manga' ? 'manga' : 'book';
+  }
+
+  function shouldShowMangaVolumeInfo(book) {
+    if (getBookType(book) !== 'manga') return false;
+    if (book.status === 'В плане') return false;
+    if (!book.volume && !book.chapter) return false;
+    return true;
   }
 
   // ============================================================
@@ -2057,8 +2096,6 @@
     const isManga = type === 'manga';
 
     pagesInputGroup.style.display = isManga ? 'none' : '';
-    volumeInputGroup.style.display = isManga ? '' : 'none';
-    chapterInputGroup.style.display = isManga ? '' : 'none';
     releaseStatusGroup.style.display = isManga ? '' : 'none';
 
     statusWantToBuyOption.style.display = isManga ? 'none' : '';
@@ -2072,6 +2109,7 @@
   function updateDatesByStatus() {
     const type = typeSelect.value;
     const isManga = type === 'manga';
+    const status = statusSelect.value;
 
     if (isManga) {
       startDateGroup.style.display = 'none';
@@ -2079,7 +2117,6 @@
       startDate.value = '';
       endDate.value = '';
     } else {
-      const status = statusSelect.value;
       if (status === 'В плане' || status === 'Хочу купить') {
         startDateGroup.style.display = 'none';
         endDateGroup.style.display = 'none';
@@ -2095,7 +2132,15 @@
       }
     }
 
-    const status = statusSelect.value;
+    const showMangaVolumeFields = isManga && status !== 'В плане';
+    volumeInputGroup.style.display = showMangaVolumeFields ? '' : 'none';
+    chapterInputGroup.style.display = showMangaVolumeFields ? '' : 'none';
+
+    if (!showMangaVolumeFields) {
+      volumeInput.value = '';
+      chapterInput.value = '';
+    }
+
     const showRating = (status === 'Прочитано');
     ratingGroup.style.display = showRating ? 'flex' : 'none';
     reviewGroup.style.display = showRating ? 'flex' : 'none';
@@ -2368,11 +2413,13 @@
 
     const author = authorInput.value.trim() || null;
     const pages = isManga ? null : (parseInt(pagesInput.value) || null);
-    const volume = isManga ? (parseInt(volumeInput.value) || null) : null;
-    const chapter = isManga ? (parseInt(chapterInput.value) || null) : null;
-    const releaseStatus = isManga ? releaseStatusSelect.value : null;
 
     const status = statusSelect.value;
+    const shouldHaveVolume = isManga && status !== 'В плане';
+    const volume = shouldHaveVolume ? (parseInt(volumeInput.value) || null) : null;
+    const chapter = shouldHaveVolume ? (parseInt(chapterInput.value) || null) : null;
+    const releaseStatus = isManga ? releaseStatusSelect.value : null;
+
     const start = isManga ? null : (startDate.value || null);
     const end = isManga ? null : (endDate.value || null);
     const rating = (status === 'Прочитано') ? (parseInt(ratingInput.value) || null) : null;
@@ -2435,7 +2482,54 @@
   addBtn.addEventListener('click', addBook);
 
   // ============================================================
-  // 21. КОПИРОВАНИЕ
+  // 21. МИНИ-РЕДАКТОР ТОМА/ГЛАВЫ
+  // ============================================================
+  function openVolumeModal(book) {
+    if (getBookType(book) !== 'manga') return;
+    volumeEditingBookId = book.id;
+    volumeBookTitle.textContent = book.title;
+    volumeBookAuthor.textContent = book.author || '';
+    volumeModalVolume.value = book.volume || '';
+    volumeModalChapter.value = book.chapter || '';
+    volumeModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => volumeModalVolume.focus(), 100);
+  }
+
+  function closeVolumeModalFn() {
+    volumeModal.classList.remove('active');
+    document.body.style.overflow = '';
+    volumeEditingBookId = null;
+  }
+
+  closeVolumeModal.addEventListener('click', closeVolumeModalFn);
+  volumeCancelBtn.addEventListener('click', closeVolumeModalFn);
+  volumeModal.addEventListener('click', (e) => {
+    if (e.target === volumeModal) closeVolumeModalFn();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && volumeModal.classList.contains('active')) closeVolumeModalFn();
+  });
+
+  volumeConfirmBtn.addEventListener('click', async () => {
+    if (!volumeEditingBookId) return;
+    const newVolume = parseInt(volumeModalVolume.value) || null;
+    const newChapter = parseInt(volumeModalChapter.value) || null;
+    await updateInFirebase(volumeEditingBookId, { volume: newVolume, chapter: newChapter }, true);
+    showToast('✅ Обновлено', 'success');
+    closeVolumeModalFn();
+  });
+
+  volumeModalVolume.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') volumeModalChapter.focus();
+  });
+  volumeModalChapter.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); volumeConfirmBtn.click(); }
+  });
+
+  // ============================================================
+  // 22. КОПИРОВАНИЕ
   // ============================================================
   function openCopyModal(book) {
     copySourceBook = book;
@@ -2486,14 +2580,15 @@
     const today = new Date().toISOString().split('T')[0];
     const srcType = getBookType(src);
     const isManga = srcType === 'manga';
+    const keepVolume = isManga && copySelectedStatus !== 'В плане';
 
     const newBook = {
       type: srcType,
       title: src.title,
       author: src.author || null,
       pages: src.pages || null,
-      volume: src.volume || null,
-      chapter: src.chapter || null,
+      volume: keepVolume ? (src.volume || null) : null,
+      chapter: keepVolume ? (src.chapter || null) : null,
       releaseStatus: src.releaseStatus || null,
       covers: src.covers || [],
       mainCover: src.mainCover || (src.covers && src.covers[0]) || null,
@@ -2532,7 +2627,7 @@
   });
 
   // ============================================================
-  // 22. ТАЙМЕР
+  // 23. ТАЙМЕР
   // ============================================================
   function openTimer(bookId) {
     const book = books.find(b => b.id === bookId);
@@ -2803,7 +2898,7 @@
   }
 
   // ============================================================
-  // 23. РЕНДЕР СПИСКА
+  // 24. РЕНДЕР СПИСКА
   // ============================================================
   function getSearchQuery() {
     return searchInput.value.trim().toLowerCase();
@@ -2891,17 +2986,18 @@
         }
 
         let mangaInfoHtml = '';
-        if (isManga) {
+        if (shouldShowMangaVolumeInfo(book)) {
           const parts = [];
           if (book.volume) parts.push(`Том ${book.volume}`);
           if (book.chapter) parts.push(`Глава ${book.chapter}`);
-          if (parts.length > 0) {
-            mangaInfoHtml = `<div class="book-volumes">🎌 ${parts.join(' · ')}</div>`;
-          }
+          mangaInfoHtml = `<div class="book-volumes">🎌 ${parts.join(' · ')}</div>`;
         }
 
         const timerBtnHtml = (!isManga && mine && book.status === 'Читаю')
           ? `<button class="book-timer-btn" data-id="${book.id}">⏱️ Читать</button>` : '';
+
+        const volumeBtnTopHtml = (mine && isManga && book.status === 'Читаю')
+          ? `<button class="book-timer-btn book-volume-btn" data-id="${book.id}">✏️ Том/Глава</button>` : '';
 
         const buyBtnHtml = (mine && !isManga && book.status === 'Хочу купить')
           ? `<button class="buy-btn" data-id="${book.id}">✅ Куплено</button>` : '';
@@ -2950,6 +3046,7 @@
             ${datesHtml ? `<div class="book-dates">${datesHtml}</div>` : ''}
             ${progressHtml}
             ${timerBtnHtml}
+            ${volumeBtnTopHtml}
             <div class="book-actions">
               ${buyBtnHtml}
               ${copyBtnHtml}
@@ -3013,6 +3110,10 @@
               updatedData.startDate = null;
               updatedData.endDate = null;
               updatedData.rating = null;
+              if (isManga) {
+                updatedData.volume = null;
+                updatedData.chapter = null;
+              }
             } else if (newStatus === 'Читаю') {
               if (!isManga) {
                 updatedData.startDate = book.startDate || today;
@@ -3043,7 +3144,13 @@
         document.querySelectorAll('.book-timer-btn').forEach(btn => {
           btn.addEventListener('click', (e) => {
             e.stopPropagation();
-            openTimer(btn.dataset.id);
+            const book = books.find(b => b.id === btn.dataset.id);
+            if (!book) return;
+            if (getBookType(book) === 'manga') {
+              openVolumeModal(book);
+            } else {
+              openTimer(btn.dataset.id);
+            }
           });
         });
 
@@ -3081,7 +3188,7 @@
   searchInput.addEventListener('input', render);
 
   // ============================================================
-  // 24. СТРАНИЦА
+  // 25. СТРАНИЦА
   // ============================================================
   function renderBookPage(book) {
     const mine = book.ownerId === currentUser.uid;
@@ -3099,13 +3206,11 @@
     }
 
     let mangaInfoHtml = '';
-    if (isManga) {
+    if (shouldShowMangaVolumeInfo(book)) {
       const parts = [];
       if (book.volume) parts.push(`Том ${book.volume}`);
       if (book.chapter) parts.push(`Глава ${book.chapter}`);
-      if (parts.length > 0) {
-        mangaInfoHtml = `<div class="book-volumes" style="font-size:1rem;">🎌 ${parts.join(' · ')}</div>`;
-      }
+      mangaInfoHtml = `<div class="book-volumes" style="font-size:1rem;">🎌 ${parts.join(' · ')}</div>`;
     }
 
     let quickRatingHtml = '';
@@ -3265,6 +3370,7 @@
         <div class="book-detail-actions">
           ${!isManga && book.status === 'Читаю' ? `<button class="edit-btn" id="detailTimerBtn">⏱️ Читать</button>` : ''}
           ${!isManga && book.status === 'Хочу купить' ? `<button class="edit-btn" id="detailBuyBtn" style="background:var(--success);color:#fff;">✅ Куплено</button>` : ''}
+          ${isManga && book.status === 'Читаю' ? `<button class="edit-btn" id="detailVolumeBtn" style="background:var(--manga-color);color:#fff;">✏️ Том/Глава</button>` : ''}
           <button class="edit-btn" id="detailEditBtn">✏️ Редактировать</button>
           <button class="delete-btn" id="detailDeleteBtn">🗑 Удалить</button>
         </div>`;
@@ -3352,6 +3458,10 @@
             updatedData.startDate = null;
             updatedData.endDate = null;
             updatedData.rating = null;
+            if (isM) {
+              updatedData.volume = null;
+              updatedData.chapter = null;
+            }
           } else if (newStatus === 'Читаю') {
             if (!isM) {
               updatedData.startDate = currentBook.startDate || today;
@@ -3462,6 +3572,13 @@
         });
       }
 
+      const detailVolumeBtn = document.getElementById('detailVolumeBtn');
+      if (detailVolumeBtn) {
+        detailVolumeBtn.addEventListener('click', () => {
+          openVolumeModal(book);
+        });
+      }
+
       if (covers.length > 1) {
         const prevBtn = document.getElementById('galleryPrev');
         const nextBtn = document.getElementById('galleryNext');
@@ -3545,7 +3662,7 @@
   }
 
   // ============================================================
-  // 25. РЕДАКТИРОВАНИЕ
+  // 26. РЕДАКТИРОВАНИЕ
   // ============================================================
   function openEditModal(bookId) {
     const book = books.find(b => b.id === bookId);
@@ -3733,28 +3850,23 @@
 
     function updateEditFormByType() {
       const isManga = editType.value === 'manga';
-
       editPagesGroup.style.display = isManga ? 'none' : '';
-      editVolumeGroup.style.display = isManga ? '' : 'none';
-      editChapterGroup.style.display = isManga ? '' : 'none';
       editReleaseStatusGroup.style.display = isManga ? '' : 'none';
-
       editStatusWantToBuy.style.display = isManga ? 'none' : '';
       if (isManga && editStatus.value === 'Хочу купить') {
         editStatus.value = 'В плане';
       }
-
       updateEditDates();
     }
 
     function updateEditDates() {
       const isManga = editType.value === 'manga';
+      const status = editStatus.value;
 
       if (isManga) {
         editStartGroup.style.display = 'none';
         editEndGroup.style.display = 'none';
       } else {
-        const status = editStatus.value;
         if (status === 'В плане' || status === 'Хочу купить') {
           editStartGroup.style.display = 'none';
           editEndGroup.style.display = 'none';
@@ -3767,7 +3879,16 @@
         }
       }
 
-      const showRating = editStatus.value === 'Прочитано';
+      const showMangaVolumeFields = isManga && status !== 'В плане';
+      editVolumeGroup.style.display = showMangaVolumeFields ? '' : 'none';
+      editChapterGroup.style.display = showMangaVolumeFields ? '' : 'none';
+
+      if (!showMangaVolumeFields) {
+        editVolume.value = '';
+        editChapter.value = '';
+      }
+
+      const showRating = status === 'Прочитано';
       editRatingGroup.style.display = showRating ? 'flex' : 'none';
       editReviewGroup.style.display = showRating ? 'flex' : 'none';
     }
@@ -3794,11 +3915,13 @@
 
       const newAuthor = document.getElementById('editAuthor').value.trim() || null;
       const newPages = isManga ? null : (parseInt(document.getElementById('editPages').value) || null);
-      const newVolume = isManga ? (parseInt(document.getElementById('editVolume').value) || null) : null;
-      const newChapter = isManga ? (parseInt(document.getElementById('editChapter').value) || null) : null;
-      const newReleaseStatus = isManga ? editReleaseStatus.value : null;
 
       const newStatus = editStatus.value;
+      const shouldHaveVolume = isManga && newStatus !== 'В плане';
+      const newVolume = shouldHaveVolume ? (parseInt(editVolume.value) || null) : null;
+      const newChapter = shouldHaveVolume ? (parseInt(editChapter.value) || null) : null;
+      const newReleaseStatus = isManga ? editReleaseStatus.value : null;
+
       const newStart = isManga ? null : (editStart.value || null);
       const newEnd = isManga ? null : (editEnd.value || null);
       const newRating = (newStatus === 'Прочитано') ? (parseInt(editRating.value) || null) : null;
@@ -3872,7 +3995,7 @@
   }
 
   // ============================================================
-  // 26. СЧЁТЧИК
+  // 27. СЧЁТЧИК
   // ============================================================
   function updateCounter() {
     if (!currentUser) return;
