@@ -281,7 +281,7 @@
     .copy-actions .btn-copy-confirm:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--accent-glow); }
     .copy-actions .btn-copy-confirm:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
-    .volume-modal .modal { max-width: 380px; }
+    .volume-modal .modal { max-width: 420px; }
     .volume-book-info {
       background: var(--bg);
       padding: 12px 16px;
@@ -686,7 +686,6 @@
       animation: pulse 1s infinite;
     }
 
-    /* Кнопка «Том/Глава» — как «Читать», но в цвете манги */
     .book-volume-btn {
       background: var(--manga-bg);
       color: var(--manga-color);
@@ -1342,11 +1341,19 @@
           </div>
           <div class="form-group" id="volumeInputGroup" style="display:none;">
             <label>Том</label>
-            <input type="number" id="volumeInput" placeholder="1" min="1" />
+            <input type="number" id="volumeInput" placeholder="1" min="1" step="1" />
           </div>
           <div class="form-group" id="chapterInputGroup" style="display:none;">
             <label>Глава</label>
-            <input type="number" id="chapterInput" placeholder="1" min="1" />
+            <input type="number" id="chapterInput" placeholder="1" min="0" step="0.1" />
+          </div>
+          <div class="form-group" id="totalVolumesGroup" style="display:none;">
+            <label>Всего томов</label>
+            <input type="number" id="totalVolumesInput" placeholder="5" min="1" step="1" />
+          </div>
+          <div class="form-group" id="totalChaptersGroup" style="display:none;">
+            <label>Всего глав</label>
+            <input type="number" id="totalChaptersInput" placeholder="120" min="0" step="0.1" />
           </div>
           <div class="form-group" id="releaseStatusGroup" style="display:none;">
             <label>Статус выхода</label>
@@ -1446,11 +1453,11 @@
         <div class="volume-fields">
           <div class="form-group">
             <label>Том</label>
-            <input type="number" id="volumeModalVolume" min="1" placeholder="1" />
+            <input type="number" id="volumeModalVolume" min="1" step="1" placeholder="1" />
           </div>
           <div class="form-group">
             <label>Глава</label>
-            <input type="number" id="volumeModalChapter" min="1" placeholder="1" />
+            <input type="number" id="volumeModalChapter" min="0" step="0.1" placeholder="1" />
           </div>
         </div>
         <div class="copy-actions">
@@ -1573,6 +1580,10 @@
   const volumeInputGroup = document.getElementById('volumeInputGroup');
   const chapterInput = document.getElementById('chapterInput');
   const chapterInputGroup = document.getElementById('chapterInputGroup');
+  const totalVolumesInput = document.getElementById('totalVolumesInput');
+  const totalVolumesGroup = document.getElementById('totalVolumesGroup');
+  const totalChaptersInput = document.getElementById('totalChaptersInput');
+  const totalChaptersGroup = document.getElementById('totalChaptersGroup');
   const releaseStatusSelect = document.getElementById('releaseStatusSelect');
   const releaseStatusGroup = document.getElementById('releaseStatusGroup');
   const coversContainer = document.getElementById('coversContainer');
@@ -1739,11 +1750,58 @@
     return book.type === 'manga' ? 'manga' : 'book';
   }
 
-  function shouldShowMangaVolumeInfo(book) {
-    if (getBookType(book) !== 'manga') return false;
-    if (book.status === 'В плане') return false;
-    if (!book.volume && !book.chapter) return false;
-    return true;
+  // Формат для дробных глав: если целое — без десятичной, если дробное — как есть
+  function formatChapter(num) {
+    if (num === null || num === undefined || num === '') return '';
+    const n = parseFloat(num);
+    if (isNaN(n)) return '';
+    return Number.isInteger(n) ? String(n) : String(n);
+  }
+
+  function formatVolume(num) {
+    if (num === null || num === undefined || num === '') return '';
+    const n = parseInt(num);
+    if (isNaN(n)) return '';
+    return String(n);
+  }
+
+  // Собирает строку «🎌 Том 3 · Глава 50 / 5 томов · 120 глав»
+    function getMangaVolumeInfoText(book) {
+    if (getBookType(book) !== 'manga') return '';
+    if (book.status === 'В плане') return '';
+
+    const progressParts = [];
+    if (book.volume) progressParts.push(`Том ${formatVolume(book.volume)}`);
+    if (book.chapter) progressParts.push(`Глава ${formatChapter(book.chapter)}`);
+
+    const totalParts = [];
+    if (book.releaseStatus === 'completed') {
+      if (book.totalVolumes) totalParts.push(`${formatVolume(book.totalVolumes)} ${pluralVolumes(book.totalVolumes)}`);
+      if (book.totalChapters) totalParts.push(`${formatChapter(book.totalChapters)} ${pluralChapters(book.totalChapters)}`);
+    }
+
+    const progressStr = progressParts.join(' ');
+    const totalStr = totalParts.join(' ');
+
+    if (!progressStr && !totalStr) return '';
+    if (progressStr && totalStr) return `${progressStr} /<br>${totalStr}`;
+    return progressStr || totalStr;
+  }
+
+  function pluralVolumes(n) {
+    const v = parseInt(n);
+    const mod10 = v % 10, mod100 = v % 100;
+    if (mod10 === 1 && mod100 !== 11) return 'том';
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return 'тома';
+    return 'томов';
+  }
+
+  function pluralChapters(n) {
+    const v = Math.round(parseFloat(n));
+    const mod10 = v % 10, mod100 = v % 100;
+    if (mod10 === 1 && mod100 !== 11) return 'глава';
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return 'главы';
+    return 'глав';
   }
 
   // ============================================================
@@ -2110,6 +2168,7 @@
     const type = typeSelect.value;
     const isManga = type === 'manga';
     const status = statusSelect.value;
+    const releaseStatus = releaseStatusSelect.value;
 
     if (isManga) {
       startDateGroup.style.display = 'none';
@@ -2132,6 +2191,7 @@
       }
     }
 
+    // Прогресс (Том, Глава) — только у манги и только если не «В плане»
     const showMangaVolumeFields = isManga && status !== 'В плане';
     volumeInputGroup.style.display = showMangaVolumeFields ? '' : 'none';
     chapterInputGroup.style.display = showMangaVolumeFields ? '' : 'none';
@@ -2139,6 +2199,16 @@
     if (!showMangaVolumeFields) {
       volumeInput.value = '';
       chapterInput.value = '';
+    }
+
+    // Всего томов/глав — только у завершённой манги
+    const showTotals = isManga && releaseStatus === 'completed';
+    totalVolumesGroup.style.display = showTotals ? '' : 'none';
+    totalChaptersGroup.style.display = showTotals ? '' : 'none';
+
+    if (!showTotals) {
+      totalVolumesInput.value = '';
+      totalChaptersInput.value = '';
     }
 
     const showRating = (status === 'Прочитано');
@@ -2158,6 +2228,7 @@
 
   typeSelect.addEventListener('change', updateFormByType);
   statusSelect.addEventListener('change', updateDatesByStatus);
+  releaseStatusSelect.addEventListener('change', updateDatesByStatus);
 
   // ============================================================
   // 15. МОДАЛКА ДОБАВЛЕНИЯ
@@ -2196,6 +2267,8 @@
     pagesInput.value = '';
     volumeInput.value = '';
     chapterInput.value = '';
+    totalVolumesInput.value = '';
+    totalChaptersInput.value = '';
     releaseStatusSelect.value = 'ongoing';
     statusSelect.value = 'В плане';
     startDate.value = '';
@@ -2415,10 +2488,15 @@
     const pages = isManga ? null : (parseInt(pagesInput.value) || null);
 
     const status = statusSelect.value;
+    const releaseStatus = isManga ? releaseStatusSelect.value : null;
     const shouldHaveVolume = isManga && status !== 'В плане';
     const volume = shouldHaveVolume ? (parseInt(volumeInput.value) || null) : null;
-    const chapter = shouldHaveVolume ? (parseInt(chapterInput.value) || null) : null;
-    const releaseStatus = isManga ? releaseStatusSelect.value : null;
+    const chapter = shouldHaveVolume ? (parseFloat(chapterInput.value) || null) : null;
+
+    // Всего томов/глав — только у завершённой манги
+    const showTotals = isManga && releaseStatus === 'completed';
+    const totalVolumes = showTotals ? (parseInt(totalVolumesInput.value) || null) : null;
+    const totalChapters = showTotals ? (parseFloat(totalChaptersInput.value) || null) : null;
 
     const start = isManga ? null : (startDate.value || null);
     const end = isManga ? null : (endDate.value || null);
@@ -2460,6 +2538,8 @@
       pages,
       volume,
       chapter,
+      totalVolumes,
+      totalChapters,
       releaseStatus,
       covers,
       mainCover,
@@ -2515,7 +2595,7 @@
   volumeConfirmBtn.addEventListener('click', async () => {
     if (!volumeEditingBookId) return;
     const newVolume = parseInt(volumeModalVolume.value) || null;
-    const newChapter = parseInt(volumeModalChapter.value) || null;
+    const newChapter = parseFloat(volumeModalChapter.value) || null;
     await updateInFirebase(volumeEditingBookId, { volume: newVolume, chapter: newChapter }, true);
     showToast('✅ Обновлено', 'success');
     closeVolumeModalFn();
@@ -2580,15 +2660,18 @@
     const today = new Date().toISOString().split('T')[0];
     const srcType = getBookType(src);
     const isManga = srcType === 'manga';
-    const keepVolume = isManga && copySelectedStatus !== 'В плане';
 
+    // Прогресс чтения (том/глава) НИКОГДА не переносится — у каждого свой
+    // Всего томов/глав — переносится (это общая инфа о произведении)
     const newBook = {
       type: srcType,
       title: src.title,
       author: src.author || null,
       pages: src.pages || null,
-      volume: keepVolume ? (src.volume || null) : null,
-      chapter: keepVolume ? (src.chapter || null) : null,
+      volume: null,
+      chapter: null,
+      totalVolumes: src.totalVolumes || null,
+      totalChapters: src.totalChapters || null,
       releaseStatus: src.releaseStatus || null,
       covers: src.covers || [],
       mainCover: src.mainCover || (src.covers && src.covers[0]) || null,
@@ -2985,13 +3068,9 @@
           progressHtml = `<div class="book-pages">${book.pages} стр.</div>`;
         }
 
-        let mangaInfoHtml = '';
-        if (shouldShowMangaVolumeInfo(book)) {
-          const parts = [];
-          if (book.volume) parts.push(`Том ${book.volume}`);
-          if (book.chapter) parts.push(`Глава ${book.chapter}`);
-          mangaInfoHtml = `<div class="book-volumes">🎌 ${parts.join(' · ')}</div>`;
-        }
+        // Строка том/глава + всего
+                const mangaInfoText = getMangaVolumeInfoText(book);
+        const mangaInfoHtml = mangaInfoText ? `<div class="book-volumes">🎌 ${mangaInfoText}</div>` : '';
 
         const timerBtnHtml = (!isManga && mine && book.status === 'Читаю')
           ? `<button class="book-timer-btn" data-id="${book.id}">⏱️ Читать</button>` : '';
@@ -3205,13 +3284,8 @@
       }
     }
 
-    let mangaInfoHtml = '';
-    if (shouldShowMangaVolumeInfo(book)) {
-      const parts = [];
-      if (book.volume) parts.push(`Том ${book.volume}`);
-      if (book.chapter) parts.push(`Глава ${book.chapter}`);
-      mangaInfoHtml = `<div class="book-volumes" style="font-size:1rem;">🎌 ${parts.join(' · ')}</div>`;
-    }
+    const mangaInfoText = getMangaVolumeInfoText(book);
+    const mangaInfoHtml = mangaInfoText ? `<div class="book-volumes" style="font-size:1rem;">🎌 ${mangaInfoText}</div>` : '';
 
     let quickRatingHtml = '';
     if (book.status === 'Прочитано' && mine) {
@@ -3709,11 +3783,19 @@
           </div>
           <div class="form-group" id="editVolumeGroup" style="display:none;">
             <label>Том</label>
-            <input type="number" id="editVolume" value="${book.volume || ''}" min="1" />
+            <input type="number" id="editVolume" value="${book.volume || ''}" min="1" step="1" />
           </div>
           <div class="form-group" id="editChapterGroup" style="display:none;">
             <label>Глава</label>
-            <input type="number" id="editChapter" value="${book.chapter || ''}" min="1" />
+            <input type="number" id="editChapter" value="${book.chapter || ''}" min="0" step="0.1" />
+          </div>
+          <div class="form-group" id="editTotalVolumesGroup" style="display:none;">
+            <label>Всего томов</label>
+            <input type="number" id="editTotalVolumes" value="${book.totalVolumes || ''}" min="1" step="1" />
+          </div>
+          <div class="form-group" id="editTotalChaptersGroup" style="display:none;">
+            <label>Всего глав</label>
+            <input type="number" id="editTotalChapters" value="${book.totalChapters || ''}" min="0" step="0.1" />
           </div>
           <div class="form-group" id="editReleaseStatusGroup" style="display:none;">
             <label>Статус выхода</label>
@@ -3781,6 +3863,8 @@
     const editPagesGroup = document.getElementById('editPagesGroup');
     const editVolumeGroup = document.getElementById('editVolumeGroup');
     const editChapterGroup = document.getElementById('editChapterGroup');
+    const editTotalVolumesGroup = document.getElementById('editTotalVolumesGroup');
+    const editTotalChaptersGroup = document.getElementById('editTotalChaptersGroup');
     const editReleaseStatusGroup = document.getElementById('editReleaseStatusGroup');
     const editReleaseStatus = document.getElementById('editReleaseStatus');
     const editStatus = document.getElementById('editStatus');
@@ -3862,6 +3946,7 @@
     function updateEditDates() {
       const isManga = editType.value === 'manga';
       const status = editStatus.value;
+      const releaseStatus = editReleaseStatus.value;
 
       if (isManga) {
         editStartGroup.style.display = 'none';
@@ -3888,6 +3973,15 @@
         editChapter.value = '';
       }
 
+      const showTotals = isManga && releaseStatus === 'completed';
+      editTotalVolumesGroup.style.display = showTotals ? '' : 'none';
+      editTotalChaptersGroup.style.display = showTotals ? '' : 'none';
+
+      if (!showTotals) {
+        document.getElementById('editTotalVolumes').value = '';
+        document.getElementById('editTotalChapters').value = '';
+      }
+
       const showRating = status === 'Прочитано';
       editRatingGroup.style.display = showRating ? 'flex' : 'none';
       editReviewGroup.style.display = showRating ? 'flex' : 'none';
@@ -3900,6 +3994,7 @@
 
     editType.addEventListener('change', updateEditFormByType);
     editStatus.addEventListener('change', updateEditDates);
+    editReleaseStatus.addEventListener('change', updateEditDates);
 
     updateEditFormByType();
 
@@ -3917,10 +4012,14 @@
       const newPages = isManga ? null : (parseInt(document.getElementById('editPages').value) || null);
 
       const newStatus = editStatus.value;
+      const newReleaseStatus = isManga ? editReleaseStatus.value : null;
       const shouldHaveVolume = isManga && newStatus !== 'В плане';
       const newVolume = shouldHaveVolume ? (parseInt(editVolume.value) || null) : null;
-      const newChapter = shouldHaveVolume ? (parseInt(editChapter.value) || null) : null;
-      const newReleaseStatus = isManga ? editReleaseStatus.value : null;
+      const newChapter = shouldHaveVolume ? (parseFloat(editChapter.value) || null) : null;
+
+      const showTotals = isManga && newReleaseStatus === 'completed';
+      const newTotalVolumes = showTotals ? (parseInt(document.getElementById('editTotalVolumes').value) || null) : null;
+      const newTotalChapters = showTotals ? (parseFloat(document.getElementById('editTotalChapters').value) || null) : null;
 
       const newStart = isManga ? null : (editStart.value || null);
       const newEnd = isManga ? null : (editEnd.value || null);
@@ -3965,6 +4064,8 @@
         pages: newPages,
         volume: newVolume,
         chapter: newChapter,
+        totalVolumes: newTotalVolumes,
+        totalChapters: newTotalChapters,
         releaseStatus: newReleaseStatus,
         covers: newCovers,
         mainCover: mainCover,
