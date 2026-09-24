@@ -563,6 +563,7 @@
       color: var(--manga-color);
       font-weight: 500;
       margin-bottom: 4px;
+      line-height: 1.4;
     }
     
     .book-status {
@@ -1750,12 +1751,11 @@
     return book.type === 'manga' ? 'manga' : 'book';
   }
 
-  // Формат для дробных глав: если целое — без десятичной, если дробное — как есть
   function formatChapter(num) {
     if (num === null || num === undefined || num === '') return '';
     const n = parseFloat(num);
     if (isNaN(n)) return '';
-    return Number.isInteger(n) ? String(n) : String(n);
+    return String(n);
   }
 
   function formatVolume(num) {
@@ -1765,10 +1765,10 @@
     return String(n);
   }
 
-  // Собирает строку «🎌 Том 3 · Глава 50 / 5 томов · 120 глав»
-    function getMangaVolumeInfoText(book) {
+  // Прогресс + общие — только для «Читаю»
+  function getMangaVolumeInfoText(book) {
     if (getBookType(book) !== 'manga') return '';
-    if (book.status === 'В плане') return '';
+    if (book.status !== 'Читаю') return '';
 
     const progressParts = [];
     if (book.volume) progressParts.push(`Том ${formatVolume(book.volume)}`);
@@ -1788,6 +1788,19 @@
     return progressStr || totalStr;
   }
 
+  // Общие тома/главы — только для «Прочитано» (завершённой манги)
+  function getMangaTotalInfoText(book) {
+    if (getBookType(book) !== 'manga') return '';
+    if (book.status !== 'Прочитано') return '';
+    if (book.releaseStatus !== 'completed') return '';
+
+    const totalParts = [];
+    if (book.totalVolumes) totalParts.push(`${formatVolume(book.totalVolumes)} ${pluralVolumes(book.totalVolumes)}`);
+    if (book.totalChapters) totalParts.push(`${formatChapter(book.totalChapters)} ${pluralChapters(book.totalChapters)}`);
+
+    return totalParts.join(' ');
+  }
+
   function pluralVolumes(n) {
     const v = parseInt(n);
     const mod10 = v % 10, mod100 = v % 100;
@@ -1802,6 +1815,31 @@
     if (mod10 === 1 && mod100 !== 11) return 'глава';
     if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return 'главы';
     return 'глав';
+  }
+
+  // Проверяет, дочитана ли манга до конца
+  function checkMangaCompletion(book, newVolume, newChapter) {
+    if (getBookType(book) !== 'manga') return null;
+    if (book.releaseStatus !== 'completed') return null;
+
+    const tv = book.totalVolumes ? parseInt(book.totalVolumes) : null;
+    const tc = book.totalChapters ? parseFloat(book.totalChapters) : null;
+
+    if (!tv && !tc) return null;
+
+    let reachedEnd = false;
+    if (tv && newVolume && newVolume >= tv) reachedEnd = true;
+    if (tc && newChapter && newChapter >= tc) reachedEnd = true;
+
+    if (!reachedEnd) return null;
+    if (book.status === 'Прочитано') return null;
+
+    const today = new Date().toISOString().split('T')[0];
+    return {
+      status: 'Прочитано',
+      endDate: book.endDate || today,
+      startDate: book.startDate || today
+    };
   }
 
   // ============================================================
@@ -2191,7 +2229,6 @@
       }
     }
 
-    // Прогресс (Том, Глава) — только у манги и только если не «В плане»
     const showMangaVolumeFields = isManga && status !== 'В плане';
     volumeInputGroup.style.display = showMangaVolumeFields ? '' : 'none';
     chapterInputGroup.style.display = showMangaVolumeFields ? '' : 'none';
@@ -2201,7 +2238,6 @@
       chapterInput.value = '';
     }
 
-    // Всего томов/глав — только у завершённой манги
     const showTotals = isManga && releaseStatus === 'completed';
     totalVolumesGroup.style.display = showTotals ? '' : 'none';
     totalChaptersGroup.style.display = showTotals ? '' : 'none';
@@ -2493,10 +2529,24 @@
     const volume = shouldHaveVolume ? (parseInt(volumeInput.value) || null) : null;
     const chapter = shouldHaveVolume ? (parseFloat(chapterInput.value) || null) : null;
 
-    // Всего томов/глав — только у завершённой манги
     const showTotals = isManga && releaseStatus === 'completed';
     const totalVolumes = showTotals ? (parseInt(totalVolumesInput.value) || null) : null;
     const totalChapters = showTotals ? (parseFloat(totalChaptersInput.value) || null) : null;
+
+    // Валидация: не больше, чем всего
+    if (isManga && releaseStatus === 'completed') {
+      const tv = totalVolumes;
+      const tc = totalChapters;
+
+      if (tv && volume && volume > tv) {
+        showToast(`❌ Том не может быть больше ${tv}`, 'error');
+        return;
+      }
+      if (tc && chapter && chapter > tc) {
+        showToast(`❌ Глава не может быть больше ${tc}`, 'error');
+        return;
+      }
+    }
 
     const start = isManga ? null : (startDate.value || null);
     const end = isManga ? null : (endDate.value || null);
@@ -2531,6 +2581,22 @@
       }
     }
 
+    // Автоперенос в «Прочитано» для завершённой манги, если дошли до конца
+    let finalStatus = status;
+    let finalStartDate = start;
+    let finalEndDate = (status === 'Прочитано' && !isManga) ? end : null;
+
+    if (isManga && status !== 'Прочитано' && releaseStatus === 'completed') {
+      const reachedEnd = (totalVolumes && volume && volume >= totalVolumes)
+                      || (totalChapters && chapter && chapter >= totalChapters);
+      if (reachedEnd) {
+        finalStatus = 'Прочитано';
+        const today = new Date().toISOString().split('T')[0];
+        finalStartDate = start || today;
+        finalEndDate = today;
+      }
+    }
+
     const newBook = {
       type,
       title,
@@ -2543,10 +2609,10 @@
       releaseStatus,
       covers,
       mainCover,
-      status,
-      startDate: start,
-      endDate: (status === 'Прочитано' && !isManga) ? end : null,
-      rating: (status === 'Прочитано') ? rating : null,
+      status: finalStatus,
+      startDate: finalStartDate,
+      endDate: finalEndDate,
+      rating: (finalStatus === 'Прочитано') ? rating : null,
       review,
       annotation,
       readingHistory: [],
@@ -2594,10 +2660,43 @@
 
   volumeConfirmBtn.addEventListener('click', async () => {
     if (!volumeEditingBookId) return;
+    const book = books.find(b => b.id === volumeEditingBookId);
+    if (!book) return;
+
     const newVolume = parseInt(volumeModalVolume.value) || null;
     const newChapter = parseFloat(volumeModalChapter.value) || null;
-    await updateInFirebase(volumeEditingBookId, { volume: newVolume, chapter: newChapter }, true);
-    showToast('✅ Обновлено', 'success');
+
+    // Валидация: не больше, чем всего (только у завершённой манги)
+    if (book.releaseStatus === 'completed') {
+      const tv = book.totalVolumes ? parseInt(book.totalVolumes) : null;
+      const tc = book.totalChapters ? parseFloat(book.totalChapters) : null;
+
+      if (tv && newVolume && newVolume > tv) {
+        showToast(`❌ В манге всего ${tv} ${pluralVolumes(tv)}`, 'error');
+        return;
+      }
+      if (tc && newChapter && newChapter > tc) {
+        showToast(`❌ В манге всего ${tc} ${pluralChapters(tc)}`, 'error');
+        return;
+      }
+    }
+
+    const updates = { volume: newVolume, chapter: newChapter };
+
+    // Автоперенос в «Прочитано», если дошли до конца
+    const completion = checkMangaCompletion(book, newVolume, newChapter);
+    if (completion) {
+      Object.assign(updates, completion);
+    }
+
+    await updateInFirebase(volumeEditingBookId, updates, true);
+
+    if (completion) {
+      showToast('🎉 Манга дочитана! Статус изменён на "Прочитано"', 'success');
+    } else {
+      showToast('✅ Обновлено', 'success');
+    }
+
     closeVolumeModalFn();
   });
 
@@ -2661,8 +2760,6 @@
     const srcType = getBookType(src);
     const isManga = srcType === 'manga';
 
-    // Прогресс чтения (том/глава) НИКОГДА не переносится — у каждого свой
-    // Всего томов/глав — переносится (это общая инфа о произведении)
     const newBook = {
       type: srcType,
       title: src.title,
@@ -3068,9 +3165,15 @@
           progressHtml = `<div class="book-pages">${book.pages} стр.</div>`;
         }
 
-        // Строка том/глава + всего
-                const mangaInfoText = getMangaVolumeInfoText(book);
-        const mangaInfoHtml = mangaInfoText ? `<div class="book-volumes">🎌 ${mangaInfoText}</div>` : '';
+        // Прогресс + общие (для «Читаю»)
+        const mangaInfoText = getMangaVolumeInfoText(book);
+        const mangaInfoHtml = mangaInfoText ? `<div class="book-volumes">${mangaInfoText}</div>` : '';
+
+        // Общие тома/главы (для «Прочитано» — как «страницы» у книг)
+        const mangaTotalText = getMangaTotalInfoText(book);
+        const mangaTotalHtml = mangaTotalText
+          ? `<div class="book-pages">${mangaTotalText}</div>`
+          : '';
 
         const timerBtnHtml = (!isManga && mine && book.status === 'Читаю')
           ? `<button class="book-timer-btn" data-id="${book.id}">⏱️ Читать</button>` : '';
@@ -3118,8 +3221,9 @@
             </div>
             <div class="book-title">${escapeHtml(book.title)}</div>
             ${book.author ? `<div class="book-author">${escapeHtml(book.author)}</div>` : ''}
-            ${mangaInfoHtml}
             ${!isManga && book.pages ? `<div class="book-pages">${book.pages} стр.</div>` : ''}
+            ${mangaTotalHtml}
+            ${mangaInfoHtml}
             ${statusBlockHtml}
             ${ratingHtml}
             ${datesHtml ? `<div class="book-dates">${datesHtml}</div>` : ''}
@@ -3285,7 +3389,12 @@
     }
 
     const mangaInfoText = getMangaVolumeInfoText(book);
-    const mangaInfoHtml = mangaInfoText ? `<div class="book-volumes" style="font-size:1rem;">🎌 ${mangaInfoText}</div>` : '';
+    const mangaInfoHtml = mangaInfoText ? `<div class="book-volumes" style="font-size:1rem;">${mangaInfoText}</div>` : '';
+
+    const mangaTotalText = getMangaTotalInfoText(book);
+    const mangaTotalHtml = mangaTotalText
+      ? `<div style="font-size:1rem;color:var(--text-secondary);">${mangaTotalText}</div>`
+      : '';
 
     let quickRatingHtml = '';
     if (book.status === 'Прочитано' && mine) {
@@ -3483,8 +3592,9 @@
         <div class="book-detail-title">${escapeHtml(book.title)}</div>
         ${book.author ? `<div class="book-detail-author">${escapeHtml(book.author)}</div>` : ''}
         ${releaseStatusHtml}
-        ${mangaInfoHtml}
         ${!isManga && book.pages ? `<div style="font-size:1rem;color:var(--text-secondary);">${book.pages} стр.</div>` : ''}
+        ${mangaTotalHtml}
+        ${mangaInfoHtml}
         ${detailStatusHtml}
         ${quickRatingHtml}
         ${datesHtml ? `<div class="book-detail-dates">${datesHtml}</div>` : ''}
@@ -4021,6 +4131,21 @@
       const newTotalVolumes = showTotals ? (parseInt(document.getElementById('editTotalVolumes').value) || null) : null;
       const newTotalChapters = showTotals ? (parseFloat(document.getElementById('editTotalChapters').value) || null) : null;
 
+      // Валидация: не больше, чем всего (только у завершённой манги)
+      if (isManga && newReleaseStatus === 'completed') {
+        const tv = newTotalVolumes;
+        const tc = newTotalChapters;
+
+        if (tv && newVolume && newVolume > tv) {
+          showToast(`❌ Том не может быть больше ${tv}`, 'error');
+          return;
+        }
+        if (tc && newChapter && newChapter > tc) {
+          showToast(`❌ Глава не может быть больше ${tc}`, 'error');
+          return;
+        }
+      }
+
       const newStart = isManga ? null : (editStart.value || null);
       const newEnd = isManga ? null : (editEnd.value || null);
       const newRating = (newStatus === 'Прочитано') ? (parseInt(editRating.value) || null) : null;
@@ -4057,6 +4182,22 @@
         mainCover = newCovers[0];
       }
 
+      // Автоперенос в «Прочитано» для завершённой манги, если дошли до конца
+      let finalStatus = newStatus;
+      let finalStartDate = newStart;
+      let finalEndDate = (newStatus === 'Прочитано' && !isManga) ? newEnd : null;
+
+      if (isManga && newStatus !== 'Прочитано' && newReleaseStatus === 'completed') {
+        const reachedEnd = (newTotalVolumes && newVolume && newVolume >= newTotalVolumes)
+                        || (newTotalChapters && newChapter && newChapter >= newTotalChapters);
+        if (reachedEnd) {
+          finalStatus = 'Прочитано';
+          const today = new Date().toISOString().split('T')[0];
+          finalStartDate = newStart || today;
+          finalEndDate = today;
+        }
+      }
+
       const updatedData = {
         type: newType,
         title: newTitle,
@@ -4069,10 +4210,10 @@
         releaseStatus: newReleaseStatus,
         covers: newCovers,
         mainCover: mainCover,
-        status: newStatus,
-        startDate: newStart,
-        endDate: (newStatus === 'Прочитано' && !isManga) ? newEnd : null,
-        rating: newRating,
+        status: finalStatus,
+        startDate: finalStartDate,
+        endDate: finalEndDate,
+        rating: (finalStatus === 'Прочитано') ? newRating : null,
         review: newReview,
         annotation: newAnnotation
       };
