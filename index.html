@@ -1321,7 +1321,12 @@
       box-shadow: 0 0 20px var(--accent-glow);
     }
     .timer-error { color: var(--error); font-size: 0.85rem; margin-top: 6px; min-height: 24px; text-align: center; display: none; }
-    .timer-history { margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+        .timer-history { margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+    .timer-history #timerHistoryList {
+      max-height: 250px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
     .timer-history h4 { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.3px; }
     .timer-history-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-secondary); padding: 4px 0; border-bottom: 1px solid var(--border); }
     .timer-history-item .time { font-weight: 500; color: var(--text); }
@@ -3388,8 +3393,8 @@
       return;
     }
 
-    const indexed = history.map((entry, idx) => ({ entry, idx }));
-    const sorted = indexed.reverse().slice(0, 10);
+        const indexed = history.map((entry, idx) => ({ entry, idx }));
+    const sorted = indexed.reverse(); // Все записи, от новых к старым
 
     timerHistoryList.innerHTML = sorted.map(({ entry, idx }) => `
       <div class="timer-history-item">
