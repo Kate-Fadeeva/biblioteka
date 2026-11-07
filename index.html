@@ -314,7 +314,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-height: 50vh;
+      max-height: 40vh;
       overflow-y: auto;
     }
     .history-item {
@@ -353,11 +353,75 @@
       border-radius: 20px;
       flex-shrink: 0;
     }
+    .history-item .h-delete {
+      background: none;
+      border: none;
+      color: var(--error);
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 0 4px;
+      opacity: 0.5;
+      transition: 0.2s;
+      flex-shrink: 0;
+      margin-left: 4px;
+    }
+    .history-item .h-delete:hover {
+      opacity: 1;
+      transform: scale(1.2);
+    }
     .history-empty {
       text-align: center;
       padding: 2rem 0;
       color: var(--text-muted);
       font-style: italic;
+    }
+
+    .history-add-block {
+      margin-top: 1rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+    .history-add-toggle {
+      background: var(--accent-dim);
+      color: var(--accent-text);
+      border: 1.5px dashed var(--accent);
+      border-radius: 40px;
+      padding: 10px 18px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+    .history-add-toggle:hover {
+      background: var(--accent);
+      color: var(--bg);
+      border-style: solid;
+    }
+    .history-add-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .history-add-form .form-group input {
+      width: 100%;
+    }
+    .history-add-time-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+    .history-add-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .history-add-error {
+      color: var(--error);
+      font-size: 0.85rem;
+      text-align: center;
+      min-height: 20px;
     }
 
     .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -1541,6 +1605,39 @@
           <div class="hb-author" id="historyBookAuthor"></div>
         </div>
         <div class="history-list" id="historyList"></div>
+        
+        <div class="history-add-block" id="historyAddBlock">
+          <div class="history-add-toggle" id="historyAddToggle">+ Добавить запись</div>
+          <div class="history-add-form" id="historyAddForm" style="display:none;">
+            <div class="form-group">
+              <label>Дата</label>
+              <input type="date" id="historyNewDate" />
+            </div>
+            <div class="form-group">
+              <label>Страница</label>
+              <input type="number" id="historyNewPage" min="1" placeholder="144" />
+            </div>
+            <div class="history-add-time-row">
+              <div class="form-group">
+                <label>Часы</label>
+                <input type="number" id="historyNewHours" min="0" max="999" placeholder="0" />
+              </div>
+              <div class="form-group">
+                <label>Минуты</label>
+                <input type="number" id="historyNewMinutes" min="0" max="59" placeholder="0" />
+              </div>
+              <div class="form-group">
+                <label>Секунды</label>
+                <input type="number" id="historyNewSeconds" min="0" max="59" placeholder="0" />
+              </div>
+            </div>
+            <div class="history-add-actions">
+              <button class="btn-copy-cancel" id="historyCancelAdd">Отмена</button>
+              <button class="btn-copy-confirm" id="historyConfirmAdd">💾 Добавить</button>
+            </div>
+            <div class="history-add-error" id="historyAddError"></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1618,6 +1715,7 @@
   let addMainCover = null;
 
   let volumeEditingBookId = null;
+  let historyEditingBook = null;
 
   // ============================================================
   // 1. FIREBASE
@@ -1720,6 +1818,16 @@
   const historyBookTitle = document.getElementById('historyBookTitle');
   const historyBookAuthor = document.getElementById('historyBookAuthor');
   const historyList = document.getElementById('historyList');
+  const historyAddToggle = document.getElementById('historyAddToggle');
+  const historyAddForm = document.getElementById('historyAddForm');
+  const historyNewDate = document.getElementById('historyNewDate');
+  const historyNewPage = document.getElementById('historyNewPage');
+  const historyNewHours = document.getElementById('historyNewHours');
+  const historyNewMinutes = document.getElementById('historyNewMinutes');
+  const historyNewSeconds = document.getElementById('historyNewSeconds');
+  const historyCancelAdd = document.getElementById('historyCancelAdd');
+  const historyConfirmAdd = document.getElementById('historyConfirmAdd');
+  const historyAddError = document.getElementById('historyAddError');
 
   const timerModal = document.getElementById('timerModal');
   const closeTimerModal = document.getElementById('closeTimerModal');
@@ -1847,7 +1955,6 @@
     return String(n);
   }
 
-  // Прогресс + общие — только для «Читаю»
   function getMangaVolumeInfoText(book) {
     if (getBookType(book) !== 'manga') return '';
     if (book.status !== 'Читаю') return '';
@@ -1870,7 +1977,6 @@
     return progressStr || totalStr;
   }
 
-  // Общие тома/главы — только для «Прочитано» (завершённой манги)
   function getMangaTotalInfoText(book) {
     if (getBookType(book) !== 'manga') return '';
     if (book.status !== 'Прочитано') return '';
@@ -1899,7 +2005,6 @@
     return 'глав';
   }
 
-  // Проверяет, дочитана ли манга до конца
   function checkMangaCompletion(book, newVolume, newChapter) {
     if (getBookType(book) !== 'manga') return null;
     if (book.releaseStatus !== 'completed') return null;
@@ -2615,7 +2720,6 @@
     const totalVolumes = showTotals ? (parseInt(totalVolumesInput.value) || null) : null;
     const totalChapters = showTotals ? (parseFloat(totalChaptersInput.value) || null) : null;
 
-    // Валидация: не больше, чем всего
     if (isManga && releaseStatus === 'completed') {
       const tv = totalVolumes;
       const tc = totalChapters;
@@ -2786,15 +2890,9 @@
   });
 
   // ============================================================
-  // 21б. ИСТОРИЯ ЧТЕНИЯ
+  // 21б. ИСТОРИЯ ЧТЕНИЯ (с добавлением и удалением)
   // ============================================================
-  function openHistoryModal(book) {
-    if (getBookType(book) !== 'book') return;
-    if (book.status !== 'Прочитано') return;
-
-    historyBookTitle.textContent = book.title;
-    historyBookAuthor.textContent = book.author || '';
-
+  function renderHistoryList(book) {
     const history = book.readingHistory || [];
     if (history.length === 0) {
       historyList.innerHTML = '<div class="history-empty">Пока нет записей</div>';
@@ -2805,16 +2903,63 @@
         const timeStr = entry.timeSpentFormatted || formatTime(entry.timeSpent || 0);
         const dateStr = new Date(entry.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' });
         const manualBadge = entry.manual ? '<span class="h-manual">вручную</span>' : '';
+        const realIdx = history.findIndex(h => h === entry);
+
         return `
           <div class="history-item">
             <span class="h-date">${dateStr}</span>
             <span class="h-page">📖 ${pageStr}</span>
             ${manualBadge}
             <span class="h-time">${timeStr}</span>
+            <button class="h-delete" data-idx="${realIdx}" title="Удалить запись">✕</button>
           </div>
         `;
       }).join('');
+
+      historyList.querySelectorAll('.h-delete').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const idx = parseInt(btn.dataset.idx);
+          if (!historyEditingBook) return;
+
+          const currentBook = books.find(b => b.id === historyEditingBook.id);
+          if (!currentBook) return;
+          const currentHistory = currentBook.readingHistory || [];
+          if (idx < 0 || idx >= currentHistory.length) return;
+
+          if (!confirm('Удалить эту запись?')) return;
+
+          const updatedHistory = currentHistory.filter((_, i) => i !== idx);
+          await updateInFirebase(currentBook.id, { readingHistory: updatedHistory }, true);
+          showToast('✅ Запись удалена', 'success');
+
+          const freshBook = books.find(b => b.id === historyEditingBook.id);
+          if (freshBook) {
+            historyEditingBook = freshBook;
+            renderHistoryList(freshBook);
+          }
+        });
+      });
     }
+  }
+
+  function openHistoryModal(book) {
+    if (getBookType(book) !== 'book') return;
+    if (book.status !== 'Прочитано') return;
+
+    historyEditingBook = book;
+    historyBookTitle.textContent = book.title;
+    historyBookAuthor.textContent = book.author || '';
+
+    historyAddForm.style.display = 'none';
+    historyAddToggle.style.display = '';
+    historyAddError.textContent = '';
+    historyNewDate.value = new Date().toISOString().split('T')[0];
+    historyNewPage.value = book.currentPage || '';
+    historyNewHours.value = '';
+    historyNewMinutes.value = '';
+    historyNewSeconds.value = '';
+
+    renderHistoryList(book);
 
     historyModal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -2823,6 +2968,7 @@
   function closeHistoryModalFn() {
     historyModal.classList.remove('active');
     document.body.style.overflow = '';
+    historyEditingBook = null;
   }
 
   closeHistoryModal.addEventListener('click', closeHistoryModalFn);
@@ -2832,6 +2978,81 @@
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && historyModal.classList.contains('active')) closeHistoryModalFn();
+  });
+
+  historyAddToggle.addEventListener('click', () => {
+    historyAddForm.style.display = 'block';
+    historyAddToggle.style.display = 'none';
+    historyAddError.textContent = '';
+  });
+
+  historyCancelAdd.addEventListener('click', () => {
+    historyAddForm.style.display = 'none';
+    historyAddToggle.style.display = '';
+    historyAddError.textContent = '';
+  });
+
+  historyConfirmAdd.addEventListener('click', async () => {
+    if (!historyEditingBook) return;
+
+    const book = books.find(b => b.id === historyEditingBook.id);
+    if (!book) return;
+
+    const dateVal = historyNewDate.value;
+    const pageVal = parseInt(historyNewPage.value) || null;
+    const h = parseInt(historyNewHours.value) || 0;
+    const m = parseInt(historyNewMinutes.value) || 0;
+    const s = parseInt(historyNewSeconds.value) || 0;
+
+    historyAddError.textContent = '';
+
+    if (!dateVal) {
+      historyAddError.textContent = 'Укажите дату';
+      return;
+    }
+    if (h < 0 || m < 0 || m > 59 || s < 0 || s > 59) {
+      historyAddError.textContent = 'Минуты и секунды: 0–59';
+      return;
+    }
+
+    const totalSeconds = h * 3600 + m * 60 + s;
+    if (totalSeconds <= 0) {
+      historyAddError.textContent = 'Введите время больше 0';
+      return;
+    }
+
+    if (book.pages && pageVal && pageVal > book.pages) {
+      historyAddError.textContent = `В книге всего ${book.pages} стр.`;
+      return;
+    }
+
+    const isoDate = new Date(dateVal + 'T12:00:00').toISOString();
+
+    const entry = {
+      date: isoDate,
+      page: pageVal,
+      timeSpent: totalSeconds,
+      timeSpentFormatted: formatTime(totalSeconds),
+      manual: true
+    };
+
+    const history = book.readingHistory || [];
+    history.push(entry);
+
+    await updateInFirebase(book.id, { readingHistory: history }, true);
+    showToast('✅ Запись добавлена', 'success');
+
+    historyAddForm.style.display = 'none';
+    historyAddToggle.style.display = '';
+    historyNewHours.value = '';
+    historyNewMinutes.value = '';
+    historyNewSeconds.value = '';
+
+    const freshBook = books.find(b => b.id === book.id);
+    if (freshBook) {
+      historyEditingBook = freshBook;
+      renderHistoryList(freshBook);
+    }
   });
 
   // ============================================================
