@@ -299,6 +299,67 @@
     }
     .volume-fields .form-group input { width: 100%; }
 
+    /* История чтения */
+    .history-modal .modal { max-width: 500px; }
+    .history-book-info {
+      background: var(--bg);
+      padding: 14px 16px;
+      border-radius: 14px;
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--accent);
+    }
+    .history-book-info .hb-title { font-weight: 600; color: var(--text); margin-bottom: 3px; }
+    .history-book-info .hb-author { font-size: 0.85rem; color: var(--text-secondary); }
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 50vh;
+      overflow-y: auto;
+    }
+    .history-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--bg);
+      border-radius: 12px;
+      border-left: 3px solid var(--accent);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    .history-item .h-date {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      min-width: 90px;
+      flex-shrink: 0;
+    }
+    .history-item .h-page {
+      font-weight: 500;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+    .history-item .h-time {
+      margin-left: auto;
+      font-weight: 600;
+      color: var(--accent-text);
+      flex-shrink: 0;
+    }
+    .history-item .h-manual {
+      font-size: 0.7rem;
+      background: var(--accent-dim);
+      color: var(--accent-text);
+      padding: 2px 6px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+    .history-empty {
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
     .form-group { display: flex; flex-direction: column; gap: 6px; }
     .form-group label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
     .form-group label .badge { font-size: 0.6rem; text-transform: none; background: var(--accent-dim); color: var(--accent-text); padding: 2px 10px; border-radius: 20px; font-weight: 400; }
@@ -1468,6 +1529,21 @@
       </div>
     </div>
 
+    <!-- МОДАЛКА ИСТОРИИ ЧТЕНИЯ -->
+    <div class="modal-overlay history-modal" id="historyModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>📜 <span class="accent">История чтения</span></h2>
+          <button class="modal-close" id="closeHistoryModal">✕</button>
+        </div>
+        <div class="history-book-info">
+          <div class="hb-title" id="historyBookTitle"></div>
+          <div class="hb-author" id="historyBookAuthor"></div>
+        </div>
+        <div class="history-list" id="historyList"></div>
+      </div>
+    </div>
+
     <!-- МОДАЛКА ТАЙМЕРА -->
     <div class="modal-overlay timer-modal" id="timerModal">
       <div class="modal">
@@ -1638,6 +1714,12 @@
   const volumeModalChapter = document.getElementById('volumeModalChapter');
   const volumeCancelBtn = document.getElementById('volumeCancelBtn');
   const volumeConfirmBtn = document.getElementById('volumeConfirmBtn');
+
+  const historyModal = document.getElementById('historyModal');
+  const closeHistoryModal = document.getElementById('closeHistoryModal');
+  const historyBookTitle = document.getElementById('historyBookTitle');
+  const historyBookAuthor = document.getElementById('historyBookAuthor');
+  const historyList = document.getElementById('historyList');
 
   const timerModal = document.getElementById('timerModal');
   const closeTimerModal = document.getElementById('closeTimerModal');
@@ -2581,7 +2663,6 @@
       }
     }
 
-    // Автоперенос в «Прочитано» для завершённой манги, если дошли до конца
     let finalStatus = status;
     let finalStartDate = start;
     let finalEndDate = (status === 'Прочитано' && !isManga) ? end : null;
@@ -2666,7 +2747,6 @@
     const newVolume = parseInt(volumeModalVolume.value) || null;
     const newChapter = parseFloat(volumeModalChapter.value) || null;
 
-    // Валидация: не больше, чем всего (только у завершённой манги)
     if (book.releaseStatus === 'completed') {
       const tv = book.totalVolumes ? parseInt(book.totalVolumes) : null;
       const tc = book.totalChapters ? parseFloat(book.totalChapters) : null;
@@ -2682,8 +2762,6 @@
     }
 
     const updates = { volume: newVolume, chapter: newChapter };
-
-    // Автоперенос в «Прочитано», если дошли до конца
     const completion = checkMangaCompletion(book, newVolume, newChapter);
     if (completion) {
       Object.assign(updates, completion);
@@ -2705,6 +2783,55 @@
   });
   volumeModalChapter.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') { e.preventDefault(); volumeConfirmBtn.click(); }
+  });
+
+  // ============================================================
+  // 21б. ИСТОРИЯ ЧТЕНИЯ
+  // ============================================================
+  function openHistoryModal(book) {
+    if (getBookType(book) !== 'book') return;
+    if (book.status !== 'Прочитано') return;
+
+    historyBookTitle.textContent = book.title;
+    historyBookAuthor.textContent = book.author || '';
+
+    const history = book.readingHistory || [];
+    if (history.length === 0) {
+      historyList.innerHTML = '<div class="history-empty">Пока нет записей</div>';
+    } else {
+      const sorted = [...history].sort((a, b) => new Date(b.date) - new Date(a.date));
+      historyList.innerHTML = sorted.map(entry => {
+        const pageStr = entry.page ? `стр. ${entry.page}` : 'без страницы';
+        const timeStr = entry.timeSpentFormatted || formatTime(entry.timeSpent || 0);
+        const dateStr = new Date(entry.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' });
+        const manualBadge = entry.manual ? '<span class="h-manual">вручную</span>' : '';
+        return `
+          <div class="history-item">
+            <span class="h-date">${dateStr}</span>
+            <span class="h-page">📖 ${pageStr}</span>
+            ${manualBadge}
+            <span class="h-time">${timeStr}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    historyModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeHistoryModalFn() {
+    historyModal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  closeHistoryModal.addEventListener('click', closeHistoryModalFn);
+  historyModal.addEventListener('click', (e) => {
+    if (e.target === historyModal) closeHistoryModalFn();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && historyModal.classList.contains('active')) closeHistoryModalFn();
   });
 
   // ============================================================
@@ -3165,11 +3292,9 @@
           progressHtml = `<div class="book-pages">${book.pages} стр.</div>`;
         }
 
-        // Прогресс + общие (для «Читаю»)
         const mangaInfoText = getMangaVolumeInfoText(book);
         const mangaInfoHtml = mangaInfoText ? `<div class="book-volumes">${mangaInfoText}</div>` : '';
 
-        // Общие тома/главы (для «Прочитано» — как «страницы» у книг)
         const mangaTotalText = getMangaTotalInfoText(book);
         const mangaTotalHtml = mangaTotalText
           ? `<div class="book-pages">${mangaTotalText}</div>`
@@ -3554,6 +3679,7 @@
           ${!isManga && book.status === 'Читаю' ? `<button class="edit-btn" id="detailTimerBtn">⏱️ Читать</button>` : ''}
           ${!isManga && book.status === 'Хочу купить' ? `<button class="edit-btn" id="detailBuyBtn" style="background:var(--success);color:#fff;">✅ Куплено</button>` : ''}
           ${isManga && book.status === 'Читаю' ? `<button class="edit-btn" id="detailVolumeBtn" style="background:var(--manga-color);color:#fff;">✏️ Том/Глава</button>` : ''}
+          ${!isManga && book.status === 'Прочитано' ? `<button class="edit-btn" id="detailHistoryBtn" style="background:var(--bg);color:var(--text);border:1.5px solid var(--border);">📜 История</button>` : ''}
           <button class="edit-btn" id="detailEditBtn">✏️ Редактировать</button>
           <button class="delete-btn" id="detailDeleteBtn">🗑 Удалить</button>
         </div>`;
@@ -3760,6 +3886,13 @@
       if (detailVolumeBtn) {
         detailVolumeBtn.addEventListener('click', () => {
           openVolumeModal(book);
+        });
+      }
+
+      const detailHistoryBtn = document.getElementById('detailHistoryBtn');
+      if (detailHistoryBtn) {
+        detailHistoryBtn.addEventListener('click', () => {
+          openHistoryModal(book);
         });
       }
 
@@ -4131,7 +4264,6 @@
       const newTotalVolumes = showTotals ? (parseInt(document.getElementById('editTotalVolumes').value) || null) : null;
       const newTotalChapters = showTotals ? (parseFloat(document.getElementById('editTotalChapters').value) || null) : null;
 
-      // Валидация: не больше, чем всего (только у завершённой манги)
       if (isManga && newReleaseStatus === 'completed') {
         const tv = newTotalVolumes;
         const tc = newTotalChapters;
@@ -4182,7 +4314,6 @@
         mainCover = newCovers[0];
       }
 
-      // Автоперенос в «Прочитано» для завершённой манги, если дошли до конца
       let finalStatus = newStatus;
       let finalStartDate = newStart;
       let finalEndDate = (newStatus === 'Прочитано' && !isManga) ? newEnd : null;
